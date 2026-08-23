@@ -1,4 +1,5 @@
-Lecture notes  posted on this site are licensed under the Creative Commons License: 
+This repo is to store course materials for Discrete Math course, fall 2026.
+Lecture notes are licensed under the Creative Commons License: 
 
 [![CC BY 4.0][cc-by-shield]][cc-by]
 

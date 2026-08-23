@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Books</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <header>
+    <h1>Books for Discrete Math</h1>
+  </header>
+
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <div class="content">
+      <h2>Required Books</h2>
+      <p>We will be using <strong>two free online textbooks</strong> this semester:</p>
+
+      <ul>
+        <li><a href="https://discrete.openmathbooks.org/dmoi4.html" target="_blank" rel="noopener noreferrer"><strong>Discrete Mathematics: An Open Introduction</strong></a> (DM), 4th edition, by <em>Oscar Levin</em></li>
+        <li><a href="https://bogart.openmathbooks.org/" target="_blank" rel="noopener noreferrer"><strong>Combinatorics Through Guided Discovery</strong></a> (CTGD), by <em>Kenneth Bogart</em></li>
+      </ul>
+
+      <p>
+        <strong>Note:</strong> The <strong>DM</strong> textbook is a new edition. If you experience issues with its interactive features, please use the
+        <a href="https://discrete.openmathbooks.org/dmoi3.html" target="_blank" rel="noopener noreferrer">previous edition</a>.
+      </p>
+
+      <h2>Recommended Book</h2>
+      <p>
+        <a href="https://infinitedescent.org/" target="_blank" rel="noopener noreferrer"><strong>An Infinite Descent into Pure Mathematics</strong></a> by <em>Clive Newstead</em><br>
+        A free, open-source introduction to proof writing and pure mathematics. Particularly useful for logic, sets, functions, induction, relations, number theory, and combinatorics.
+      </p>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>

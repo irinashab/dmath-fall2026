@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Using Classroom50 | Discrete Mathematics</title>
+  <style>
+    :root {
+      --ink: #20242a;
+      --muted: #59636e;
+      --blue: #315da8;
+      --blue-soft: #eef4ff;
+      --green-soft: #edf8f1;
+      --amber-soft: #fff7e6;
+      --line: #dfe4ea;
+      --paper: #ffffff;
+      --page: #f5f7fa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      font: 17px/1.62 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(900px, calc(100% - 32px));
+      margin: 40px auto;
+      padding: clamp(28px, 5vw, 60px);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 12px 36px rgb(28 39 54 / 8%);
+    }
+
+    h1, h2, h3 { line-height: 1.2; }
+    h1 { margin: 0 0 10px; font-size: clamp(2rem, 5vw, 3rem); }
+    h2 { margin: 2.3rem 0 0.8rem; color: var(--blue); }
+    h3 { margin: 1.5rem 0 0.4rem; }
+    p, ul, ol { margin-top: 0.6rem; }
+    li + li { margin-top: 0.42rem; }
+    a { color: var(--blue); }
+    code {
+      padding: 0.1em 0.35em;
+      border-radius: 5px;
+      background: #eef1f4;
+      font-size: 0.92em;
+    }
+
+    .subtitle { margin: 0 0 2rem; color: var(--muted); font-size: 1.08rem; }
+
+    .box {
+      margin: 1.3rem 0;
+      padding: 1rem 1.15rem;
+      border-left: 5px solid var(--blue);
+      border-radius: 8px;
+      background: var(--blue-soft);
+    }
+
+    .success { border-color: #318257; background: var(--green-soft); }
+    .warning { border-color: #c57a12; background: var(--amber-soft); }
+    .box > :first-child { margin-top: 0; }
+    .box > :last-child { margin-bottom: 0; }
+
+    .checklist { list-style: none; padding-left: 0; }
+    .checklist li { position: relative; padding-left: 1.7rem; }
+    .checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--blue); }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Using Classroom50</h1>
+    <p class="subtitle">Student instructions for Discrete Mathematics</p>
+
+    <div class="box">
+      <strong>The short version:</strong> accept the assignment, open the private repository created for you, upload the required file to the <code>main</code> branch, and verify that the file opens.
+    </div>
+
+    <h2>What you need</h2>
+    <ul>
+      <li>A GitHub account connected to your Purchase College email address.</li>
+      <li>Membership in the course GitHub organization, <code>dmath-fall2026</code>.</li>
+      <li>The assignment link posted on the course page.</li>
+    </ul>
+    <p>You do <strong>not</strong> need to create a personal access token. Tokens are part of the instructor's setup, not the student submission process.</p>
+
+    <h2>0. Create your GitHub account</h2>
+    <p>Complete this step before trying to join the course organization.</p>
+    <ol>
+      <li>Go to <a href="https://github.com/signup">github.com/signup</a>.</li>
+      <li>Create an account using your Purchase College email address.</li>
+      <li>Choose a username you will be comfortable using for coursework. Your username will appear in the name of every assignment repository.</li>
+      <li>Open the verification message GitHub sends to your Purchase email and verify the address.</li>
+      <li>Make a note of your GitHub username; your instructor may ask for it if there is a problem with your enrollment.</li>
+    </ol>
+    <div class="box">
+      <strong>Already have a GitHub account?</strong> Do not create a second one. In GitHub, open <strong>Settings → Emails</strong>, add your Purchase College email address, and verify it. Continue using your existing account for the course.
+    </div>
+
+    <h2>1. Join the course organization</h2>
+    <p>This is a one-time step.</p>
+    <ol>
+      <li>Look for the GitHub organization invitation sent by your instructor.</li>
+      <li>Sign in to the GitHub account you will use for the course.</li>
+      <li>Accept the invitation to join <code>dmath-fall2026</code>.</li>
+      <li>Go to <a href="https://classroom50.org/">classroom50.org</a> and choose <strong>Sign in with GitHub</strong>.</li>
+      <li>Find <code>dmath-fall2026</code>, marked <strong>Student</strong>, and open it.</li>
+    </ol>
+    <div class="box warning">
+      Use the same GitHub account throughout the course. If you accept the organization invitation with one account and open the assignment with another, Classroom50 may not recognize you correctly.
+    </div>
+
+    <h2>2. Accept an assignment</h2>
+    <ol>
+      <li>Open the assignment link posted on the course page.</li>
+      <li>Sign in to Classroom50 with GitHub if asked.</li>
+      <li>Click <strong>Accept assignment</strong>.</li>
+      <li>Wait while Classroom50 creates your private assignment repository.</li>
+      <li>Open the repository when the confirmation page appears.</li>
+    </ol>
+    <p>Everyone receives the same assignment link, but Classroom50 creates a different private repository for each student. Its name ends with your GitHub username.</p>
+    <div class="box success">
+      You accept each assignment only once. Reopening its link will not create a second repository.
+    </div>
+
+    <h2>3. Find your repository later</h2>
+    <p>The best route is through Classroom50:</p>
+    <ol>
+      <li>Sign in at <a href="https://classroom50.org/">classroom50.org</a>.</li>
+      <li>Open the <code>dmath-fall2026</code> organization marked <strong>Student</strong>.</li>
+      <li>Select the assignment you previously accepted.</li>
+      <li>Open your assignment repository.</li>
+    </ol>
+    <p>You can also find it on GitHub under <strong>Your repositories</strong>, but you should not need to hunt for it there.</p>
+
+    <h2>4. Prepare the required file</h2>
+    <p>Follow the naming and file-format directions in the assignment's <code>README.md</code>. For a PDF submission:</p>
+    <ol>
+      <li>Compile or export your work as a genuine PDF.</li>
+      <li>Open the PDF on your own computer before uploading it.</li>
+      <li>Confirm that the document displays correctly and contains your completed work.</li>
+      <li>Give it the exact filename requested in the assignment.</li>
+    </ol>
+    <div class="box warning">
+      <strong>Changing a filename does not change its file type.</strong> Renaming <code>work.tex</code> to <code>work.pdf</code> does not create a PDF. You must compile the LaTeX source and upload the resulting PDF file.
+    </div>
+
+    <h2>5. Upload your work</h2>
+    <ol>
+      <li>Open your personal assignment repository.</li>
+      <li>Check the branch selector near the upper-left corner. It must say <strong>main</strong>.</li>
+      <li>Click <strong>Add file</strong>, then <strong>Upload files</strong>.</li>
+      <li>Drag the required file onto the page, or click <strong>choose your files</strong>.</li>
+      <li>Wait until the filename appears in the upload list.</li>
+      <li>In the commit-message box, briefly describe what you are submitting, for example <code>Submit Practice 0</code>.</li>
+      <li>Choose <strong>Commit directly to the main branch</strong>.</li>
+      <li>Click <strong>Commit changes</strong>.</li>
+    </ol>
+    <p>The commit is the upload. For these manually graded assignments, there is no additional Submit button, tag, release, or token.</p>
+
+    <h2>6. Verify the submission</h2>
+    <p>Do not stop immediately after clicking <strong>Commit changes</strong>.</p>
+    <ul class="checklist">
+      <li>The branch selector says <strong>main</strong>.</li>
+      <li>The required filename appears in the repository's file list.</li>
+      <li>Clicking the filename opens a valid preview or downloads a file that opens correctly.</li>
+      <li>The document contains the work you intended to submit.</li>
+    </ul>
+    <p>If GitHub says <strong>Invalid PDF</strong> or shows LaTeX code instead of a document, you did not upload a valid PDF.</p>
+
+    <h2>7. Correct or replace a file</h2>
+    <p>You may upload a corrected file to the same repository before the deadline:</p>
+    <ol>
+      <li>Fix the original document and produce a new, valid output file.</li>
+      <li>Open the new file on your computer and check it.</li>
+      <li>Give it exactly the same required filename.</li>
+      <li>Return to the repository's <code>main</code> branch.</li>
+      <li>Use <strong>Add file → Upload files</strong> and upload the corrected file.</li>
+      <li>Commit the replacement directly to <code>main</code>.</li>
+      <li>Open the file from the repository once more to verify it.</li>
+    </ol>
+    <p>GitHub keeps the earlier versions in the commit history, while the repository's main page shows the newest version.</p>
+
+    <h2>8. Submission status and grades</h2>
+    <p>These assignments are graded manually. Classroom50 may continue to display <strong>Accepted · awaiting submission</strong> even after you have uploaded your work. This does not mean that your file disappeared.</p>
+    <p>Your instructor will check the file in your private repository and enter the score manually. You can view your own information by opening the assignment and choosing <strong>My submission</strong>.</p>
+
+    <h2>If something goes wrong</h2>
+    <h3>You cannot see the course organization</h3>
+    <p>Confirm that you accepted the GitHub organization invitation and that you are signed in with the same GitHub account.</p>
+
+    <h3>You cannot find your assignment repository</h3>
+    <p>Return to Classroom50, open <code>dmath-fall2026</code>, and select the assignment. You may also reopen the assignment link from the course page.</p>
+
+    <h3>You cannot upload a file</h3>
+    <p>Confirm that you are in your personal assignment repository—not the template repository—and that the branch is <code>main</code>. If the assignment has been closed, contact the instructor.</p>
+
+    <h3>The PDF will not open</h3>
+    <p>Open the source in your LaTeX editor, compile it, download the resulting PDF, and test that PDF locally. Then upload the valid PDF again using the required filename.</p>
+
+    <h3>You uploaded the wrong file</h3>
+    <p>Upload the correct file using the same filename and commit it to <code>main</code>. Then verify the replacement from the repository page.</p>
+
+    <footer>
+      Discrete Mathematics · Fall 2026
+    </footer>
+  </main>
+</body>
+</html>

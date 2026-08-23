@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – LaTeX</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header>
+    <h1>LaTeX Instructions</h1>
+  </header>
+
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <blockquote>
+      <p>“TeX is intended for the creation of beautiful books—and especially for books that contain a lot of mathematics.”</p>
+      <footer>—Donald E. Knuth, <cite>The TeXbook</cite></footer>
+    </blockquote>
+
+    <p>Have you ever wondered how mathematical articles are typed? We do not have symbols on the keyboard for things like exponents, so \(x^2\) might not be so easy to write. \(\pi\) will certainly not appear on your keyboard, either, and good luck finding the symbol for \(\int\).</p>
+
+<p>The answer is called <strong>LaTeX</strong>. LaTeX is a document preparation and typesetting system. In mathematics, it is the standard for writing articles, books, and problem sets. Although Microsoft Word and Google Docs can handle mathematical equations, using them for documents with a lot of mathematics can be cumbersome. These course notes are a minor exception: I am using GitHub Pages to write HTML and MathJax (a JavaScript library that renders LaTeX notation on the web).</p>
+
+<h2 class="no_toc" id="setting-up">Setting up</h2>
+
+<p>There are several ways to set up and install LaTeX. If you prefer not to install anything on your computer, you can create a <strong>free</strong> account on <a href="https://www.overleaf.com" target="_blank" rel="noopener noreferrer">Overleaf</a>. This is the simplest way to get up and running.</p>
+
+<p>If you prefer to use LaTeX on your own computer, you will need two things:</p>
+
+<ol>
+  <li>A LaTeX <em>distribution</em>: either <a href="https://www.tug.org/mactex/" target="_blank" rel="noopener noreferrer">MacTeX</a> for macOS or <a href="https://miktex.org/about" target="_blank" rel="noopener noreferrer">MiKTeX</a> for Windows.</li>
+  <li>A LaTeX <em>editor</em>: my preference is <a href="https://www.texstudio.org" target="_blank" rel="noopener noreferrer">TeXstudio</a>. MiKTeX and MacTeX both come with LaTeX editors, so you can use those if you like (MiKTeX comes with TeXworks and MacTeX comes with TeXShop), though I prefer TeXstudio.</li>
+</ol>
+
+<p>Once you have written your document in LaTeX and saved it as a <code>.tex</code> file, you will be able to compile it to a PDF.</p>
+
+<h2 class="no_toc" id="basic-formatting">Basic Formatting</h2>
+
+<p>A simple LaTeX file may look something like:</p>
+
+<div class="math-box"><div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">\documentclass</span><span class="p">{</span>article<span class="p">}</span>
+
+<span class="c">% This is a comment</span>
+<span class="c">% This part of the file is called the preamble.</span>
+<span class="c">% Title / author / date can go here</span>
+<span class="c">% Can also include packages that we need to use to render the math correctly</span>
+<span class="k">\title</span><span class="p">{</span>This is my title<span class="p">}</span>
+<span class="k">\author</span><span class="p">{</span>My Name<span class="p">}</span>
+
+<span class="nt">\begin{document}</span>
+
+<span class="c">% This is the main body of the document.</span>
+<span class="k">\maketitle</span>
+
+Paragraph 1.
+
+Paragraph 2.
+
+<span class="nt">\end{document}</span>
+</code></pre></div></div></div>
+
+<p>It can be overwhelming to start a LaTeX document from scratch, so feel free to use the problem-set files I post as a starting point. I include several packages, macros, and definitions in the preamble.</p>
+
+<h2 class="no_toc" id="formatting-math">Formatting Math</h2>
+
+<p>To format math in a LaTeX file, you use dollar signs to start and end your mathematical notation. This is referred to as <em>inline math mode</em>. For example, to write the sentence “If \(a \neq 0\), then \(ax^2 + bx + c\) is a quadratic polynomial,” you use the following LaTeX syntax:</p>
+
+<div class="math-box"><div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>If <span class="p">$</span><span class="nb">a </span><span class="nv">\neq</span><span class="nb"> </span><span class="m">0</span><span class="p">$</span>, then <span class="p">$</span><span class="nb">ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </span><span class="o">+</span><span class="nb"> bx </span><span class="o">+</span><span class="nb"> c</span><span class="p">$</span> is a quadratic polynomial.
+</code></pre></div></div></div>
+
+<p>This is <em>inline</em> math because the mathematics appears in the middle of a sentence. There is also <em>display math mode</em>, which places mathematical content on its own line. Use <code>\[</code> to begin display math and <code>\]</code> to end it.</p>
+
+<p>As you can see, LaTeX uses commands to produce mathematical notation. For exponents or superscripts, we use the caret (<code>^</code>); for “not equal,” \(\neq\), we use <code>\neq</code>. You can find several good guides to basic LaTeX commands and mathematical symbols below.</p>
+
+<h2 class="no_toc" id="further-reading">Further reading</h2>
+<p>These first two are essential: you <strong>must</strong> check these out.</p>
+
+<ul>
+  <li><a href="https://guides.nyu.edu/c.php?g=601858&amp;p=4168084" target="_blank" rel="noopener noreferrer">NYU: Guide to LaTeX</a>. This guide is quite thorough and has many other links to help you get set up. Its <a href="https://guides.nyu.edu/c.php?g=601858&amp;p=4168135" target="_blank" rel="noopener noreferrer">resources section</a> includes useful references for finding LaTeX commands and symbols.</li>
+  <li><a href="https://www.cs.princeton.edu/courses/archive/spr10/cos433/Latex/latex-guide.pdf" target="_blank" rel="noopener noreferrer">David Xiao, “A Beginner’s Guide to LaTeX” (Princeton)</a>. This is a short, six-page introduction to the basics of LaTeX.</li>
+  <li><a href="https://tobi.oetiker.ch/lshort/lshort.pdf" target="_blank" rel="noopener noreferrer"><cite>The Not So Short Introduction to LaTeX 2e</cite></a>. This comprehensive reference describes LaTeX’s core functionality.</li>
+</ul>
+
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>

@@ -512,6 +512,10 @@ section {
   padding: 0.75rem 0;
   list-style-position: inside;
 }
+.back-to-top {
+  margin-top: 2rem;
+  text-align: right;
+}
 
 .lesson-nav li {
   margin: 0;
@@ -671,4 +675,13 @@ mjx-container[display="true"] {
   .glyph-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+/* ===================================
+   article tag saying that the file is
+   one self-contained piece of content
+    inside the page’s <main>
+   =================================== */
+article {
+  max-width: 900px;
+  margin: 0 auto;
 }

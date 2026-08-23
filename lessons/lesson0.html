@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lesson 0</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+ 
+
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <article>
+      <header>
+        <h1>Discrete Mathematics: Lesson 0</h1>
+       
+      </header>
+
+      <nav aria-label="Contents">
+        <h2>Contents</h2>
+        <ol>
+          <li><a href="#warm-up">Warm-Up</a></li>
+          <li><a href="#hidden-structure">The Hidden Structure</a></li>
+          <li><a href="#discrete-mathematics">What Is Discrete Mathematics?</a></li>
+          <li><a href="#mathematical-writing">Mathematical Writing</a></li>
+          <li><a href="#latex">LaTeX in This Course</a></li>
+          <li><a href="#practice-0">Post-Lecture Practice 0</a></li>
+        </ol>
+      </nav>
+
+      <section id="warm-up">
+        <h2>Warm-Up: The Game of 15</h2>
+
+        <p>We begin with a game for two players.</p>
+
+        <ul>
+          <li>Players take turns choosing integers from 1 through 9.</li>
+          <li>Once a number has been chosen, it cannot be chosen again.</li>
+          <li>A player wins by collecting three numbers whose sum is 15.</li>
+          <li>A player may use any three of the numbers they have collected.</li>
+          <li>If neither player succeeds, the game ends in a tie.</li>
+        </ul>
+
+        <h3>Example</h3>
+
+        <ul>
+          <li>Player 1 chooses 8.</li>
+          <li>Player 2 chooses 5.</li>
+          <li>Player 1 chooses 2.</li>
+          <li>Player 2 chooses 6.</li>
+          <li>Player 1 chooses 4. The sum (8+2+4=14), so Player 1 has not yet won.</li>
+          <li>Player 2 chooses 9. None of Player 2's triples sums to 15.</li>
+          <li>Player 1 chooses 3 and wins because (8+4+3=15).</li>
+        </ul>
+
+        <h3>Pair Up</h3>
+
+        <ol>
+          <li>Introduce yourselves: name, pronouns, year, major, interests, or anything else you would like to share.</li>
+          <li>Play several games. Take turns going first.</li>
+          <li>Look for a strategy. Is there a particularly strong first move? How can you block an opponent?</li>
+          <li>Write your proposed strategy clearly enough that another pair could follow it.</li>
+          <li>Compare strategies with another pair. Does this game remind you of another game?</li>
+        </ol>
+      </section>
+
+      <section id="hidden-structure">
+        <h2>The Hidden Structure</h2>
+
+        <p>The game may look like an arithmetic puzzle, but arrange the numbers in this square:</p>
+
+        <div class="math-box" role="img" aria-label="A three by three magic square with rows 8 1 6, 3 5 7, and 4 9 2">
+          \[
+          \begin{array}{|c|c|c|}
+          \hline
+          8 &amp; 1 &amp; 6 \\ \hline
+          3 &amp; 5 &amp; 7 \\ \hline
+          4 &amp; 9 &amp; 2 \\ \hline
+          \end{array}
+          \]
+        </div>
+
+        <p>Every row, column, and diagonal sums to 15. Therefore, collecting three numbers whose sum is 15 is equivalent to occupying a row, column, or diagonal in tic-tac-toe.</p>
+
+        <p>The two games look different, but they have the same underlying structure. Recognizing and describing hidden structures like this is an important part of discrete mathematics.</p>
+      </section>
+
+      <section id="discrete-mathematics">
+       <p>Let’s start with the word <em>discrete</em>:</p>
+
+  <blockquote>
+    <strong>dis·crete</strong> /disˈkrēt/<br>
+    <strong>Adjective:</strong> Individually separate and distinct.<br>
+    <strong>Synonyms:</strong> separate – detached – distinct – abstract
+  </blockquote>
+
+  <p>
+    Defining <em>discrete mathematics</em> is tricky—because defining <em>mathematics</em> itself is tricky.
+    Is math the study of numbers? Partly, yes. But it also includes functions, lines, triangles,
+    parallelepipeds, vectors, and much more. Or maybe you'd say mathematics is a toolbox for solving
+    problems—especially those involving patterns, structure, and logic.
+  </p>
+
+  <p>
+    So what makes mathematics <em>discrete</em>?
+  </p>
+
+  <p>
+    Try applying the dictionary definition of “discrete” to mathematics: individually separate and distinct.
+    Some areas of math deal with continuous things, like the real numbers. In calculus, when you talk about numbers
+    between 0 and 1, you can always find another number in between—like 0.5. And between 0 and 0.5? Sure—0.25.
+    This can go on forever. There’s no smallest possible gap.
+  </p>
+
+  <p>
+    But discrete math is different.
+  </p>
+
+  <p>
+    Suppose you're working with natural numbers \(\{1, 2, 3, ...\}\). Take the numbers 4 and 5.
+    Can you find a natural number between them? No—you’re stuck. Discrete math deals with things
+    that come in individual chunks: integers, graphs, logic statements, sets, algorithms.
+  </p>
+
+  <p>
+    The best way to understand discrete math is to jump in and start doing it.  
+   
+  </p>
+</section>
+      <section id="required course">
+  <h2>Why Discrete Math is a Required Course for Math/CS Majors</h2>
+  <p>
+    This course is often required in most computer science departments. It is usually considered a prerequisite for higher-level computer science courses, as it provides the mathematical background needed for courses like <em>Data Structures</em>, <em>Computability</em>, and <em>Algorithms</em>.
+  </p>
+  <p>
+    That said: this is a mathematics course. In some mathematics departments, there is a “bridge” course which connects the gap between calculus-based courses and upper-level, abstract mathematics courses. This course does not serve that explicit purpose, but much of the material found in those “bridge” courses will be covered here—material on logic, set theory, cardinality, induction, proof writing, etc.
+  </p>
+</section>
+
+
+      <section id="mathematical-writing">
+        <h2>Mathematical Writing</h2>
+
+        <p>Mathematics is communicated through writing. A page of correct calculations is not yet a clear mathematical argument if the reader does not know what is being calculated or why.</p>
+
+        <h3>What Is Missing?</h3>
+
+        <p>Consider the following proposed solution:</p>
+
+        <div class="math-box">
+          \[
+          \begin{aligned}
+          x^2+(x+2)^2 &amp;=100 \\
+          2x^2+4x+4 &amp;=100 \\
+          x^2+2x-48 &amp;=0 \\
+          (x+8)(x-6) &amp;=0 \\
+          x &amp;=-8 \text{ or } x=6 \\
+          x&gt;0 &amp;\implies x=6
+          \end{aligned}
+          \]
+        </div>
+
+        <p>The algebra is correct, but the writing is not sufficient. We do not know what problem is being solved, what (x) represents, or why (x) must be positive. The relationships between the lines are left for the reader to infer, and the proposed solution never answers a stated question.</p>
+
+        <h3>A Clearer Solution</h3>
+
+        <p><strong>Problem.</strong> Find two positive numbers that differ by 2 and whose squares sum to 100.</p>
+
+        <p><strong>Solution.</strong> Let (x) be the smaller number. The larger number is then (x+2). Because the sum of their squares is 100,</p>
+
+        \[
+        x^2+(x+2)^2=100.
+        \]
+
+        <p>Simplifying and factoring gives</p>
+
+        \[
+        \begin{aligned}
+        2x^2+4x+4 &amp;=100,\\
+        x^2+2x-48 &amp;=0,\\
+        (x+8)(x-6) &amp;=0.
+        \end{aligned}
+        \]
+
+        <p>Therefore, (x=-8) or (x=6). Since the numbers must be positive, we discard (x=-8). Thus, the smaller number is 6 and the larger number is 8. Indeed,</p>
+
+        \[
+        6^2+8^2=36+64=100.
+        \]
+
+        <p><strong>Answer.</strong> The two numbers are 6 and 8.</p>
+
+        <h3>Some Principles of Good Mathematical Writing</h3>
+
+        <ul>
+          <li>State the problem or claim.</li>
+          <li>Define variables and state assumptions.</li>
+          <li>Use complete sentences to connect calculations and explain reasoning.</li>
+          <li>Justify important steps.</li>
+          <li>Conclude by answering the original question.</li>
+          <li>Check the result when a useful verification is available.</li>
+        </ul>
+
+        <p>For more advice, see Francis Su's <a href="https://math.hmc.edu/su/wp-content/uploads/sites/10/2019/11/good-math-writing.pdf" target="_blank" rel="noopener">Guidelines for Good Mathematical Writing</a>.</p>
+      </section>
+
+      <section id="latex">
+        <h2>LaTeX in This Course</h2>
+
+        <p>We will use LaTeX to write mathematics in this course. LaTeX is a markup language: instead of selecting mathematical symbols from a menu, you type commands that describe the notation and document structure.</p>
+
+        <p>Because we meet in a regular classroom, we will not work with LaTeX on computers during class. After class, you will download a starter file, edit it, compile it into a PDF, and submit the completed work through GitHub. You do not need to create a document from scratch.</p>
+
+        <p>Setup instructions, examples, and a command reference are available on the <a href="../resources/latex-instructions.html">LaTeX Resources</a> page. We will discuss what you are expected to produce before you begin the assignment.</p>
+      </section>
+
+      <section id="practice-0">
+        <h2>Post-Lecture Practice 0</h2>
+
+        <ol>
+        <li>Create a GitHub account using your Purchase College email address. If you already have an account, add and verify your Purchase email instead.</li>
+        <li>Accept the invitation to join the <code>dmath-fall2026</code> GitHub organization.</li>
+        <li>Follow the<a href="../resources/classroom50.html" target="_blank"> Classroom50 student instructions</a>, then use the <a href="https://classroom50.org/dmath-fall2026/discrete-mathematics/assignments/post-lecture-practice-0/accept?k=ntl88as7" target="_blank"> Post-Lecture Practice 0 assignment link </a> to accept the assignment and open your private repository.</li>.
+          <li>Follow the <a href="../resources/latex-instructions.html" target="_blank">LaTeX setup instructions</a>. You may work in Overleaf or use a LaTeX installation on your computer.</li>
+          <li>Open our <a href="https://classroom50.org/dmath-fall2026/discrete-mathematics" target="_blank" rel="noopener">Discrete Mathematics classroom</a> and access Post-Lecture Practice 0.</li>
+          <li>Download the starter file <code>post-lecture-practice-0.tex</code>.</li>
+          <li>Replace the placeholders for your name, year, and major.</li>
+          <li>Rewrite the argument below as a clear mathematical proof.</li>
+        </ol>
+
+        <p><strong>Claim.</strong> If (a) is even and (b) is a multiple of (a), then (b) is even.</p>
+
+        <div class="math-box">
+          \[
+          \begin{aligned}
+          a &amp;=2k,\\
+          b &amp;=na=n(2k)=2(nk),\\
+          b &amp;=2x,\qquad x=nk,\\
+          b &amp;\text{ is even.}
+          \end{aligned}
+          \]
+        </div>
+
+        <p>Your proof should explain why integers (k) and (n) exist, connect the equations with complete sentences, and finish with a clear conclusion.</p>
+
+        <ol start="6">
+          <li>Compile your document to create a PDF.</li>
+          <li>Upload your completed <code>.tex</code> file and PDF to your assignment repository.</li>
+          <li>Verify your submission according to <a href="../resources/classroom50.html" target="_blank">Classroom50 student instructions</a>.</li>
+        </ol>
+      </section>
+    </article>
+    <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+ 
+</body>
+</html>
