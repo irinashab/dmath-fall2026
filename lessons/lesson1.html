@@ -4,20 +4,328 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Irina Shablinsky">
-  <meta name="description" content="Fall 2026 Origins of Mathematics">
-  <title>Origins of Mathematics – Lesson 1</title>
+  <meta name="description" content="Propositional logic, truth tables, and logical connectives">
+  <title>Discrete Math – Lesson 1: Propositional Logic</title>
   <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    table.truth-table {
+      width: auto;
+      margin: 1rem auto;
+      border-collapse: collapse;
+    }
+
+    table.truth-table th,
+    table.truth-table td {
+      min-width: 2.5rem;
+      padding: 0.35rem 0.65rem;
+      text-align: center;
+    }
+  </style>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <header>
-    <h1>Lesson 1: Propositional Logic</h1>
+    <h1>Lesson 1: Introduction to Propositional Logic</h1>
   </header>
 
   <div id="navigation-placeholder"></div>
 
   <main>
-  <h1>Coming Soon!</h1>
-    <!-- Page content goes here -->
+    
+    <article>
+        <h2>Beyond Aristotelian Logic: A Brief Overview</h2>
+        <p>While this course begins with classical propositional logic—which finds its roots in Aristotelian philosophy and even ancient wisdom like the biblical injunction to "Let your 'Yes' be 'Yes,' and your 'No,' 'No'" (Matthew 5:37)—it's important to recognize that logic extends far beyond these binary foundations.</p>
+        
+        <blockquote>
+            “Let your ‘Yes’ be ‘Yes,’ and your ‘No,’ ‘No.’”<br>
+            — Matthew 5:37
+        </blockquote>
+        
+        <p>This ancient wisdom emphasizes clarity and truthfulness in communication, reflecting the binary nature of classical logic where statements are either true or false. However, modern logic has developed many systems that handle more complex and nuanced reasoning:</p>
+        
+        <div>
+            <section>
+                <h4>Many-Valued Logic</h4>
+                <p>Extends beyond true/false to include additional truth values like "unknown" or "possible." Fuzzy logic, used in control systems, allows for degrees of truth between 0 and 1.</p>
+            </section>
+            <section>
+                <h4>Intuitionistic Logic</h4>
+                <p>Rejects the law of excluded middle (either P or not P), requiring constructive proof of statements. Important in computer science and mathematics.</p>
+            </section>
+            <section>
+                <h4>Paraconsistent Logic</h4>
+                <p>Allows contradictions without making every statement provable. Useful for managing inconsistent information in databases and AI systems.</p>
+            </section>
+        </div>
+        
+        <p>Despite these advanced systems, classical propositional logic remains the foundation for most mathematical reasoning and computer science applications. Its simplicity and clarity make it the ideal starting point for studying formal logic.</p>
+    </article>
+    
+    <article>
+    <div>
+        <h3>What is Logic?</h3>
+        <p>Logic is the systematic study of reasoning and argument. It provides the tools to distinguish correct reasoning from incorrect reasoning. We can define it as:</p>
+        <blockquote><strong>Logic is the process of deducing information correctly.</strong></blockquote>
+        <p>The validity of an argument depends on its <strong>syntax</strong> (its structure or form), not necessarily on the <strong>semantics</strong> (the actual truth or meaning) of the statements involved.</p>
+    </div>
+    
+    <h2>The Building Blocks: Propositions</h2>
+    <p>A <strong>proposition</strong> is a declarative statement that is unequivocally either <strong>true (T)</strong> or <strong>false (F)</strong>.</p>
+    
+    <div >
+        <h3>Examples of Propositions:</h3>
+        <ul>
+            <li>T: \(\sqrt{2}\) is a real number.</li>
+            <li>T: \(2 + 3 = 5\).</li>
+            <li>F: All integers are even.</li>
+            <li>F: \(\sqrt{3}\) is an integer.</li>
+        </ul>
+        
+        <h3>Non-Examples (What is <em>not</em> a proposition?):</h3>
+        <ul>
+            <li><strong>Open sentences:</strong> \(x + 7 = 13\) (its truth value depends on \(x\)). Once \(x\) is specified, it becomes a proposition.</li>
+            <li><strong>Expressions without a claim:</strong> \(4+6\).</li>
+            <li><strong>Questions:</strong> Are polynomials continuous?</li>
+            <li><strong>Commands:</strong> Close the door.</li>
+            <li><strong>Exclamations:</strong> Wow!</li>
+        </ul>
+    </div>
+    
+    </article>
+
+    <article>
+    <h2>Arguments and Validity</h2>
+    <p>An <strong>argument</strong> consists of <strong>premises</strong> and a <strong>conclusion</strong>. An argument is <strong>valid</strong> if the conclusion necessarily follows from the premises. Crucially, a valid argument can have false premises and a false conclusion—it's about the logical connection, not the actual truth.</p>
+    
+    <div >
+        <h3>Example of a Valid Argument:</h3>
+        <ul>
+            <li><strong>Premise 1:</strong> If it is raining, then I will bring an umbrella.</li>
+            <li><strong>Premise 2:</strong> It is raining.</li>
+            <li><strong>Conclusion:</strong> Therefore, I will bring an umbrella.</li>
+        </ul>
+        <p><em>This form is valid. If the premises are true, the conclusion must be true.</em></p>
+        
+        <h3>Example of an Invalid Argument:</h3>
+        <ul>
+            <li><strong>Premise 1:</strong> If it is raining, then I will bring an umbrella.</li>
+            <li><strong>Premise 2:</strong> I will bring an umbrella.</li>
+            <li><strong>Conclusion:</strong> Therefore, it is raining.</li>
+        </ul>
+        <p><em>This is invalid. You could be bringing an umbrella for another reason (e.g., bright sun). The form is flawed.</em></p>
+    </div>
+    <div> <p>And here&rsquo;s the twist: an argument can be valid even if it&rsquo;s completely false in content. For instance: &lsquo;Socrates is a Martian. All Martians live on Pluto. Therefore, Socrates lives on Pluto.&rsquo; Every single statement is false &mdash; but the argument form is valid.</p></div>
+    </article>
+
+    <article>
+    <h2>Formalizing Logic: Propositional Variables and Connectives</h2>
+    <p>To analyze the <em>form</em> of arguments, we replace statements with <strong>propositional variables</strong> (usually uppercase letters like P, Q, R). These variables represent the truth value (T or F) of the statement.</p>
+
+    <div>
+        <p>Let \(P\) mean “It is raining” and \(Q\) mean “I will bring an umbrella.” Then the valid argument has the form</p>
+        <p>\(P\rightarrow Q,\quad P,\quad \therefore Q.\)</p>
+        <p>The invalid argument has the form</p>
+        <p>\(P\rightarrow Q,\quad Q,\quad \therefore P.\)</p>
+        <p>Forgetting the meanings of \(P\) and \(Q\) makes the difference easier to see: the second form allows both premises to be true while the conclusion is false.</p>
+    </div>
+
+    <p>A <strong>truth table</strong> lists the value of a compound statement for every possible assignment of truth values to its variables. A table with one variable has two rows. How many rows are needed for \(n\) variables?</p>
+    
+    <div >
+        <h4>Negation (NOT): \(\neg P\)</h4>
+        <p>"It is not the case that P."</p>
+        <table class="truth-table">
+            <tr><th>P</th><th>\(\neg P\)</th></tr>
+            <tr><td>T</td><td>F</td></tr>
+            <tr><td>F</td><td>T</td></tr>
+        </table>
+    </div>
+
+    <div>
+        <h4>Double Negation: \(\neg\neg P\)</h4>
+        <p>In English, \(\neg\neg P\) reads: “It is not the case that \(P\) is not true.” More naturally, we may say: “\(P\) is not false.” Negating a proposition twice returns its original truth value, so \(\neg\neg P\) is logically equivalent to \(P\).</p>
+        <table class="truth-table">
+            <tr><th>\(P\)</th><th>\(\neg P\)</th><th>\(\neg\neg P\)</th></tr>
+            <tr><td>T</td><td>F</td><td>T</td></tr>
+            <tr><td>F</td><td>T</td><td>F</td></tr>
+        </table>
+    </div>
+    
+    <div >
+        <h4>Conjunction (AND): \(P \land Q\)</h4>
+        <p>"Both P and Q are true."</p>
+        <table class="truth-table">
+            <tr><th>P</th><th>Q</th><th>\(P \land Q\)</th></tr>
+            <tr><td>T</td><td>T</td><td>T</td></tr>
+            <tr><td>T</td><td>F</td><td>F</td></tr>
+            <tr><td>F</td><td>T</td><td>F</td></tr>
+            <tr><td>F</td><td>F</td><td>F</td></tr>
+        </table>
+    </div>
+
+    <div>
+        <h4>Disjunction (OR): \(P \lor Q\)</h4>
+        <p>“P or Q” uses the inclusive meaning of <em>or</em>: at least one is true, possibly both.</p>
+        <table class="truth-table">
+            <tr><th>P</th><th>Q</th><th>\(P \lor Q\)</th></tr>
+            <tr><td>T</td><td>T</td><td>T</td></tr>
+            <tr><td>T</td><td>F</td><td>T</td></tr>
+            <tr><td>F</td><td>T</td><td>T</td></tr>
+            <tr><td>F</td><td>F</td><td>F</td></tr>
+        </table>
+    </div>
+    
+    <div >
+        <h3>Exercise:</h3>
+        <p>Build truth tables for \(\neg P \land \neg Q\) and \(\neg(P\land Q)\). Are these expressions logically equivalent?</p>
+    </div>
+    
+    </article>
+
+    <article>
+    <h2>De Morgan's Laws</h2>
+    <p>These crucial laws describe how negation distributes over conjunction and disjunction.</p>
+    
+    <div >
+        <ol>
+            <li><strong>Negation of AND:</strong> \(\neg(P \land Q)\) is equivalent to \(\neg P \lor \neg Q\).<br>
+                <em>"It is not the case that both P and Q are true" means "At least one of P or Q is false."</em></li>
+            <li><strong>Negation of OR:</strong> \(\neg(P \lor Q)\) is equivalent to \(\neg P \land \neg Q\).<br>
+                <em>"It is not the case that either P or Q is true" means "Both P and Q are false."</em></li>
+        </ol>
+    </div>
+
+    <div>
+        <h3>A warning about ordinary language</h3>
+        <p>Let \(P(x)\) mean “\(x\) is even” and \(Q(x)\) mean “\(x&gt;7\).” Is “\(x\) is not both even and greater than 7” equivalent to “\(x\) is odd and at most 7” for every integer \(x\)? Test a few values before applying De Morgan’s law.</p>
+    </div>
+    
+    <div>
+        <h3>Truth Table Proof of De Morgan's First Law:</h3>
+        <table class="truth-table">
+            <tr>
+                <th>P</th><th>Q</th><th>\(P \land Q\)</th><th>\(\neg(P \land Q)\)</th>
+                <th>\(\neg P\)</th><th>\(\neg Q\)</th><th>\(\neg P \lor \neg Q\)</th>
+            </tr>
+            <tr><td>T</td><td>T</td><td>T</td><td>F</td><td>F</td><td>F</td><td>F</td></tr>
+            <tr><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+            <tr><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+            <tr><td>F</td><td>F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+        </table>
+        <p><em>Since the columns for \(\neg(P \land Q)\) and \(\neg P \lor \neg Q\) are identical, the statements are logically equivalent.</em></p>
+    </div>
+    
+    </article>
+
+    <article>
+    <h2>Conditional Statements (Implications)</h2>
+    <p>The statement "If P, then Q" is called a <strong>conditional</strong> or <strong>implication</strong> and is written \(P \rightarrow Q\).</p>
+    
+    <div>
+        <h3>Truth Table for Implication:</h3>
+        <table class="truth-table">
+            <tr><th>P</th><th>Q</th><th>\(P \rightarrow Q\)</th></tr>
+            <tr><td>T</td><td>T</td><td>T</td></tr>
+            <tr><td>T</td><td>F</td><td>F</td></tr>
+            <tr><td>F</td><td>T</td><td>T</td></tr>
+            <tr><td>F</td><td>F</td><td>T</td></tr>
+        </table>
+    </div>
+    
+    <div >
+        <h3>Example 1:</h3>
+        <p>"If you clean your room (P), then you will get ice cream (Q)."</p>
+        <p><em>The only way this promise is broken is if the room is cleaned (P is T) but no ice cream is given (Q is F).</em></p>
+         <h3>Example 2:</h3>
+        <p>The expression “if \(x&gt;5\), then \(x&gt;3\)” is an open sentence until \(x\) is specified. The quantified statement “for every real number \(x\), if \(x&gt;5\), then \(x&gt;3\)” is true.</p>
+        <ul>
+            <li>If \(x = 6\) (T → T), the statement holds.</li>
+            <li>If \(x = 2\) (F → F), the statement holds. (\(2 > 3\) is false, but the implication is still true).</li>
+            <li>If \(x = 4\) (F → T), the statement holds. The hypothesis is false, so the implication isn't violated.</li>
+        </ul>
+    </div>
+    
+    </article>
+
+    <article>
+    <h2>Biconditional Statements</h2>
+    <p>The statement "P if and only if Q" is called a <strong>biconditional</strong> and is written \(P \leftrightarrow Q\). It means that P and Q have the <em>exact same</em> truth value.</p>
+    
+    <div>
+        <h3>Truth Table for Biconditional:</h3>
+        <table class="truth-table">
+            <tr><th>P</th><th>Q</th><th>\(P \leftrightarrow Q\)</th></tr>
+            <tr><td>T</td><td>T</td><td>T</td></tr>
+            <tr><td>T</td><td>F</td><td>F</td></tr>
+            <tr><td>F</td><td>T</td><td>F</td></tr>
+            <tr><td>F</td><td>F</td><td>T</td></tr>
+        </table>
+    </div>
+    
+    <h2>Summary of Connectives</h2>
+    <table>
+        <tr>
+            <th>Connective</th>
+            <th>Symbol</th>
+            <th>Meaning</th>
+        </tr>
+        <tr>
+            <td>Negation</td>
+            <td>¬</td>
+            <td>not</td>
+        </tr>
+        <tr>
+            <td>Conjunction</td>
+            <td>∧</td>
+            <td>and</td>
+        </tr>
+        <tr>
+            <td>Disjunction</td>
+            <td>∨</td>
+            <td>or (inclusive)</td>
+        </tr>
+        <tr>
+            <td>Conditional</td>
+            <td>→</td>
+            <td>if... then...</td>
+        </tr>
+        <tr>
+            <td>Biconditional</td>
+            <td>↔</td>
+            <td>if and only if</td>
+        </tr>
+    </table>
+    
+    <div >
+        <h3>Suggested Exercises for Students:</h3>
+        <ol>
+            <li>Construct truth tables for \(\neg(P \lor Q)\) and \(P \rightarrow \neg Q\).</li>
+            <li>Use truth tables to prove the second De Morgan's Law: \(\neg(P \lor Q) \equiv \neg P \land \neg Q\).</li>
+            <li>Translate the following English sentence into logical notation using propositional variables: "If the train is late or my watch is fast, then we will not be on time."</li>
+        </ol>
+    </div>
+    
+    </article>
+
+    <article>
+      <h2>Post-Lecture Practice 1</h2>
+      <p>In this practice you will work with several ideas related to conditional statements:</p>
+      <ol>
+        <li>Complete the truth table for the <em>converse</em> \(Q \rightarrow P\) of \(P \rightarrow Q\).</li>
+        <li>Translate the converse, inverse, and contrapositive of a conditional statement into English.</li>
+        <li>Use a truth table to show that \(P \lor \neg P\) is a tautology. This statement is called the <em>Law of Excluded Middle</em>.</li>
+      </ol>
+      <p>Use this<a href="https://classroom50.org/dmath-fall2026/discrete-mathematics/assignments/post-lecture-practice-1/accept?k=ntl88as7" target="_blank"> link</a> to download the LaTeX starter for Post-Lecture Practice 1</a>.</p>
+      <p>Complete your work in the starter file, compile it as a PDF, and submit both .tex and PDF files through Classroom50.</p>
+    </article>
   </main>
 
   <div id="footer-placeholder"></div>
@@ -55,7 +363,6 @@
       document.getElementById("footer-placeholder").innerHTML = html;
     })
     .catch(error => console.error("Footer load failed:", error));
-</script>
-
+  </script>
 </body>
 </html>
