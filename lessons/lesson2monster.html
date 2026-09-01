@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Predicate logic, satisfiability, proof methods, and counting">
+  <title>Discrete Math – Lesson 2: Logic and Proof Writing</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header id="title-block-header">
+    <h1>Lesson 2: Logic and Proof Writing</h1>
+  </header>
+
+  <div id="navigation-placeholder"></div>
+
+    <!-- Table of Contents -->
+    <ul id="markdown-toc">
+      <li><a href="#proof-writing">Proof writing</a>
+        <ul>
+          <li><a href="#direct-proofs">Direct Proofs</a></li>
+          <li><a href="#proof-by-contradiction-contrapositive">Proof by contradiction / contrapositive</a></li>
+        </ul>
+      </li>
+      <li><a href="#satisfiability">Satisfiability</a>
+        <ul>
+          <li><a href="#knights-and-knaves">Knights and Knaves</a></li>
+          <li><a href="#algorithms-and-p-vs-np">Algorithms and P vs NP</a></li>
+        </ul>
+      </li>
+      <li><a href="#predicate-logic-material">Predicate Logic</a></li>
+      <li><a href="#intro-to-counting--arrangement-problems">Intro to Counting / Arrangement Problems</a>
+       
+      </li>
+      <li><a href="#departure-pass-2">Departure Pass 2</a></li>
+    </ul>
+
+   
+
+<main>
+          
+
+    <!-- Content starts -->
+    <p>How do we prove a conditional (“if-then”) statement? We will cover two ways in this lesson. The first is “direct proof” and the second is “proof by contradiction”.</p>
+
+
+<h2 id="direct-proofs">Direct Proofs</h2>
+
+<p>An “if-then” statement is true if, whenever the hypothesis (“if” part, also referred to as the <em>antecedent</em>) is true, then the conclusion (“then” part, also referred to as the <em>consequent</em>) must also be true. Let’s prove a statement similar to the statement in Departure pass 0: prove that if a number \(n\) is a multiple of 6, then it must be even.</p>
+
+<p>Before attempting a proof, make sure you can write down definitions of “multiple of 6” and “even number”! We of course, intuitively, know what these terms mean, but we need to have good definitions so we can actually use them in our arguments. The facts we will be using are:</p>
+<ol>
+<li><p>The sum of integers is an integer</p></li>
+<li><p>The difference of integers is an integer</p></li>
+<li><p>The product of integers is an integer</p></li>
+<li><p>Every integer is either even or odd</p></li>
+</ol>
+<p>Now we can start working with definitions:<br />
+<strong>Definition 1</strong> An integer <span class="math inline">\(n\)</span> is a <em>multiple</em> of integer <span class="math inline">\(x\)</span> if <span class="math inline">\(n=kx\)</span> for some integer <span class="math inline">\(k\)</span>.<br />
+<strong>Definition 2</strong> An integer <span class="math inline">\(n\)</span> is <em>even</em> if it is a multiple of <span class="math inline">\(2\)</span> i.e. if <span class="math inline">\(n=2p\)</span> for some integer <span class="math inline">\(p\)</span>.<br />
+Now we can do the proof of the following<br />
+<strong>Theorem:</strong> Let <span class="math inline">\(n\)</span> be an integer. If <span class="math inline">\(n\)</span> is a multiple of 6, then <span class="math inline">\(n\)</span> is even.<br />
+We will prove this “directly”; that means, we will only look at those cases where the “if” part is true, and then we will try to come up with an argument for why the “then” part must be true.<br />
+<strong>Proof:</strong> Let <span class="math inline">\(n\)</span> be a multiple of 6. By Definition 1, this means there is an integer <span class="math inline">\(k\)</span> such that <span class="math inline">\(n=6k\)</span>. We can re-write this as <span class="math inline">\(n = (2 \times 3)k\)</span>. The associative property of multiplication allows us to conclude that <span class="math inline">\(n = 2 \times (3k)\)</span>. Let <span class="math inline">\(m = 3k\)</span>. According to fact 3, <span class="math inline">\(m\)</span> is an integer, so we have that <span class="math inline">\(n=2m\)</span>. We have shown that <span class="math inline">\(n\)</span> is a multiple of 2. By Definition 2, that means <span class="math inline">\(n\)</span> is even.</p>
+<h2 id="proof-by-contradiction-contrapositive">Proof by contradiction / contrapositive</h2>
+<p>Now let us examine “proof by contradiction”. First of all, what does this mean? Before we examine a specific proof by contradiction, let us first recall the truth table for a conditional statement <span class="math inline">\(p \rightarrow q\)</span>:<br />
+</p>
+
+\begin{array}{c | c | c}
+p &amp; q &amp; p \rightarrow q \\
+\hline
+\text{T} &amp; \text{T} &amp; \text{T} \\
+\text{T} &amp; \text{F} &amp; \text{F} \\
+\text{F} &amp; \text{T} &amp; \text{T} \\
+\text{F} &amp; \text{F} &amp; \text{T}
+\end{array}
+
+
+
+<p>Looking carefully at this truth table, the only way for an implication to be false is if the antecedent is true and the consequent is <strong>false</strong>. Proof by contradiction, then, is to assume that this happens, arrive at a contradiction, conclude that the statement cannot be false, and then, using classical logic, that the statement must therefore by true.<br />
+Let us use proof by contradiction to show that parallel lines must have the same slope.<br />
+<strong>Theorem:</strong> Two non-vertical, parallel lines have the same slope.<br />
+To prove this, it will be easier to re-state it as an “if-then” statement. So we will re-state it as:<br />
+<strong>Theorem:</strong> If two non-vertical lines are parallel then they have the same slope.<br />
+<strong>Proof:</strong> We assume that this statement is false. In particular, we suppose lines <span class="math inline">\(\ell1\)</span> and <span class="math inline">\(\ell2\)</span> are parallel, meaning that they never intersect. Let <span class="math inline">\(y_1 = m_1 x + b_1\)</span> be the equation of the first line, and <span class="math inline">\(y_2 = m_2 x + b_2\)</span> be the equation of the second line. Now assume that the two lines do not have the same slope: that is, that <span class="math inline">\(m_1 \neq m_2\)</span>. <em>(Notice: we have now assumed that the “if” part is true, and the “then” part is false; that is, we assumed that the conditional is false.)</em><br />
+Consider the x-value <span class="math inline">\(x = \dfrac{b_2 - b_1}{m_1 - m_2}\)</span>. Plugging this value in to both equations, and simplifying, results in the same y-value: <span class="math inline">\(y = \dfrac{m_1 b_2 - m_2 b_1}{m_1 - m_2}\)</span>. This means that the two lines intersect at this point <span class="math inline">\((\dfrac{b_2-b_1}{m_1-m_2}, \dfrac{m_1 b_2 - m_2 b_1}{m_1-m_2})\)</span>. This is a contradiction, since we assumed our lines do not intersect. Therefore, our assumption (that the conditional statement is false) is not true: in other words, the “if-then” statement is not false, so it must be true.</p>
+<h2 id="contrapositive">Contrapositive</h2>
+<p>Recall, from the previous “check-in”, that the contrapositive of <span class="math inline">\(p \rightarrow q\)</span> is <span class="math inline">\(\lnot q \rightarrow \lnot p\)</span>. You can verify (and, on your problem set, you will verify this) that every conditional statement is logically equivalent to its contrapositive. This means that if you can prove <span class="math inline">\(\lnot q \rightarrow \lnot p\)</span>, you have proved <span class="math inline">\(p \rightarrow q\)</span>.  <p>Proof by contradiction and proof using the contrapositive are related but not identical. Here is a quick comparison:</p>
+
+    <table class="comparison-table">
+      <tr>
+        <th>Method</th>
+        <th>Approach</th>
+        <th>Example idea</th>
+      </tr>
+      <tr>
+        <td><strong>Contrapositive</strong></td>
+        <td>Instead of proving <em>if p then q</em>, prove the logically equivalent statement <em>if not q then not p</em>.</td>
+        <td>To prove “If  a²-2a+7 is even, then a is even,” instead prove “If a is odd, then  a²-2a+7 is odd.”</td>
+      </tr>
+      <tr>
+        <td><strong>Contradiction</strong></td>
+        <td>Assume the statement is false (p is true and q is false), then show this leads to a logical impossibility.</td>
+        <td>To prove the same theorem, assume  a²-2a+7 is even and a is odd. Show this creates a contradiction.</td>
+      </tr>
+    </table>
+
+    <p>Both methods are powerful. Contrapositive proofs can sometimes be cleaner, while proof by contradiction is often useful when direct reasoning is difficult.</p>
+<div id="satisfiability" >
+<h2 >Satisfiability</h2>
+<p>One more topic in propositional logic: <strong>satisfiability</strong>. Let’s say we have a formula in propositional logic: something like <span class="math inline">\([p \wedge (q \rightarrow r)] \wedge [(p \vee \lnot q) \rightarrow \lnot r]\)</span>. We say that this formula is <strong>satisfiable</strong> if we can assign truth values to all the variables (in this case, p, q, and r) such that the resulting formula is evaluated to true.<br />
+If p is T, q is F, and r is F, then the formula is evaluated as <span class="math inline">\([\text{T} \wedge (\text{F} \rightarrow \text{F})] \wedge [(\text{T} \vee \lnot \text{F}) \rightarrow \lnot \text{F}]\)</span>. This evaluates to <span class="math inline">\([\text{T} \wedge \text{T}] \wedge [\text{T} \rightarrow \text{T}]\)</span>, which is T. That means this formula is satisfiable.<br />
+Checking whether a formula is satisfiable, in our class, amounts to making a truth table for that formula, and seeing if any row in that truth table results in a “T” in the column for this formula. For example, the following is a truth table for <span class="math inline">\(p \rightarrow \lnot p\)</span>.</p>
+\begin{array}{c | c | c | c | c }
+p & \lnot p & p \rightarrow \lnot p \\
+\hline
+\text{T} & \text{F} & \text{F} \\
+\text{F} & \text{T} & \text{T}
+\end{array}
+<p><br />
+This formula is satisfiable: it’s true if <span class="math inline">\(p\)</span> is false.</p>
+<h2 id="knights-and-knaves">Knights and Knaves</h2>
+<p>Logic puzzles are a fun application of satisfiability. “Knights and Knaves” puzzles were popularized by the late Raymond Smullyan. Here is an example:<br />
+</p>
+<blockquote>
+<p>You are on an island in which all residents are either knights or knaves. Knights always tell the truth, and knaves always lie, but they are indistinguishable otherwise. You meet two residents: A and B. A says, “B is a knave.” B says, “Neither one of us is a knave.” Can you determine A and B’s types?</p>
+</blockquote>
+<p>Before reading the solution, try this out on your own. See if you can come up with a strategy!</p>
+
+<details>
+<summary>Click for a solution.</summary>
+<p>Let p be the statement "A is a knight", and q the statement "B is a knight". Based on A's statement, if A is telling the truth, then q is false. In other words:\(p \rightarrow \lnot q\). Moreover, if B is a knave, then A is telling the truth, so this is actually and if and only if: \(p \leftrightarrow \lnot q\). Similarly, if\(q\)is true, then \(p \wedge q\) must be true, and vice versa: if both are knights, then B is telling the truth. Therefore \(q\) is true.</p>
+<p>In other words, we <b>know</b> the following statements:\(p \leftrightarrow \lnot q\) and \(q \leftrightarrow (p \wedge q)\). Let's make a truth table for this:</p>
+
+
+\begin{array}{c | c | c | c | c }
+p &amp; q &amp; \lnot q &amp; p \leftrightarrow \lnot q &amp; q \leftrightarrow (p \wedge q) \\
+\hline
+\text{T} &amp; \text{T} &amp; \text{F} &amp; \text{F} &amp; \text{T} \\
+\text{T} &amp; \text{F} &amp; \text{T} &amp; \text{T} &amp; \text{T} \\
+\text{F} &amp; \text{T} &amp; \text{F} &amp; \text{T} &amp; \text{F} \\
+\text{F} &amp; \text{F} &amp; \text{T} &amp; \text{F} &amp; \text{T} \\
+\end{array}
+<p>We see that the only row with a satisfying assignment for both of these statements is when p is T and q is F. That is, if A is a knight and B is a knave.
+    
+</p>
+</details>
+<article id="predicate-logic-material">
+<h1>Predicate Logic</h1>
+<!--Rest of the Body-->
+<p>Today we are revisiting logic. Many of the ideas we started talking about recently, involving set theory, will be important today as we discuss an extension of the classical, propositional logic that we first started.</p>
+
+        <h2 id="related-propositions">Related Propositions</h2>
+        <p>When we discussed propositional logic, we justified the truth table for $p \rightarrow q$ by saying "If $x > 5$ then $x > 3$" should be true for every single number $x$. But for each $x$, we get a different proposition:</p>
+        
+        <ul>
+            <li>If $0 > 5$ then $0 > 3$</li>
+            <li>If $1 > 5$ then $1 > 3$</li>
+            <li>If $2 > 5$ then $2 > 3$</li>
+            <li>If $3 > 5$ then $3 > 3$</li>
+        </ul>
+        
+        <p>And so on. The problem is that it's not possible, in propositional logic, to talk about a whole set of propositions at once. Every proposition, in propositional logic, is considered independently of the others. But it seems like there should be a way to write down a formula, and study all the propositions we get by substituting into that formula. In other words, we need a stronger logic that lets us study some kinds of formulas, or templates for propositions. The logic we will use is called <strong>predicate logic</strong>, or <strong>first-order logic</strong>.</p>
+
+        <h2 id="predicates-quantifiers">Predicates and Quantifiers</h2>
+        
+        <div class="definition">
+            <p>A <strong>predicate</strong> represents an assertion that can be made about one or more mathematical objects. For example, the predicate $P(x)$ could represent the assertion $x > 5$. Here $x$ is called a <strong>variable</strong> for the predicate.</p>
+        </div>
+        
+        <p>Another predicate, with two variables, $Q(x,y)$, could represent the assertion $x > y$. The number of variables that appear in a predicate is referred to as the <strong>arity</strong> of the predicate. A predicate whose arity is 1 is referred to as a <strong>unary</strong> predicate, a predicate whose arity is 2 is referred to as a <strong>binary</strong> predicate, and more generally a predicate of arity $n$ is referred to as an $n$-ary predicate.</p>
+        
+        <p>Our examples do not need to be mathematical necessarily. We could have a predicate $C(x,y)$ representing that person $x$ is a child of person $y$. Different kinds of predicates might have different objects that can be plugged in for the variables. The <strong>universe</strong> for a formula is the set from which the variables can take their values from. This is also sometimes referred to as the <strong>domain of discourse</strong>. We will see some examples where this might matter in the next section.</p>
+
+        <h2 id="universal-quantifier">Universal Quantifier</h2>
+        
+        <p>Consider the predicate $P(x)$ representing the assertion $x > 0$. This statement is true for every single natural number. In predicate logic, we can state this using the universal quantifier, $\forall$. This is read as "for all".</p>
+        
+        <div class="math-box">$$\forall x P(x)$$</div>
+        
+        <p>This is read as "For all $x$, $P(x)$ is true." What do we mean by "for all $x$"? We mean that is a true statement whenever we replace $x$ by any possible object <em>from our universe</em>. In particular, the statement $\forall x (x \geq 0)$ is true if our universe is $\mathbb{N}$, but false if our universe is $\mathbb{Z}$.</p>
+        
+        <p><strong>Exercise:</strong> Consider the statement "$\forall x (x > 1 \rightarrow x \geq 2)$." Is this statement true or false in the following universes:</p>
+        
+        <ul>
+            <li>$\mathbb{N}$</li>
+            <li>$\mathbb{R}$</li>
+            <li>$\mathbb{Z}$</li>
+            <li>$\mathbb{Q}$</li>
+        </ul>
+        
+        <details class="answer">
+            <summary>Answers</summary>
+            <ul>
+                <li>True. If $x=0$ or $x=1$ the antecedent is false, and therefore the if-then statement is true. Otherwise both the antecedent and consequents are true, and therefore the whole statement is true.</li>
+                <li>False: $x=1.5$ is a counterexample.</li>
+                <li>True. Similar argument to the case where the universe is $\mathbb{N}$.</li>
+                <li>False. $x=1.5$ is again a counterexample.</li>
+            </ul>
+        </details>
+
+        <h2 id="existential-quantifier">Existential Quantifier</h2>
+        
+        <p>Often in mathematics, we want to state that a particular problem has a solution. For example, the polynomial $x^2 + 2x + 1$ has a root at $x=-1$. We might also want to say that another polynomial doesn't have a solution: e.g, $x^2+1=0$ has no roots in $\mathbb{R}$. We can formalize this using the <strong>existential quantifier</strong>, $\exists$. This is read as "there exists".</p>
+        
+        <p>For example: $\exists x (x^2 + 2x + 1 = 0)$. We read this is "There is (at least one) $x$ such that $x^2 + 2x + 1 = 0$." This statement is true if our universe is $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$, or $\mathbb{C}$. But it's not true if our universe is $\mathbb{N}$! (Can you prove that?)</p>
+        
+        <p>Similarly, the statement $\exists x (x^2 + 1 = 0)$ is false if our universe is $\mathbb{R}$ (or any subset of $\mathbb{R}$, including $\mathbb{Z}$ or $\mathbb{Q}$), but true in the universe $\mathbb{C}$. We will talk about negations of quantified statements later, but the statement $\lnot \exists x (x^2 + 1 = 0)$ would, by the laws of classical logic, therefore be true in $\mathbb{R}$ and false in $\mathbb{C}$.</p>
+        
+        <p><strong>Exercise:</strong> Let $D(f, g)$ be the predicate: "The derivative of $f$ is equal to $g$." Consider the statement $\exists f D(f, f)$. Determine if this statement is true or false in the following universes:</p>
+        
+        <ul>
+            <li>$U_1 = \{ p(x) : p : \mathbb{R} \to \mathbb{R}$ is a non-constant polynomial function.$\}$</li>
+            <li>$U_2 = \{ f(x) : f : \mathbb{R} \to \mathbb{R}$ is a differentiable function $\}$</li>
+        </ul>
+        
+        <details class="answer">
+            <summary>Answer</summary>
+            <ul>
+                <li>False: if $p(x)$ is a non-constant polynomial, then its derivative will have a smaller degree, and therefore not be equal to it.</li>
+                <li>True: let $f(x)=e^x$, or any constant multiple of $e^x$.</li>
+            </ul>
+        </details>
+
+        <h2 id="free-bound-variables">Free and Bound Variables</h2>
+        
+        <p><strong>Quick exercise:</strong></p>
+        
+        <ol>
+            <li>Suppose our universe is $\mathbb{N}$. Is $x \geq 0$ true or false?</li>
+            <li>Suppose our universe is $\mathbb{N}$. Is $\forall x (x \geq 0)$ true or false?</li>
+        </ol>
+        
+        <details class="answer">
+            <summary>Answers</summary>
+ <ol>
+                <li>Neither! It's a formula, not a statement. We could ask about $1 > 0$, or $0 > 0$ or $12345 > 0$. But $x \geq 0$ is not a statement with a defined truth value.</li>
+                <li>True. This is a statement that actually has a defined truth value.</li>
+            </ol>
+        </details>
+        
+        <p>A <strong>formula</strong> can be built up out of predicates, quantifiers, and the basic logical connectives: $\wedge, \vee$, $\lnot$, $\rightarrow$, etc. A variable which does not appear in any quantifier is called a <strong>free variable</strong>. A variable which has been quantified is called a <strong>bound variable</strong>. A <strong>statement</strong> is a formula with no free variables.</p>
+        
+        <p>Moral of the story: statements have truth values. In general, a formula might not have a truth value. You can plug in for the free variables in the formula (using elements from the universe relevant to the context of the problem), and then determine the truth value of that formula, with that particular assignment of the variables:</p>
+        
+        <ul>
+            <li>in $\mathbb{Z}$ the formula $3 > 0$ is true, and the formula $-1 > 0$ is false.</li>
+        </ul>
+        
+        <p>Or you could quantify over the variables, and determine the truth of the quantified statement:</p>
+        
+        <ul>
+            <li>in $\mathbb{Z}$ the statement $\forall x (x \geq 0)$ is false, and the statement $\exists x (x \geq 0)$ is true.</li>
+        </ul>
+        
+        <p><strong>Exercises:</strong></p>
+        
+        <ol>
+            <li>Is $\forall y (y > x)$ a statement? Which variables are free? Which variables are bound?</li>
+            <li>In the formula $x < 1$ the variable $x$ is free. In $\mathbb{N}$, determine the following
+                <ul>
+                    <li>Find an assignment for $x$ that makes the formula true.</li>
+                    <li>Find an assignment for $x$ that makes the formula false.</li>
+                    <li>Is $\exists x (x < 1)$ true or false in $\mathbb{N}$?</li>
+                    <li>Is $\exists x \lnot (x < 1)$ true or false in $\mathbb{N}$?</li>
+                </ul>
+            </li>
+        </ol>
+        
+        <details class="answer">
+            <summary>Solutions</summary>
+            <ol>
+                <li>It is not a statement. $x$ is free and $y$ is a bound variable.</li>
+                <li>
+                    <ul>
+                        <li>Let $x=0$, The formula $0 < 1$ is true.</li>
+                        <li>Let $x=1$, The formula $1 < 1$ is false.</li>
+                        <li>Since $0 < 1$ is true, then $\exists x (x < 1)$ is true.</li>
+                        <li>Since $1 < 1$ is false, $\exists x \lnot (x < 1)$ is true.</li>
+                    </ul>
+                </li>
+            </ol>
+        </details>
+
+        <h2 id="set-theory-examples">Set Theory Examples</h2>
+        
+        <p>Recall that $A \subseteq B$ means "Every element of $A$ is an element of $B$. We can write this using quantifiers: $\forall x (x \in A \rightarrow x \in B)$. Literally this is read "For any element $x$, if $x$ is in $A$, then $x$ is in $B$."</p>
+        
+        <p>Let $A$ be any set. Re-write the following statements using predicate logic:</p>
+        
+        <ul>
+            <li>$A \subseteq A$</li>
+            <li>$\emptyset \subseteq A$</li>
+        </ul>
+        
+        <p>Often times, sets are defined in English sentences that can be formalized using quantifiers. For example, "an even number is a multiple of $2$". More precisely, "$x$ is even if there is $n$ such that $x=2n$". In set theoretic notation:</p>
+        
+        <div class="math-box">$$E = \{ x : x = 2n \mbox{, for some } n \in \mathbb{N} \}$$</div>
+        
+        <p>Then $x \in E$ if the statement "$\exists n (x = 2n)$" is a true statement about $x$ in the universe $\mathbb{N}$.</p>
+        
+        <p><strong>Exercises:</strong></p>
+        
+        <ol>
+            <li>Recall that $\mathbb{Q}$ is defined as the set of those numbers which can be written as fractions $\frac{m}{n}$, for integers $m$ and $n$, where $n \neq 0$. Give a precise definition using quantifiers of the statement $x \in \mathbb{Q}$. What is the universe for our quantifiers?</li>
+            <li>Let $S$ be the set of perfect squares. Give a precise definition of the statement $x \in S$ (in the universe $\mathbb{N}$)</li>
+        </ol>
+        
+        <details class="answer">
+            <summary>Answers</summary>
+            <ol>
+                <li>$x \in \mathbb{Q}$ can be stated as $\exists m \exists n (n \neq 0 \wedge x = \frac{m}{n})$. The universe for our quantifiers is $\mathbb{Q}$.</li>
+                <li>$x \in S$ if "$\exists n (x = n^2)$" in the universe $\mathbb{N}$.</li>
+            </ol>
+        </details>
+
+        <h2 id="negations">Negations</h2>
+        
+        <p>Earlier we asked:</p>
+        
+        <ul>
+            <li>Is $\exists x (x < 1)$ true or false in $\mathbb{N}$?</li>
+            <li>Is $\exists x \lnot(x < 1)$ true or false in $\mathbb{N}$?</li>
+        </ul>
+        
+        <p>The answer to both of these is <strong>true</strong>: $0 < 1$, so letting $x=0$ shows that the first statement is true. $\lnot (1 < 1)$, so letting $x=1$ shows that the second is also true.</p>
+        
+        <p>This means that the negation of $\exists x (x < 1)$ is <strong>not</strong> the same as $\exists x \lnot (x < 1)$. In general, the negation of a statement should be true whenever the original statement is false, and vice versa.</p>
+        
+        <p>In English, the negation of $\exists x (x < 1)$ would be "It is not true that there is an $x$ such that $x < 1$." Put more simply: "There is no $x$ such that $x < 1$." So how would we show this? We'd have to argue why, for all $x$, it's not the case that $x < 1$. In other words: the negation of $\exists x (x < 1)$ is $\forall x \lnot (x < 1)$.</p>
+        
+        <p>In general:</p>
+        
+        <ul>
+            <li>$\lnot \exists x P(x) \equiv \forall x \lnot P(x)$</li>
+            <li>$\lnot \forall x P(x) \equiv \exists x \lnot P(x)$</li>
+        </ul>
+        
+        <p>These are called <strong>De Morgan's Laws for Quantifiers</strong>. Recall De Morgan's Laws for propositional logic: $\lnot (p \vee q) \equiv \lnot p \wedge \lnot q$ and $\lnot (p \wedge q) \equiv \lnot p \vee \lnot q$. For finite universes, the $\forall$ quantifier can be thought of as one big $\wedge$-statement, and the $\exists$ quantifier can be thought of as one big $\vee$-statement.</p>
+        
+        <p>For example: in the universe $A = \{1, 2, 4, 8 \}$, suppose $P(x)$ represents "$x$ is an even number." Then $\forall x P(x)$ is false, because $P(1)$ is false.</p>
+        
+        <p>In other words, it's not true that $P(1) \wedge P(2) \wedge P(4) \wedge P(8)$. So in this universe, $\lnot (P(1) \wedge P(2) \wedge P(4) \wedge P(8))$ is true. De Morgan's Laws tells us that this is the same as $\lnot P(1) \vee \lnot P(2) \vee \lnot P(4) \vee \lnot P(8)$.</p>
+        
+        <p>But since at least one of those is true, the statement $\exists x \lnot P(x)$ is also true. Again, we can think of $\exists$ as representing a big disjunction: check if any one of the elements of the universe satisfies the condition.</p>
+        
+        <p><strong>Exercises:</strong></p>
+        
+        <p>Write the negations of the following formulas, moving the $\lnot$ sign as far in as possible:</p>
+        
+        <ol>
+            <li>$\exists n (x = 2n)$</li>
+            <li>$\exists n (x = 2n+1)$</li>
+            <li>$\forall x (x \geq 0)$</li>
+        </ol>
+        
+        <details class="answer">
+            <summary>Answers</summary>
+            <ol>
+                <li>$\forall n (x \neq 2n)$</li>
+                <li>$\forall n (x \neq 2n + 1)$</li>
+                <li>$\exists x \lnot (x \geq 0)$</li>
+            </ol>
+        </details>
+
+        <h2 id="nested-quantifiers">Nested Quantifiers</h2>
+        
+        <p>Many statements require more than one quantifier to fully express. Consider the statement "Every person has a parent." Let $P(x,y)$ represent the predicate that person $x$ is a parent of person $y$. The statement "Every person has a parent" is written as "$\forall y \exists x P(x, y)$" (where our universe is the set of all people who have ever existed).</p>
+        
+        <p>Notice that this is <strong>not</strong> the same thing as "$\exists x \forall y P(x, y)$". It's also <strong>not</strong> the same thing as "$\forall x \exists y P(x, y)$".</p>
+        
+        <ul>
+            <li>$\forall y \exists x P(x, y)$: "For every person y, there is a person $x$ such that $x$ is a parent of $y$." In other words: every person has a parent.</li>
+            <li>$\exists x \forall y P(x, y)$: "There is a person $x$ such that for all people $y$, $x$ is a parent of $y$." In other words: there is a person who is a parent to everyone.</li>
+            <li>$\forall x \exists y P(x, y)$: "For every person $x$, there is a person $y$ such that $x$ is a parent of $y$." In other words: Every person is a parent to someone.</li>
+        </ul>
+        
+        <p>What would $\forall x \forall y P(x, y)$ represent? What would $\exists x \exists y P(x, y)$ represent? What about $\exists y \forall x P(x, y)$?</p>
+
+        <h2 id="number-theory-examples">Number Theory Examples</h2>
+        
+        <p>How might we represent "There is no largest integer" in the universe $\mathbb{Z}$?</p>
+        
+        <div class="math-box">$$\lnot \exists x \forall y (x \geq y)$$</div>
+        
+        <p>This is literally read as "It is not the case that there is an $x$ such that for every $y$, $x \geq y$." Recall: "There is no" is represented either as "$\lnot \exists$", or, equivalently, as $\forall \lnot$. So we could, equivalently, write this as $\forall x \lnot [\forall y (x \geq y)]$. Again, we can push the $\lnot$ quantifier one more step in: $\forall x \exists y \lnot (x \geq y)$. We might read this as "Every $x$ is smaller than some $y$." Intuitively, this should make sense as to why that says the same thing as "There is no largest integer $x$."</p>
+        
+        <p><strong>Exercises:</strong></p>
+        
+        <ol>
+            <li>Consider the formula $\exists k (n = mk)$. What does this represent about $m$ and $n$?</li>
+            <li>Write the formula "$n$ is a prime number" using quantifiers. Recall: a prime number is a number greater than $1$ which has no factors other than $1$ and itself.</li>
+            <li>Write the statement "There is no largest prime number." This one is quite complicated! But it can be done.</li>
+        </ol>
+        
+        <details class="answer">
+            <summary>Answers</summary>
+            <ol>
+                <li>$\exists k (n = mk)$ says that $n$ divisible by $m$, or $m$ is a factor of $n$.</li>
+                <li>$n$ is a prime number if $n > 1$ and, whenever $m$ is a factor of $n$, then $m$ is either $1$ or $n$. So: $n > 1 \wedge \forall m [\exists k (n = mk)] \rightarrow (m = 1 \vee m = n)$</li>
+                <li>"There is no largest prime" would be "There is no $n$ that satisfies the formula above, such that for any other $x$ satisfying that same formula, $n \geq x$". So:
+                    <div class="math-box">
+                        \begin{align*}
+                        \lnot \exists n [n > 1 &\wedge \forall m [\exists k (n = mk)] \\
+                        &\rightarrow (m = 1 \vee m = n)] \wedge \\
+                        \forall x [x > 1 &\wedge \forall m [\exists k (x = mk) \\
+                        &\rightarrow (m = 1 \vee m = x)]] \\
+                        &\rightarrow n \geq x
+                        \end{align*}
+                    </div>
+                </li>
+            </ol>
+        </details>
+
+        <h2 id="function-examples">Function Examples</h2>
+        
+        <p>Sometimes we want our quantifiers to range over possibly different universes. We might write this as $\forall x \in A \exists y \in B \ldots$. This way, we only look at $A$ for the first quantifier and $B$ for the second quantifier. This helps us define functions. The predicate $F(x,y)$ represents a function from $A$ to $B$ if the following statement is true:</p>
+        
+        <div class="math-box">
+            \begin{align*}
+            &[\forall x \in A \exists y \in B F(x, y)] \wedge \\
+            &[\forall x \in A \forall y \in B \forall z \in B (F(x, y) \wedge F(x, z)) \\
+            &\rightarrow y = z]
+            \end{align*}
+        </div>
+        
+        <p>This is quite a mouthful, so let's break it up.</p>
+        
+        <div class="math-box">$$\forall x \in A \exists y \in B F(x, y)$$</div>
+        
+        <p>says "Every $x \in A$ has at least one $y \in B$ such that $F(x, y)$ is true." In other words, this part of the statement is ensuring that the function we're trying to define, is defined for every single element of the domain.</p>
+        
+        <p>If this statement were not true, then there would be some $x \in A$ that is not associated with any $y \in B$. In other words, the "function" we're trying to look at would not be defined for some $x \in A$.</p>
+        
+        <p>Now let's look at the second part of that statement:</p>
+        
+        <div class="math-box">
+            \begin{align*}
+            &\forall x \in A \forall y \in B \forall z \in B (F(x, y) \wedge F(x, z)) \\
+            &\rightarrow y = z
+            \end{align*}
+        </div>
+        
+        <p>This says: "For every $x \in A$, whenever $y \in B$ and $z \in B$ are such that $F(x,y)$ and $F(x,z)$, then $y=z$." In other words, this says that the "vertical line test" passes for each $x \in A$.</p>
+        
+        <p>What would it mean for this last statement to not be true? Negating quantifiers, we would get that there would need to be some $x \in A$, such that there are $y \in B$ and $z \in B$ such that</p>
+        
+        <div class="math-box">$$\lnot [(F(x, y) \wedge F(x, z)) \rightarrow y = z]$$</div>
+        
+        <p>Remember that $p \rightarrow q$ is false if $p$ is true and $q$ is false. In this case, that would mean: there are $y$ and $z$ such that $F(x, y)$ and $F(x, z)$, and also $y \neq z$. That is: the vertical line test does not pass, as the graph of the function would pass through the points $(x, y)$ and $(x,z)$.</p>
+        
+        <p><strong>Exercises:</strong> Let $A$ and $B$ be sets and $f : A \to B$ a function.</p>
+        
+        <ol>
+            <li>Write the statement that $f$ is one to one.</li>
+            <li>Write the statement that $f$ is <strong>not</strong> one to one. Move the negation in as far as possible.</li>
+            <li>Write the statement that $f$ is onto.</li>
+            <li>Write the statement that $f$ is <strong>not</strong> onto. Move the negation in as far as possible.</li>
+        </ol>
+        
+        <details class="answer">
+            <summary>Solutions</summary>
+            <ol>
+                <li>$f$ is one to one whenever $x \neq y \in A$, then $f(x) \neq f(y)$. So: $\forall x \in A \forall y \in A (x \neq y \rightarrow f(x) \neq f(y))$</li>
+                <li>$\forall x \in A \forall y \in A (x \neq y \rightarrow f(x) \neq f(y))$. This is equivalent to: $\exists x \in A \exists y \in A \lnot (x \neq y \rightarrow f(x) \neq f(y))$ We can further re-write this as: $\exists x \in A \exists y \in A (x \neq y \wedge f(x) = f(y))$ which says "There are two elements of $A$ which are different, and are mapped to the same output."</li>
+                <li>$f$ is onto, whenever $y \in B$, there is $x \in A$ such that $f(x)=y$. So: $\forall y \in B \exists x \in A (f(x) = y)$</li>
+                <li>$\lnot (\forall y \in B \exists x \in A f(x) = y))$. This is equivalent to: $\exists y \in B \forall x \in A \lnot (f(x) = y)$ or more naturally, just turn the last $\lnot (f(x) = y)$ into $f(x) \neq y$: $\exists y \in B \forall x \in A f(x) \neq y$ We can read this as "There is a $y \in B$ such that no $x \in A$ is mapped to it."</li>
+            </ol>
+        </details>
+</article>
+<h2 id="algorithms-and-p-vs-np">Algorithms and P vs NP</h2>
+<p>Computer science is the study of algorithms. If you have taken CS1 (and definitely if you took CS2), you likely know, at least informally, what the term <em>algorithm</em> means (informally, a general “recipe” or list of instructions for solving a problem). Our discussion of satisfiability hinted at the fact that there is a general algorithm to solve any satisfiability question: make a truth table, and then check whether there is any row in which the formula evaluates to “T”.</p>
+
+<p>In computer science, when we study a problem, there are two questions we can ask about that problem:</p>
+
+<ol>
+  <li>Is this problem solvable with an algorithm?</li>
+  <li>Just how <em>efficient</em> an algorithm can we find?</li>
+</ol>
+
+<p>The first question is the domain of <em>computability theory</em>, while the second is the domain of <em>complexity theory</em>. Both are active areas of research in theoretical computer science. For the satisfiability question, we have already answered the first problem: there is an algorithm, and while the code to write the algorithm might be somewhat tricky, the general steps are not too hard to understand.</p>
+
+<p>To determine the efficiency of an algorithm, we first need to define the notion of the <strong>running time</strong>. The running time of an algorithm is a function \(T(n)\) such that, for any input of size at most \(n\), the algorithm takes at most \(T(n)\)  steps. We then can compare two different algorithms for solving the same problem by seeing which running time is smaller in the long run (i.e., for large values of \(n\)).</p>
+
+<p>Let’s think about the “truth table” algorithm. When we study counting principles, we will be able to determine exactly the number of rows in a truth table with \(n\), variables. For now, I will just hint that the number of rows in a truth table with \(n\) variables is <strong>not</strong> a polynomial function of \(n\). That is, for large values of \(n\), it’s bigger than \(n^2\), bigger than \(n^3\), etc. Of course, it’s possible to make truth tables for small values of \(n\), like with 2 variables or 3 variables. But a formula with just 20 variables would take over a million rows, and with 100 variables it would be an astronomical amount of rows.</p>
+
+<p>On the other hand, if you are given a formula, and a <em>particular</em> assignment for the variables, you can probably write a simple program that would determine if that assignment satisfies the formula. For example, if you are given the formula\(p_1 \wedge p_2 \wedge p_3 \wedge p_4\) and the assignment: \(p_1 = \text{T}\), \(p_2 = \text{F}\),\(p_3 = \text{T}\), \(p_4 = \text{T}\), it is not hard to see that this is not a satisfying assignment. Moreover, the algorithm for checking this amounts to simply plugging in the variables and computing a small number of these logical operations.</p>
+
+<p>In other words: the satisfiability problem might not be easy to solve, but if you are given an assignment, you can easily verify if that really does satisfy the formula. By “easy”, here, I mean that the number of steps it takes to answer the question is small (technically, a polynomial function).</p>
+
+<h3 class="no_toc" id="easy-to-verify-hard-to-solve">Easy to verify, hard to solve?</h3>
+
+<p>This duality between problems being “easy to verify” but possibly “hard to solve” is a common theme in computer science. Complexity theorists classify problems in computer science into different “classes” based on their running times; two such classes are the classes P and NP. Roughly speaking: <strong>P</strong> contains the collection of problems for which there is an algorithm which <strong>solves</strong> the problem whose running time is a polynomial function, while <strong>NP</strong> contains those problems which can be <strong>verified</strong> with an algorithm whose running time is a polynomial function. We gave an argument above that the “satisfiability problem” is in the class NP. It’s also not hard to show that any problem in the class P is also in the class NP (exercise: try to give an argument for this on your own).</p>
+
+<p>The million-dollar question: is the satisfiability problem in the class P? This problem is still not solved. There is currently no known algorithm that solves the satisfiability problem in polynomial time; moreover, there is no known <em>proof</em> that it <em>cannot</em> be solved in polynomial time!</p>
+
+<p>When I say this is the “million-dollar question”, I mean this quite literally. This is the “P vs NP” question: is every problem that is easy to “verify”, also easy to “solve”? Intuition tells us “No”, but we do not have a real proof of that fact yet. In the 1970s, Stephen Cook and Leonid Levin independently showed that if the satisfiability problem has a polynomial time algorithm (ie, if it’s in the class P), then <strong>every</strong> problem in the class NP is also in the class P. That is: if we can solve the satisfiability problem efficiently, then the classes P and NP are the same class.</p>
+
+<p>In 2000, the Clay Mathematics Institute named this “P vs NP” problem as one of its <a href="https://en.wikipedia.org/wiki/Millennium_Prize_Problems">Millenium Prize Problems</a>, announcing that anyone who discovers a solution to this problem will be awarded 1 million USD!</p>
+</div>
+<h1 id="intro-to-counting--arrangement-problems">Intro to Counting / Arrangement Problems</h1>
+
+
+
+<p>We will revisit logic as we go through the semester. But discrete mathematics, itself, really is about <em>counting</em>. In other words: “discrete” objects are those which can be enumerated (one after the other), while “continuous” objects are things like the real numbers \(\mathbb{R}\).</p>
+
+<p><strong>Question:</strong> In how many ways can we arrange the letters C A T?</p>
+
+<ul>
+  <li>CAT</li>
+  <li>CTA</li>
+  <li>ACT</li>
+  <li>ATC</li>
+  <li>TAC</li>
+  <li>TCA</li>
+</ul>
+
+<p>I count 6 ways.</p>
+
+<p><strong>Question:</strong> What is meant by an “arrangement” of the letters?</p>
+
+<p>We will come back to this. For the rest of this lesson, we will work through some of the problems in <a href="http://bogart.openmathbooks.org/ctgd/what-is.html">Chapter 1, <em>Combinatorics Through Guided Discovery</em></a>.</p>
+
+Let's work through Problem 1,  you should work through Problem 2 on your own.</p>
+
+<blockquote>
+  <p>Five schools are going to send their baseball teams to a tournament, in which each team must play each other team exactly once. How many games are required?</p>
+</blockquote>
+
+<ul>
+  <li>(a) How many games does team 1 have to play in? Team 1 plays teams 2 - 5, so that is 4 games.</li>
+  <li>(b) How many games, other than with team 1, does team 2 have to play in? Team 2 plays teams 3 - 5, so that’s 3 games.</li>
+  <li>(c) Let’s make a table to see how many games team \(i\) plays, besides the ones they played against teams \(1\) through \(i-1\):</li>
+</ul>
+
+\begin{array}{c | c}
+i &amp; \text{Games} \\
+\hline
+1 &amp; 4 \\
+2 &amp; 3 \\
+3 &amp; 2 \\
+4 &amp; 1 \\
+5 &amp; 0
+\end{array}
+
+<p>So the answer to problem 1 is:</p>
+
+\(\sum_{i = 1}^4 (5 -i) = 4 + 3 + 2 + 1 = 10\)
+
+<p>There is a trick to adding consecutive numbers in a row. ie, there is a trick for adding\(1 + 2 + 3 + \ldots + (n - 1)\). Play around with this problem in the case that \(n = 4, 5, 6, \ldots\) and see if you can find the pattern.</p>
+
+<h3 class="no_toc" id="alternate-solution">Alternate Solution</h3>
+
+<p>Suppose team \(i\) is playing in a game. They have \(4\) possible opponents. And there are \(5\) different values for \(i\). So why isn’t the answer simply \(5 \times 4 = 20\)? For a smaller example: if we had \(3\) teams, each team would play in \(2\) different games. So are there \(6\) games?</p>
+
+<p>Let’s list out each of the two games that each team plays in:</p>
+
+<p>Team 1’s games:</p>
+
+<ul>
+  <li>Team 1 vs Team 2</li>
+  <li>Team 1 vs Team 3</li>
+</ul>
+
+<p>Team 2’s games</p>
+
+<ul>
+  <li><strong>Team 2 vs Team 1</strong></li>
+  <li>Team 2 vs Team 3</li>
+</ul>
+
+<p>Team 3’s games</p>
+
+<ul>
+  <li><strong>Team 3 vs Team 1</strong></li>
+  <li><strong>Team 3 vs Team 2</strong></li>
+</ul>
+
+<p>What do we notice here? I bolded games that were already accounted for. In particular, every game shows up <em>twice</em>! That makes sense: there are two teams playing in each game.</p>
+
+<p>In general, if there are \(n\) teams, each playing \(n - 1\) other teams, then there are <strong>not</strong> \(n \times (n - 1)\) games, because again, each game would appear twice if we listed out all \(n - 1\) games for each team. So what is the correct formula?</p>
+
+<h1 id="departure-pass-2">Departure Pass 2</h1>
+
+<p>Due Friday, 9/5 </p>
+
+<ol>
+  <li>
+    <p>In this problem, rather than ask you to prove a statement, I just want you to think about how you would go about writing a proof. State clearly what definitions you would use, what hypotheses/assumptions you would make, and which method feels more natural to you for this theorem? Try explaining why in a few sentences. Consider whether you prefer reasoning directly (do a direct proof), by reversing the logic (contrapositive) or by reaching an impossibility (contradiction).</p>
+    <p><strong>Theorem</strong>: Let  \(n\) be an integer. If \(n^2\) is an even number, then  \(n\) is even.</p>
+  </li>
+  <li>You are on an island where everyone is either a knight (who always tells the truth) or a knave (who always lies). You meet two people, A and B. A says “We are both knaves.” Determine the identities of A and B. (For this problem, you can either use a truth table, or reason intuitively.)</li>
+  <li>Work through problem 2 of <a href="https://bogart.openmathbooks.org/ctgd/s1-2-basics.html">Combinatorics Through Guided Discovery section 1.2</a>: Some number \(n\) of schools are going to send their baseball teams to a tournament. Each team must play each other team exactly once. Think of the teams as being numbered \(1\) through \(n\):
+    <ul>
+      <li>How many games does team 1 have to play in?
+        <ul>
+          <li>How many games, other than the one with team 1, does team two have to play in?</li>
+          <li>How many games, other than those with the first \(i - 1\) teams, does team \(i\) have to play in?</li>
+          <li>In terms of your answers to the previous parts of the problem, what is the total number of games played?
+Can you find a formula for the total number, using the "adding numbers in two ways" trick?</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+</main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+  </script>
+</body>
+</html>

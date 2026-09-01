@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Predicate logic, satisfiability, quantifiers, and counterexamples">
+  <title>Discrete Math – Lesson 2: Predicate Logic</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    table.truth-table {
+      width: auto;
+      margin: 1rem auto;
+      border-collapse: collapse;
+    }
+    table.truth-table th,
+    table.truth-table td {
+      min-width: 2.5rem;
+      padding: 0.35rem 0.65rem;
+      text-align: center;
+    }
+  </style>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header id="top">
+    <h1>Lesson 2: Predicate Logic</h1>
+  </header>
+
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <article>
+      <h2>Knights and Knaves</h2>
+      <p>Let us begin by returning to propositional logic. Logic puzzles give us practice translating ordinary language into symbols and looking for truth values that can occur together.</p>
+
+      <blockquote>
+        <p>You are on an island where every resident is either a knight or a knave. Knights always tell the truth, and knaves always lie. You meet two residents, A and B.</p>
+        <p>A says, “B is a knave.”</p>
+        <p>B says, “Neither one of us is a knave.”</p>
+        <p>Can you determine A and B’s types?</p>
+      </blockquote>
+
+      <p>Before opening the solution, try reasoning through the possibilities. Then try expressing the two statements symbolically.</p>
+
+      <details>
+        <summary>Solution</summary>
+        <p>Let \(p\) mean “A is a knight” and \(q\) mean “B is a knight.” A’s statement is true exactly when B is a knave, so</p>
+        <p>\[p \leftrightarrow \neg q.\]</p>
+        <p>B’s statement says that both A and B are knights. It is true exactly when B is a knight, so</p>
+        <p>\[q \leftrightarrow (p\land q).\]</p>
+
+        <table class="truth-table">
+          <thead>
+            <tr>
+              <th>\(p\)</th>
+              <th>\(q\)</th>
+              <th>\(p\leftrightarrow\neg q\)</th>
+              <th>\(q\leftrightarrow(p\land q)\)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+            <tr><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+            <tr><td>F</td><td>T</td><td>T</td><td>F</td></tr>
+            <tr><td>F</td><td>F</td><td>F</td><td>T</td></tr>
+          </tbody>
+        </table>
+
+        <p>Only the second row makes both conditions true. Therefore A is a knight and B is a knave.</p>
+      </details>
+    </article>
+
+    <article>
+      <h2>Satisfiability</h2>
+      <p>A formula is <strong>satisfiable</strong> if there is at least one assignment of truth values to its variables that makes the formula true. In the puzzle above, we looked for an assignment that satisfied both conditions at the same time.</p>
+
+      <p>For a formula with only a few variables, we can search for a satisfying assignment with a truth table. For a large formula, this approach quickly becomes impractical.</p>
+
+      <h3>Looking ahead: P versus NP</h3>
+      <p>There is an important difference between <em>finding</em> a satisfying assignment and <em>checking</em> a proposed assignment. Checking is straightforward: substitute the proposed truth values and evaluate the formula. Finding an assignment may be much harder.</p>
+
+      <p>The question of whether problems whose proposed solutions can be checked efficiently can also be solved efficiently lies at the heart of the famous <strong>P versus NP</strong> problem. The Boolean satisfiability problem, usually called <strong>SAT</strong>, plays a central role: an efficient general algorithm for SAT would imply that \(P=NP\).</p>
+
+      <p>We are only planting the idea here. The meanings of “efficient,” \(P\), \(NP\), and the special role of SAT will be developed more carefully in later computer science courses.</p>
+    </article>
+
+    <article>
+      <h2>Why Propositional Logic Is Not Enough</h2>
+      <p>Consider the expression</p>
+      <p>\[x&gt;5 \rightarrow x&gt;3.\]</p>
+
+      <p>For each particular value of \(x\), it becomes a proposition:</p>
+      <ul>
+        <li>If \(0&gt;5\), then \(0&gt;3\).</li>
+        <li>If \(4&gt;5\), then \(4&gt;3\).</li>
+        <li>If \(7&gt;5\), then \(7&gt;3\).</li>
+      </ul>
+
+      <p>Propositional logic treats these as separate propositions. We need a way to discuss the entire family at once—for example, to say that the implication is true for every real number \(x\). This extension of propositional logic is called <strong>predicate logic</strong>, or <strong>first-order logic</strong>.</p>
+    </article>
+
+    <article>
+      <h2>Predicates and Domains</h2>
+      <p>A <strong>predicate</strong> is an assertion involving one or more variables. For example, \(P(x)\) might mean “\(x&gt;5\),” while \(Q(x,y)\) might mean “\(x&gt;y\).”</p>
+
+      <p>A predicate is not automatically a proposition. The expression \(x&gt;5\) has no truth value until we specify \(x\) or quantify the variable.</p>
+
+      <p>We must also specify the possible values of the variables. This set is called the <strong>domain</strong>, <strong>universe</strong>, or <strong>domain of discourse</strong>. The domain can change the truth of a statement.</p>
+
+      <p>We will frequently use the following sets of numbers as domains:</p>
+      <ul>
+        <li>\(\mathbb N=\{0,1,2,3,\ldots\}\), the <strong>natural numbers</strong>;</li>
+        <li>\(\mathbb Z=\{\ldots,-2,-1,0,1,2,\ldots\}\), the <strong>integers</strong>;</li>
+        <li>\(\mathbb Q\), the <strong>rational numbers</strong>—numbers that can be written as \(\frac{m}{n}\), where \(m,n\in\mathbb Z\) and \(n\ne0\);</li>
+        <li>\(\mathbb R\), the <strong>real numbers</strong>, represented by all points on the number line.</li>
+      </ul>
+
+      <p>In this course, \(0\) is included in \(\mathbb N\). Other books sometimes begin the natural numbers with \(1\), so it is always worth checking the convention being used.</p>
+
+      <p>For example, “every \(x\) is nonnegative” is true when \(x\) ranges over \(\mathbb N\), but false when \(x\) ranges over \(\mathbb Z\) or \(\mathbb R\).</p>
+    </article>
+
+    <article>
+      <h2>Universal and Existential Quantifiers</h2>
+
+      <h3>The universal quantifier</h3>
+      <p>The symbol \(\forall\) means “for every” or “for all.”</p>
+      <p>\[\forall x\,P(x)\]</p>
+      <p>means that \(P(x)\) is true for every \(x\) in the domain.</p>
+
+      <p><strong>Question.</strong> Consider</p>
+      <p>\[\forall x\,(x&gt;1\rightarrow x\ge 2).\]</p>
+      <p>Is it true when the domain is \(\mathbb N\)? \(\mathbb Z\)? \(\mathbb Q\)? \(\mathbb R\)?</p>
+
+      <details>
+        <summary>Answer</summary>
+        <p>It is true over \(\mathbb N\) and \(\mathbb Z\). It is false over \(\mathbb Q\) and \(\mathbb R\); for example, \(x=\tfrac32\) is a counterexample.</p>
+      </details>
+
+      <h3>The existential quantifier</h3>
+      <p>The symbol \(\exists\) means “there exists” or “there is at least one.”</p>
+      <p>\[\exists x\,P(x)\]</p>
+      <p>means that \(P(x)\) is true for at least one \(x\) in the domain.</p>
+
+      <p>For example,</p>
+      <p>\[\exists x\,(x^2+2x+1=0)\]</p>
+      <p>is true over \(\mathbb Z\) and \(\mathbb R\), because \(x=-1\) is a solution. It is false over \(\mathbb N\). The truth of a quantified statement can change when its domain changes.</p>
+    </article>
+
+    <article>
+      <h2>Free and Bound Variables</h2>
+       <p><strong>Quick exercise:</strong></p>
+        
+        <ol>
+            <li>Suppose our universe is \(\mathbb N\). Is \(x \geq 0\) true or false?</li>
+            <li>Suppose our universe is \(\mathbb N\). Is \(\forall x (x \geq 0)\) true or false?</li>
+        </ol>
+        
+        <details>
+            <summary>Answers</summary>
+ <ol>
+                <li>Neither! It's a formula, not a statement. We could ask about \(1 > 0\), or \(0 > 0\) or \(12345 > 0\). But \(x \geq 0\) is not a statement with a defined truth value.</li>
+                <li>True. This is a statement that actually has a defined truth value.</li>
+            </ol>
+        </details>
+        
+      <p>Compare the following expressions over the natural numbers:</p>
+      <ol>
+        <li>\(x\ge0\)</li>
+        <li>\(\forall x\,(x\ge0)\)</li>
+      </ol>
+
+      <p>In the first expression, \(x\) is a <strong>free variable</strong>. The expression is an open statement, and its truth cannot be determined until \(x\) is specified.</p>
+
+      <p>In the second expression, \(x\) is a <strong>bound variable</strong> because it is governed by the quantifier. The entire expression is a proposition and has a truth value.</p>
+
+      <p><strong>Question.</strong> In \(\forall y\,(y&gt;x)\), which variable is bound and which is free? Is the formula a proposition?</p>
+
+      <details>
+        <summary>Answer</summary>
+        <p>The variable \(y\) is bound and \(x\) is free. Therefore the formula is not yet a proposition.</p>
+      </details>
+    </article>
+
+    <article>
+      <h2>Negating Quantified Statements</h2>
+      <p>The negation of “there exists an \(x\) with property \(P\)” is not “there exists an \(x\) without property \(P\).” Both of those statements could be true.</p>
+
+      <p>For example, over \(\mathbb N\), both statements are true:</p>
+      <ul>
+        <li>\(\exists x\,(x&lt;1)\)</li>
+        <li>\(\exists x\,\neg(x&lt;1)\)</li>
+      </ul>
+
+      <p>To say that no \(x\) has the property, every \(x\) must fail to have it. Thus:</p>
+      <p>\[\neg\exists x\,P(x)\equiv\forall x\,\neg P(x),\]</p>
+      <p>\[\neg\forall x\,P(x)\equiv\exists x\,\neg P(x).\]</p>
+
+      <p>These are De Morgan’s laws for quantifiers. In ordinary English:</p>
+      <ul>
+        <li>“Not everyone passed” means “Someone did not pass.”</li>
+        <li>“Nobody failed” means “Everyone did not fail.”</li>
+      </ul>
+
+      <p><strong>Exercise.</strong> Negate each statement, moving the negation as far inward as possible:</p>
+      <ol>
+        <li>\(\exists n\,(x=2n)\)</li>
+        <li>\(\forall x\,(x\ge0)\)</li>
+      </ol>
+
+      <details>
+        <summary>Answer</summary>
+        <ol>
+          <li>\(\forall n\,(x\ne2n)\)</li>
+          <li>\(\exists x\,(x&lt;0)\)</li>
+        </ol>
+      </details>
+    </article>
+
+    <article>
+      <h2>Nested Quantifiers</h2>
+      <p>When a statement contains more than one quantifier, their order matters.</p>
+
+      <p>Let \(P(x,y)\) mean “\(x\) is a parent of \(y\),” with people as the domain.</p>
+      <ul>
+        <li>\(\forall y\,\exists x\,P(x,y)\): Every person has a parent.</li>
+        <li>\(\exists x\,\forall y\,P(x,y)\): Someone is a parent of everyone.</li>
+        <li>\(\forall x\,\exists y\,P(x,y)\): Every person is a parent of someone.</li>
+      </ul>
+
+      <p><strong>Question.</strong> Compare the following statements over \(\mathbb R\):</p>
+      <p>\[\forall x\,\exists y\,(y&gt;x)\]</p>
+      <p>and</p>
+      <p>\[\exists y\,\forall x\,(y&gt;x).\]</p>
+
+      <details>
+        <summary>Answer</summary>
+        <p>The first is true: given any real number \(x\), we may choose \(x+1\). The second is false: there is no real number larger than every real number.</p>
+      </details>
+    </article>
+
+    <article>
+      <h2>What Examples Can—and Cannot—Prove</h2>
+      <p>Examples play different roles depending on the quantifier in a statement. One example may settle an existential statement or refute a universal statement. It cannot, in general, establish a universal statement.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Statement</th>
+            <th>To establish it</th>
+            <th>To refute it</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>\(\forall x\,P(x)\)</td>
+            <td>Give an argument that works for an arbitrary \(x\)</td>
+            <td>Give one counterexample</td>
+          </tr>
+          <tr>
+            <td>\(\exists x\,P(x)\)</td>
+            <td>Give one object and verify that it works</td>
+            <td>Prove that no object in the domain works</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Existential statements and witnesses</h3>
+      <p>A particular object used to establish an existential statement is called a <strong>witness</strong>. Naming an object is not enough: we must verify that it belongs to the stated domain and has the required property.</p>
+
+      <p><strong>Example.</strong> Consider</p>
+      <p>\[\exists n\in\mathbb Z\;(n^2=25).\]</p>
+      <p>Choose \(n=5\). Since \(5\in\mathbb Z\) and \(5^2=25\), the integer \(5\) is a witness and the existential statement is true.</p>
+
+      <h3>Universal statements and counterexamples</h3>
+      <p>Many mathematical statements have the form</p>
+      <p>\[\forall x\,(P(x)\rightarrow Q(x)).\]</p>
+
+      <p>To refute such a statement, it is enough to find one value of \(x\) for which \(P(x)\) is true and \(Q(x)\) is false. Such a value is called a <strong>counterexample</strong>. This is exactly the one row in the truth table where an implication is false.</p>
+
+      <p><strong>Example.</strong> The statement “For every integer \(n\), if \(n\) is odd, then \(n\) is prime” is false. The integer \(9\) is a counterexample: it is odd, but it is not prime.</p>
+
+      <h3>The dangerous direction</h3>
+      <p>Checking several examples does not prove a universal statement. Consider</p>
+      <p>\[\forall n\in\mathbb N\;(n^2+n+41\text{ is prime}).\]</p>
+      <p>The expression produces primes for many small values of \(n\), but at \(n=40\) it becomes</p>
+      <p>\[40^2+40+41=41^2,\]</p>
+      <p>which is not prime. A long list of successful examples may suggest a conjecture, but it is not a proof that the conjecture holds for every value.</p>
+
+      <p><strong>Classify the task.</strong> For each statement below, decide whether one verified example could establish it, refute it, or do neither.</p>
+      <ol>
+        <li>There is an integer whose square is \(49\).</li>
+        <li>Every prime number is odd.</li>
+        <li>There is a real number \(x\) such that \(x^2=-1\).</li>
+        <li>For every integer \(n\), \(n^2\ge n\).</li>
+      </ol>
+
+      <details>
+        <summary>Discussion</summary>
+        <ol>
+          <li>One verified example can establish it: \(7^2=49\).</li>
+          <li>One counterexample refutes it: \(2\) is prime and even.</li>
+          <li>No collection of unsuccessful examples proves it false; one must show that no real number has square \(-1\).</li>
+          <li>Examples may test the claim but cannot establish it for every integer. A general argument is required.</li>
+        </ol>
+      </details>
+    </article>
+
+    <article>
+      <h2>Post-Lecture Practice</h2>
+      <p>Use this<a href="https://classroom50.org/dmath-fall2026/discrete-mathematics/assignments/post-lecture-practice-2/accept?k=ntl88as7" target="_blank"> link</a> to download the LaTeX starter for Post-Lecture Practice 2</a>.</p>
+      <p>Complete your work in the starter file, compile it as a PDF, and submit both .tex and PDF files through Classroom50.</p>
+
+    </article>
+    <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+  </script>
+</body>
+</html>
