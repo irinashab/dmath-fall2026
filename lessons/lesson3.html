@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Proof writing, direct proof, proof by cases, contraposition, and contradiction">
+  <title>Discrete Math – Lesson 3: Proof Writing</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header id="top">
+    <h1>Lesson 3: Proof Writing</h1>
+  </header>
+
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <article>
+      <h2>From Quantifiers to a Proof</h2>
+      <p>In the previous lesson, we translated statements into predicate logic and discussed what examples can—and cannot—prove. We begin by returning to Lewis Carroll’s argument.</p>
+
+      <p>Let \(P(x)\), \(Q(x)\), and \(R(x)\) mean “\(x\) is a lion,” “\(x\) is fierce,” and “\(x\) drinks coffee,” respectively. The domain consists of all creatures.</p>
+
+      <ol>
+        <li>All lions are fierce.</li>
+        <li>Some lions do not drink coffee.</li>
+        <li>Therefore, some fierce creatures do not drink coffee.</li>
+      </ol>
+
+      <p>The premises and conclusion can be written as</p>
+      <p>\[
+        \forall x\,(P(x)\rightarrow Q(x)),
+      \]</p>
+      <p>\[
+        \exists x\,(P(x)\land\neg R(x)),
+      \]</p>
+      <p>and</p>
+      <p>\[
+        \exists x\,(Q(x)\land\neg R(x)).
+      \]</p>
+
+      <p><strong>Question.</strong> The conclusion sounds reasonable, but how do the premises force it to be true?</p>
+
+      <details>
+        <summary>Follow the argument</summary>
+        <ol>
+          <li>The second premise tells us that there is a creature \(a\) such that \(P(a)\) and \(\neg R(a)\).</li>
+          <li>The first premise applies to every creature, so it applies to \(a\). Thus \(P(a)\rightarrow Q(a)\).</li>
+          <li>Since \(P(a)\), it follows that \(Q(a)\).</li>
+          <li>Therefore \(Q(a)\land\neg R(a)\).</li>
+          <li>Consequently, \(\exists x\,(Q(x)\land\neg R(x))\).</li>
+        </ol>
+      </details>
+
+      <p>The creature \(a\) comes from an existential premise. It serves as a <strong>witness</strong> for the conclusion, but naming it is not the whole proof. We also had to use the universal premise to establish that this same creature is fierce.</p>
+    </article>
+
+    <article>
+      <h2>What Does a Proof Have to Do?</h2>
+      <p>A mathematical proof is a sequence of justified statements showing that a conclusion must follow from the assumptions. A collection of examples may suggest that a universal statement is true, but a proof must explain why it works in every permitted case.</p>
+
+      <p>Many theorems in this course have the form</p>
+      <p>\[
+        \forall x\,(P(x)\rightarrow Q(x)).
+      \]</p>
+
+      <p>To prove such a theorem, we begin with an <strong>arbitrary</strong> object \(x\) in the stated domain and assume \(P(x)\). We must then show that \(Q(x)\) follows. The word “arbitrary” matters: the reasoning cannot depend on a special choice of \(x\).</p>
+
+      <h3>Anatomy of a proof</h3>
+      <ol>
+        <li>Identify the domain.</li>
+        <li>State what is being assumed.</li>
+        <li>Unpack the relevant definitions.</li>
+        <li>Move from one justified statement to the next.</li>
+        <li>Explicitly connect the final statement to the desired conclusion.</li>
+      </ol>
+    </article>
+
+    <article>
+      <h2>Definitions Are the Raw Materials</h2>
+      <p>Informal understanding is not enough when we write a proof. We need definitions that can be used in an argument.</p>
+
+      <ul>
+        <li>For integers \(a\) and \(b\), we say that \(a\) <strong>divides</strong> \(b\), written \(a\mid b\), if \(b=ak\) for some \(k\in\mathbb Z\).</li>
+        <li>An integer \(n\) is <strong>even</strong> if \(n=2k\) for some \(k\in\mathbb Z\).</li>
+        <li>An integer \(n\) is <strong>odd</strong> if \(n=2k+1\) for some \(k\in\mathbb Z\).</li>
+      </ul>
+
+      <p>We will also use familiar facts about integers: sums, differences, and products of integers are integers, and every integer is either even or odd.</p>
+
+      <p><strong>Before starting a proof, ask:</strong> What do the hypotheses give me when I write out their definitions? What form must my final expression have?</p>
+    </article>
+
+    <article>
+      <h2>Direct Proof</h2>
+      <p>In a <strong>direct proof</strong> of \(P\rightarrow Q\), we assume \(P\) and use definitions and known facts to reach \(Q\).</p>
+
+      <p><strong>Theorem.</strong> Let \(n\in\mathbb Z\). If \(n\) is a multiple of \(6\), then \(n\) is even.</p>
+
+      <p><strong>Proof.</strong> Let \(n\) be an arbitrary integer that is a multiple of \(6\). By the definition of multiple, there is an integer \(k\) such that</p>
+      <p>\[
+        n=6k.
+      \]</p>
+      <p>We can rewrite this as</p>
+      <p>\[
+        n=2(3k).
+      \]</p>
+      <p>Because \(k\in\mathbb Z\), the number \(3k\) is also an integer. Thus \(n\) is \(2\) times an integer, so \(n\) is even. \(\square\)</p>
+
+      <p>Notice that the proof does not merely show that \(6,12,\) and \(18\) are even. The integer \(n\) was arbitrary, so the argument applies to every multiple of \(6\).</p>
+    </article>
+
+    <article>
+      <h2>Work with a Partner: A Direct Proof</h2>
+      <p><strong>Theorem.</strong> Let \(a\) and \(b\) be odd integers. Prove that \(a+b\) is even.</p>
+
+      <p>Before writing the proof, discuss these questions:</p>
+      <ol>
+        <li>What are you assuming?</li>
+        <li>How can you express \(a\) and \(b\) using the definition of odd?</li>
+        <li>What must the final expression for \(a+b\) look like?</li>
+        <li>How will you know that the quantity multiplying \(2\) is an integer?</li>
+      </ol>
+
+      <p><strong>A detail to watch:</strong> Two independently chosen odd integers need not have the same representation. Use \(a=2k+1\) and \(b=2\ell+1\), not \(a=2k+1\) and \(b=2k+1\).</p>
+
+      <details>
+        <summary>Compare with a complete proof</summary>
+        <p><strong>Proof.</strong> Let \(a\) and \(b\) be arbitrary odd integers. Then there are integers \(k\) and \(\ell\) such that</p>
+        <p>\[
+          a=2k+1 \qquad\text{and}\qquad b=2\ell+1.
+        \]</p>
+        <p>Therefore,</p>
+        <p>\[
+          a+b=(2k+1)+(2\ell+1)=2(k+\ell+1).
+        \]</p>
+        <p>Since \(k,\ell\in\mathbb Z\), we know that \(k+\ell+1\in\mathbb Z\). Thus \(a+b\) is twice an integer and is therefore even. \(\square\)</p>
+      </details>
+
+      <p><strong>If you finish early:</strong> Prove that the product of two odd integers is odd.</p>
+    </article>
+
+    <article>
+      <h2>Proof by Cases</h2>
+      <p>Sometimes the domain naturally divides into a small number of possibilities. A <strong>proof by cases</strong> considers every possibility and shows that the conclusion holds in each one.</p>
+
+      <p><strong>Theorem.</strong> For every integer \(n\), \(n^2\ge n\).</p>
+
+      <p><strong>Proof.</strong> Let \(n\in\mathbb Z\). Since \(n\) is an integer, either \(n\ge1\) or \(n\le0\).</p>
+
+      <p><strong>Case 1: \(n\ge1\).</strong> Both \(n\) and \(n-1\) are nonnegative, so</p>
+      <p>\[
+        n(n-1)\ge0.
+      \]</p>
+      <p>Therefore \(n^2-n\ge0\), and hence \(n^2\ge n\).</p>
+
+      <p><strong>Case 2: \(n\le0\).</strong> We know that \(n^2\ge0\). Since \(0\ge n\), it follows that \(n^2\ge n\).</p>
+
+      <p>The two cases include every integer \(n\), so \(n^2\ge n\) for every \(n\in\mathbb Z\). \(\square\)</p>
+
+      <p>This is the universal statement from Lesson 2 for which checking examples was not enough. The proof now explains why the inequality holds for every integer.</p>
+    </article>
+
+    <article>
+      <h2>Proof by Contraposition</h2>
+      <p>The implication \(P\rightarrow Q\) is logically equivalent to its contrapositive, \(\neg Q\rightarrow\neg P\). Therefore, instead of assuming \(P\) and proving \(Q\), we may assume \(\neg Q\) and prove \(\neg P\).</p>
+
+      <p><strong>Choose a method.</strong> Consider the theorem:</p>
+      <p>\[
+        \text{If }ab\text{ is odd, then both }a\text{ and }b\text{ are odd.}
+      \]</p>
+      <p>A direct proof would begin with information about the product \(ab\), but we need information about the separate factors. The contrapositive gives us something more useful to work with.</p>
+
+      <details>
+        <summary>Proof using the contrapositive</summary>
+        <p>The negation of “both \(a\) and \(b\) are odd” is “at least one of \(a\) and \(b\) is not odd.” Because every integer is either even or odd, this means that at least one of them is even. Thus the contrapositive is:</p>
+        <p>“If at least one of \(a\) and \(b\) is even, then \(ab\) is even.”</p>
+
+        <p><strong>Proof.</strong> Let \(a,b\in\mathbb Z\), and suppose at least one of them is even.</p>
+        <p>If \(a\) is even, then \(a=2k\) for some \(k\in\mathbb Z\), and</p>
+        <p>\[
+          ab=(2k)b=2(kb).
+        \]</p>
+        <p>Since \(kb\in\mathbb Z\), the product \(ab\) is even.</p>
+        <p>If \(b\) is even, then \(b=2\ell\) for some \(\ell\in\mathbb Z\), and</p>
+        <p>\[
+          ab=a(2\ell)=2(a\ell).
+        \]</p>
+        <p>Since \(a\ell\in\mathbb Z\), the product \(ab\) is again even. We have proved the contrapositive, so if \(ab\) is odd, both \(a\) and \(b\) must be odd. \(\square\)</p>
+      </details>
+
+      <p>A contrapositive proof does not mean proving the converse. The converse here is “If both \(a\) and \(b\) are odd, then \(ab\) is odd.” That statement is true, but proving it alone would not prove the original theorem.</p>
+    </article>
+<article><h2>Work with a Partner: Proof by Contraposition</h2></article>
+ <p><strong>Choose a method.</strong> Consider the theorem:</p>
+      <p>\[
+        \text{If }n^2\text{ is even, then }n\text{ is even.}
+      \]</p>
+      <p>What would a direct proof have to do? What is the contrapositive? Which route appears more natural?</p>
+
+      <details>
+        <summary>Proof using the contrapositive</summary>
+        <p>The contrapositive is: “If \(n\) is odd, then \(n^2\) is odd.”</p>
+
+        <p><strong>Proof.</strong> Let \(n\) be an odd integer. Then \(n=2k+1\) for some \(k\in\mathbb Z\). Squaring gives</p>
+        <p>\[
+          n^2=(2k+1)^2=4k^2+4k+1=2(2k^2+2k)+1.
+        \]</p>
+        <p>Because \(2k^2+2k\in\mathbb Z\), the number \(n^2\) is odd. We have proved the contrapositive, so the original theorem follows. \(\square\)</p>
+      </details>
+
+    <article>
+      <h2>Proof by Contradiction</h2>
+      <p>In a <strong>proof by contradiction</strong>, we assume that the statement we want to prove is false. We then show that this assumption forces an impossibility. Therefore the assumption must be false.</p>
+
+      <p><strong>Theorem.</strong> There is no smallest positive rational number.</p>
+
+      <p><strong>Proof.</strong> Suppose, for the sake of contradiction, that there is a smallest positive rational number \(r\). Since \(r\in\mathbb Q\), the number</p>
+      <p>\[
+        \frac r2
+      \]</p>
+      <p>is also rational. Moreover, \(r/2&gt;0\) and \(r/2&lt;r\). Thus \(r/2\) is a positive rational number smaller than the supposed smallest positive rational number \(r\). This is a contradiction. Therefore, there is no smallest positive rational number. \(\square\)</p>
+
+      <h3>A Classic Contradiction: \(\sqrt{2}\) Is Irrational</h3>
+      <p>We will use the familiar fact that every rational number can be written in <strong>lowest terms</strong>: if a number is rational, it can be written as \(\frac ab\), where \(a,b\in\mathbb Z\), \(b\ne0\), and \(a\) and \(b\) have no common factor greater than \(1\).</p>
+
+      <p><strong>Theorem.</strong> The number \(\sqrt{2}\) is irrational.</p>
+
+      <p><strong>Proof.</strong> Suppose, for the sake of contradiction, that \(\sqrt{2}\) is rational. Write</p>
+      <p>\[
+        \sqrt{2}=\frac ab
+      \]</p>
+      <p>in lowest terms. Squaring both sides gives</p>
+      <p>\[
+        2=\frac{a^2}{b^2},
+      \]</p>
+      <p>so</p>
+      <p>\[
+        a^2=2b^2.
+      \]</p>
+
+      <p>Therefore \(a^2\) is even. We have already proved that if the square of an integer is even, then the integer itself is even. Thus \(a\) is even, and \(a=2k\) for some \(k\in\mathbb Z\).</p>
+
+      <p>Substituting \(a=2k\) into \(a^2=2b^2\), we obtain</p>
+      <p>\[
+        4k^2=2b^2,
+      \]</p>
+      <p>and hence</p>
+      <p>\[
+        b^2=2k^2.
+      \]</p>
+
+      <p>Now \(b^2\) is even, so \(b\) is even as well. Therefore both \(a\) and \(b\) are divisible by \(2\). This contradicts our choice of \(\frac ab\) in lowest terms. Consequently, \(\sqrt{2}\) is irrational. \(\square\)</p>
+
+      <h3>Contraposition is not contradiction</h3>
+      <p>To prove \(P\rightarrow Q\):</p>
+      <ul>
+        <li>A <strong>direct proof</strong> assumes \(P\) and derives \(Q\).</li>
+        <li>A <strong>contrapositive proof</strong> assumes \(\neg Q\) and derives \(\neg P\).</li>
+        <li>A <strong>proof by contradiction</strong> assumes \(P\land\neg Q\) and derives an impossibility.</li>
+      </ul>
+    </article>
+
+    <article>
+      <h2>Choosing a Proof Strategy</h2>
+      <p>There is often more than one correct proof. The goal is not to guess a prescribed method, but to notice which assumptions expose useful definitions and lead naturally toward the conclusion.</p>
+
+      <p>For each statement, discuss which method you would try first and what your opening sentence would be.</p>
+      <ol>
+        <li>Let \(a,b,c\in\mathbb Z\). If \(a\mid b\) and \(b\mid c\), then \(a\mid c\).</li>
+        <li>For every integer \(n\), the number \(n^2+n+1\) is odd.</li>
+        <li>If \(a+b\) is odd, then at least one of \(a\) and \(b\) is odd.</li>
+        <li>There is no greatest integer.</li>
+      </ol>
+    </article>
+
+    <article>
+      <h2>Common Trouble Spots</h2>
+      <ul>
+        <li><strong>Examples in place of a proof:</strong> checking \(6,12,\) and \(18\) does not prove a statement about every multiple of \(6\).</li>
+        <li><strong>Using the same parameter without justification:</strong> two odd integers should generally be written \(2k+1\) and \(2\ell+1\).</li>
+        <li><strong>Assuming the conclusion:</strong> begin with the hypotheses, not with the statement you are trying to establish.</li>
+        <li><strong>Leaving the domain unstated:</strong> parity and divisibility are statements about integers.</li>
+        <li><strong>Stopping after the algebra:</strong> explain why the final expression matches the required definition.</li>
+        <li><strong>Declaring a contradiction without identifying it:</strong> state exactly which assumption or known fact has been violated.</li>
+      </ul>
+    </article>
+
+    <article>
+      <h2>Problem Set 0</h2>
+      <p>There is no separate Post-Lecture Practice for this lesson. Complete Problem Set 0 instead.</p>
+      <p><a href="https://classroom50.org/dmath-fall2026/discrete-mathematics/assignments/problem-set-0/accept?k=ntl88as7" target="_blank" >Download the LaTeX starter for Problem Set 0</a>.</p>
+    </article>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+  </script>
+</body>
+</html>
