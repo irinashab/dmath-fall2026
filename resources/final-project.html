@@ -6,16 +6,7 @@
 
 <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]}};</script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><header id="top"><h1>Final Project Guidelines and Topics</h1></header>
-<div id="navigation-placeholder">
-<nav class="course-navigation" aria-label="Course navigation">
-  <ul>
-    <li><a data-path="index.html" href="index.html">Home</a></li>
-    <li><a data-path="resources/syllabus.html" href="resources/syllabus.html">Syllabus</a></li>
-    <li><a data-path="lessons.html" href="lessons.html">Lessons</a></li>
-    <li><a data-path="resources.html" href="resources.html">Resources</a></li>
-  </ul>
-</nav>
-</div><main>
+<div id="navigation-placeholder"></div><main>
 <article id="overview">
 <h2>Final project</h2>
 <p>The final project is a team presentation and a project paper on a focused question related to discrete mathematics. Your task is to teach your classmates something beyond our regular coursework while using the definitions, examples, and proof methods we have studied.</p>
@@ -149,26 +140,40 @@
 </main><div id="footer-placeholder"><footer>
 
 
-<p class="small">
-© 2026 Irina Shablinsky.
-Unless otherwise noted, original course materials are licensed under the
-<a href="https://creativecommons.org/licenses/by-nc/4.0/">
-Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
-</a>
-Third-party materials remain subject to their respective copyright and license terms.
-Last updated: September 2026
-</p>
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
 
-</footer></div>
-<!-- Static includes above support local viewing. Refresh from course includes when served from the course root. -->
-<script>
-if(location.protocol==='http:' || location.protocol==='https:') {
- const siteRoot=new URL('./',location.href);
- for(const [file,id] of [['navigation.html','navigation-placeholder'],['footer.html','footer-placeholder']]) {
-  fetch(new URL('assets/includes/'+file,siteRoot)).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()}).then(html=>{
-   const el=document.getElementById(id);el.innerHTML=html;
-   el.querySelectorAll('a[data-path]').forEach(a=>{a.href=new URL(a.dataset.path,siteRoot).href});
-  }).catch(()=>{});
- }
-}
-</script></body></html>
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>
