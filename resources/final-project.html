@@ -1,13 +1,39 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="Irina Shablinsky"><meta name="description" content="Fall 2026 discrete mathematics final project requirements, deadlines, presentation and paper rubrics, and topic ideas."><title>Discrete Math – Final Project Guidelines and Topics</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 final project dates, team proposal, presentation requirements, project paper, rubrics, and topics.">
+  <title>Discrete Math – Final Project Guidelines and Topics</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Final Project Guidelines and Topics</h1>
+  </header>
+  <div id="navigation-placeholder">
+<nav class="course-navigation" aria-label="Course navigation">
+  <ul>
+    <li><a data-path="index.html" href="../index.html">Home</a></li>
+    <li><a data-path="resources/syllabus.html" href="../resources/syllabus.html">Syllabus</a></li>
+    <li><a data-path="lessons.html" href="../lessons.html">Lessons</a></li>
+    <li><a data-path="resources.html" href="../resources.html">Resources</a></li>
+  </ul>
+</nav>
+</div>
 
-<link rel="stylesheet" href="../assets/style.css">
-
-
-
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><header id="top"><h1>Final Project Guidelines and Topics</h1></header>
-<div id="navigation-placeholder"></div><main>
-<article id="overview">
+  <main>
+    <article id="overview">
 <h2>Final project</h2>
 <p>The final project is a team presentation and a project paper on a focused question related to discrete mathematics. Your task is to teach your classmates something beyond our regular coursework while using the definitions, examples, and proof methods we have studied.</p>
 <p><strong>Build your project around one focused question, one substantial worked example, and one mathematical argument.</strong> Original research is not expected. Understanding and clearly explaining existing mathematics is the goal.</p>
@@ -136,14 +162,31 @@
 <li>Can every team member explain the central idea?</li>
 <li>Are borrowed results and materials attributed?</li>
 <li>Has the presentation been rehearsed within 10 minutes?</li>
-</ul></article><p class="back-to-top"><a href="#top">Back to top ↑</a></p>
-</main><div id="footer-placeholder"><footer>
+</ul></article>
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
 
+  <div id="footer-placeholder">
+<footer>
+
+
+<p class="small">
+© 2026 Irina Shablinsky.
+Unless otherwise noted, original course materials are licensed under the
+<a href="https://creativecommons.org/licenses/by-nc/4.0/">
+Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
+</a>
+Third-party materials remain subject to their respective copyright and license terms.
+Last updated: August 2026
+</p>
+
+</footer></div>
 
   <script>
-  const siteRoot = window.location.hostname.endsWith("github.io")
-    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
-    : "/";
+  if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+  const siteRoot = new URL("../", window.location.href).href;
 
   fetch(`${siteRoot}assets/includes/navigation.html`)
     .then(response => {
@@ -173,6 +216,7 @@
       document.getElementById("footer-placeholder").innerHTML = html;
     })
     .catch(error => console.error("Footer load failed:", error));
+  }
 </script>
 
 </body>

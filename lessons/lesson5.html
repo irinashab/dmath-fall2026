@@ -1,710 +1,46 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="Irina Shablinsky"><meta name="description" content="Functions, injectivity, surjectivity, bijections, and in-class proofs using predicate logic."><title>Discrete Math – Lesson 5: Functions and Bijections</title>
-<!-- Course stylesheet embedded so this draft opens as a single file. -->
-<style>/* Shared styling for course pages */
-
-:root {
-  --bg: #ffffff;
-  --text: #111111;
-  --link: #0b63c7;
-  --link-hover: #084a93;
-  --border: #111111;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #121212;
-    --text: #e9e9e9;
-    --link: #8ab4f8;
-    --link-hover: #a9c7ff;
-    --border: #e9e9e9;
-  }
-}
-
-html, body {
-  background: var(--bg);
-  color: var(--text);
-}
-
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  margin: 0 auto;
-  max-width: 800px;
-  padding: 20px;
-}
-
-h1 {
-  text-align: center;
-}
-
-h3 {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-p {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-ul {
-  list-style-type: disc;
-  margin: 10px 0;
-  padding-left: 20px;
-}
-
-ul ul {
-  list-style-type: circle; /* nested lists */
-  margin: 5px 0;
-  padding-left: 20px;
-}
-
-li {
-  margin: 5px 0;
-}
-
-a {
-  color: var(--link);
-  text-decoration: none;
-}
-
-a:hover,
-a:focus {
-  text-decoration: underline;
-  color: var(--link-hover);
-}
-
-
-/* Responsive YouTube embeds (optional utility) */
-     @media (prefers-color-scheme: dark) {
-         html {
-           filter: invert(100%);
-        }
-
-        .youtube-container iframe {
-          filter: invert(100%);
-        }
-
-        .noreverse {
-          filter: invert(100%);
-        }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Functions, injectivity, surjectivity, bijections, and in-class proofs using predicate logic.">
+  <title>Discrete Math – Lesson 5: Functions and Bijections</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
       }
-      .desmos-container {
-        overflow: hidden;
-        padding-bottom: 100%;
-        position: relative;
-        height: 0;
-      }
-
-      .desmos-container iframe {
-        height: 95%;
-        width: 95%;
-        left: 0;
-        position: absolute;
-        top: 0;
-      }
-
-      .youtube-container {
-        overflow: hidden;
-        padding-bottom: 56.25%;
-        position: relative;
-        height: 0;
-      }
-
-      .youtube-container iframe {
-        height: 100%;
-        width: 100%;
-        left: 0;
-        position: absolute;
-        top: 0;
-      }
-/* ---- Page utilities (safe defaults) ---- */
-
-ol {
-  margin: 10px 0;
-  padding-left: 28px;
-}
-
-ol li {
-  margin: 10px 0;
-}
-
-code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.95em;
-}
-
-pre {
-  margin: 10px 0;
-  padding: 12px 14px;
-  overflow: auto;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.04);
-}
-
-@media (prefers-color-scheme: dark) {
-  pre {
-    background: rgba(255, 255, 255, 0.06);
-  }
-}
-
-.callout {
-  border-left: 6px solid var(--border);
-  padding: 10px 14px;
-  margin: 14px 0;
-  background: rgba(0, 0, 0, 0.03);
-  border-radius: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .callout {
-    background: rgba(255, 255, 255, 0.05);
-  }
-}
-/* ---- Grading page components ---- */
-
-.grid {
-  display: grid;
-  gap: 14px;
-}
-
-@media (min-width: 780px) {
-  .grid.two {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.card {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px 16px;
-  background: rgba(0, 0, 0, 0.02);
-}
-
-@media (prefers-color-scheme: dark) {
-  .card {
-    background: rgba(255, 255, 255, 0.04);
-  }
-}
-
-.card h3 {
-  margin-top: 0;
-}
-
-.badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  font-size: 0.9em;
-  margin-right: 8px;
-}
-
-.small {
-  font-size: 0.85em;
-}
-
-blockquote {
-  margin: 10px 0;
-  padding-left: 12px;
-  border-left: 4px solid var(--border);
-}
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--link);
-    color: white;
-    border-radius: 6px;
-    text-decoration: none;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-.button:hover {
-    background-color: var(--link-hover);
-    text-decoration: none;
-    color: white;
-}
-/* ---- Lecture content utilities ---- */
-
-figure {
-  margin: 14px 0;
-}
-
-figure img {
-  max-width: 100%;
-  height: auto;
-}
-
-figcaption {
-  margin-top: 6px;
-  font-size: 0.95em;
-  opacity: 0.9;
-}
-footer {
-  text-align: center;
-  margin-top: 4rem;
-  font-size: 0.9em;
-  color: #666;
-}
-.site-footer {
-  text-align: center;
-  margin-top: 4rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #ccc;
-  font-size: 0.9em;
-  color: #666;
-}
-.site-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #ccc;
-}
-
-.site-header h1 {
-  margin-bottom: 0.3rem;
-}
-
-.course-meta {
-  font-size: 0.9em;
-  color: #666;
-}
-/* Live format validation (while typing) */
-main .exercise input.format-bad {
-  border: 3px solid #ff0000 !important;
-  background: rgba(255, 0, 0, 0.15) !important;
-  box-shadow: 0 0 6px rgba(255, 0, 0, 0.6) !important;
-}
-main .exercise input.format-ok {
-  border: 3px solid #00b050 !important;
-  background: rgba(0, 176, 80, 0.12) !important;
-  box-shadow: 0 0 6px rgba(0, 176, 80, 0.5) !important;
-}
-/* Hint button highlight when format is wrong */
-main .exercise button.hint-glow {
-  background: #ff9800 !important;
-  box-shadow: 0 0 8px rgba(255, 152, 0, 0.9);
-  transform: scale(1.05);
-}
-.binary-grid{
-display:grid;
-grid-template-columns:repeat(6,60px);
-text-align:center;
-font-family:monospace;
-}
-
-.binary-grid div{
-border:1px solid #444;
-padding:8px;
-}
-.binary-grid{
-  display:grid;
-  grid-template-columns: repeat(6, 70px);
-  justify-content:center;
-  margin:20px 0;
-  font-family:monospace;
-}
-
-.binary-grid div{
-  border:2px solid #444;
-  padding:10px;
-  text-align:center;
-  font-size:18px;
-  background:#fafafa;
-}
-
-.binary-grid .bit{
-  font-weight:bold;
-  background:#eef3ff;
-}
-
-.grid-caption{
-  text-align:center;
-  font-family:monospace;
-}
-pre {
-  background: #f6f8fa;
-  padding: 14px;
-  border-radius: 6px;
-  overflow-x: auto;
-  border-left: 4px solid #4a6fa5;
-  line-height: 1.4;
-}
-
-code {
-  font-family: "Courier New", monospace;
-  font-size: 0.95em;
-}
-
-pre code {
-  color: #222;
-}
-/* ===========================
-   Tables
-   =========================== */
-
-table {
-     border-collapse: collapse;
-  width: 100%;
-}
-
-th,
-td {
-    border: 2px solid var(--border);
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-    background: #eef2f7;
-}
-
-table th:first-child,
-table td:first-child {
-    white-space: nowrap;
-}
-section {
-  margin-bottom: 35px;
-}
-.callout {
-  background: #ffffe0;
-  border-left: 5px solid #FDFD96;
-  padding: 14px 16px;
-  margin: 20px 0;
-  border-radius: 4px;
-}
-
-.callout h3 {
-  margin-top: 0;
-}
-
-.callout ul {
-  margin: 6px 0 0 18px;
-}
-.warning {
-  background: #fff4e5;
-  border-left: 5px solid #f39c12;
-}
-
-.tip {
-  background: #eaf7ff;
-  border-left: 5px solid #3498db;
-}
-
-.note {
-  background: #f3f5f7;
-  border-left: 5px solid #888;
-  
-}
-/*=============================
-       Navigation
-===============================*/
-
-
-.course-navigation {
-  margin: 1rem 0 2rem;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-}
-
-.course-navigation ul {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.course-navigation a {
-  display: block;
-  padding: 0.75rem 1rem;
-  text-decoration: none;
-}
-
-.course-navigation a:hover,
-.course-navigation a:focus {
-  text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-  .course-navigation ul {
-    flex-direction: column;
-  }
-}
-/*======================
-   Announcement box
-========================*/
-.announcements {
-  margin-top: 2rem;
-  padding: 1rem 1.25rem;
-  background-color: #f5f1e8;
-  border-left: 4px solid #7a4f32;
-  border-radius: 6px;
-}
-
-.announcements h2 {
-  margin-top: 0;
-}
-
-.announcements p:last-child {
-  margin-bottom: 0;
-}
-
-/* ===========================
-   Narrative lesson components
-   =========================== */
-
-:root {
-  --accent: #8a4f2d;
-  --accent-soft: #f5e9dc;
-  --surface: #f7f4ef;
-  --muted: #5f5a54;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --accent: #e5ad83;
-    --accent-soft: #35271f;
-    --surface: #1d1b19;
-    --muted: #c4bdb5;
-  }
-}
-
-.lesson-header {
-  margin: 2rem 0 2.75rem;
-  text-align: left;
-}
-
-.lesson-header h1 {
-  max-width: 16ch;
-  margin: 0.2rem 0 0.65rem;
-  text-align: left;
-  font-size: clamp(2.25rem, 8vw, 4.6rem);
-  line-height: 0.98;
-  letter-spacing: -0.045em;
-}
-
-.eyebrow,
-.section-kicker {
-  color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.lesson-deck {
-  max-width: 62ch;
-  color: var(--muted);
-  font-size: 1.15rem;
-}
-
-.lesson-nav {
-  margin-bottom: 3rem;
-  border-block: 1px solid color-mix(in srgb, var(--border) 25%, transparent);
-}
-
-.lesson-nav ol {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.25rem;
-  margin: 0;
-  padding: 0.75rem 0;
-  list-style-position: inside;
-}
-.back-to-top {
-  margin-top: 2rem;
-  text-align: right;
-}
-
-.lesson-nav li {
-  margin: 0;
-}
-
-.lesson-section {
-  scroll-margin-top: 1rem;
-  margin-bottom: 4.5rem;
-}
-
-.lesson-section > h2 {
-  margin: 0.25rem 0 1rem;
-  font-size: clamp(1.8rem, 5vw, 2.7rem);
-  line-height: 1.1;
-}
-
-.lead {
-  font-size: 1.12rem;
-}
-
-.challenge,
-.worked-example,
-.evidence-note {
-  margin: 1.5rem 0;
-  padding: 1.1rem 1.25rem;
-  border: 1px solid color-mix(in srgb, var(--border) 20%, transparent);
-  border-radius: 12px;
-  background: var(--surface);
-}
-
-.challenge {
-  border-left: 5px solid var(--accent);
-}
-
-.challenge h3,
-.worked-example h3,
-.evidence-note h3 {
-  margin: 0 0 0.35rem;
-}
-
-.need-grid,
-.glyph-grid,
-.example-grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.need-grid {
-  margin: 1.5rem 0;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
-
-.need-grid article {
-  padding-top: 0.8rem;
-  border-top: 3px solid var(--accent);
-}
-
-.need-grid h3 {
-  margin: 0;
-}
-
-.need-grid p {
-  color: var(--muted);
-}
-
-.glyph-grid {
-  margin: 1.5rem 0;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-}
-
-.glyph-card {
-  display: grid;
-  min-height: 135px;
-  place-items: center;
-  padding: 0.75rem;
-  border: 1px solid color-mix(in srgb, var(--border) 20%, transparent);
-  border-radius: 10px;
-  text-align: center;
-}
-
-.glyph-card img {
-  width: auto;
-  max-width: 76px;
-  height: 65px;
-  object-fit: contain;
-  filter: var(--glyph-filter, none);
-}
-
-.glyph-card strong,
-.glyph-card span {
-  display: block;
-}
-
-.glyph-card span {
-  color: var(--muted);
-  font-size: 0.8rem;
-}
-
-.example-grid {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-.numeral-figure,
-.exchange-figure {
-  margin: 1rem 0;
-  padding: 1rem;
-  border-radius: 10px;
-  background: #fff;
-  color: #111;
-  text-align: center;
-}
-
-.numeral-figure img,
-.exchange-figure img {
-  max-height: 135px;
-  object-fit: contain;
-}
-
-.exchange-pair {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-details.answer {
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  background: var(--accent-soft);
-}
-
-details.answer summary {
-  cursor: pointer;
-  font-weight: 700;
-}
-
-mjx-container[display="true"] {
-  margin: 1.1rem 0 !important;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.math-line {
-  text-align: center;
-  font-size: 1.08rem;
-}
-
-@media (max-width: 520px) {
-  body {
-    padding: 16px;
-  }
-
-  .lesson-nav ol {
-    display: block;
-  }
-
-  .glyph-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-/* ===================================
-   article tag saying that the file is
-   one self-contained piece of content
-    inside the page’s <main>
-   =================================== */
-article {
-  max-width: 900px;
-  margin: 0 auto;
-}
-html { filter: none !important; } body { font-size:16px; } section { scroll-margin-top:1rem; margin-bottom:3rem; } figure { max-width:480px; margin:1.5rem auto; } figure svg { display:block; width:100%; height:auto; } figure figcaption { text-align:center; } summary { cursor:pointer; } summary:focus-visible, a:focus-visible { outline:3px solid var(--link); outline-offset:4px; } .lead { margin-top:1.5rem; } .course-navigation a { padding:.65rem .8rem; } @media print { .course-navigation,.lesson-nav,.back-to-top {display:none} body {max-width:none;color:#111;background:white} .challenge,.worked-example,.evidence-note {break-inside:avoid} details {break-inside:avoid} }
-/* Plain lecture articles and unboxed exercises. */
-main article { margin-bottom: 2.5rem; scroll-margin-top: 1rem; }
-main details { margin: 1rem 0; padding: 0; background: transparent; border: 0; border-radius: 0; }
-main details summary { font-weight: 600; }
-main aside { margin: 1.5rem 0; padding: 0; background: transparent; border: 0; }
-main table th { background:transparent; } main table caption { text-align:left; margin-bottom:.5rem; }
-</style>
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><header id="top"><h1>Lesson 5: Functions and Bijections</h1></header><div id="navigation-placeholder"><nav class="course-navigation" aria-label="Course navigation">
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 5: Functions and Bijections</h1>
+  </header>
+  <div id="navigation-placeholder">
+<nav class="course-navigation" aria-label="Course navigation">
   <ul>
-    <li><a data-path="index.html" href="index.html">Home</a></li>
-    <li><a data-path="resources/syllabus.html" href="resources/syllabus.html">Syllabus</a></li>
-    <li><a data-path="lessons.html" href="lessons.html">Lessons</a></li>
-    <li><a data-path="resources.html" href="resources.html">Resources</a></li>
+    <li><a data-path="index.html" href="../index.html">Home</a></li>
+    <li><a data-path="resources/syllabus.html" href="../resources/syllabus.html">Syllabus</a></li>
+    <li><a data-path="lessons.html" href="../lessons.html">Lessons</a></li>
+    <li><a data-path="resources.html" href="../resources.html">Resources</a></li>
   </ul>
 </nav>
-</div><main><p class="lead">A function assigns exactly one output to each input. Today we make that familiar idea precise, use quantifiers to guide proofs, and see how a function can help us count.</p><nav class="lesson-nav" aria-label="In this lecture"><ol><li><a href="#warm-up">Subsets</a></li><li><a href="#pairs">Ordered pairs</a></li><li><a href="#functions">Functions</a></li><li><a href="#injective">Injectivity</a></li><li><a href="#surjective">Surjectivity</a></li><li><a href="#bijections">Bijections and counting</a></li><li><a href="#afterthoughts">Afterthought proofs</a></li><li><a href="#infinity">Infinite sets</a></li></ol></nav><article id="warm-up"><h2>1. Begin with subsets</h2><p>Let \(A=\{a,b,c\}\). List all subsets of \(A\), organized by size.</p><ol><li>How many subsets have zero, one, two, or three elements?</li><li>How do you know your list is complete?</li><li>Explain why \(X\subseteq A\) and \(X\in\mathcal P(A)\) mean the same thing.</li></ol><details><summary>Show solution</summary><ul><li>Zero elements: \(\emptyset\).</li><li>One element: \(\{a\},\{b\},\{c\}\).</li><li>Two elements: \(\{a,b\},\{a,c\},\{b,c\}\).</li><li>Three elements: \(\{a,b,c\}\).</li></ul><p>There are eight subsets. Every subset has one of these four sizes, and the list includes all possibilities of each size. By definition, the elements of \(\mathcal P(A)\) are precisely the subsets of \(A\).</p></details><p>Keep the question of completeness in mind. Later we will describe a systematic way to encode every subset.</p></article><article id="pairs"><h2>2. Ordered pairs and Cartesian products</h2><p>Sets do not record order, but sometimes order matters:</p>\[\{0,1\}=\{1,0\},\qquad (0,1)\ne(1,0).\]<p>In an <strong>ordered pair</strong>, the first and second positions have different roles. Two ordered pairs are equal exactly when their corresponding entries agree:</p>\[(a,b)=(c,d)\iff(a=c\land b=d).\]<p>More generally, we can use ordered triples and ordered \(n\)-tuples. Entries may repeat: \((0,1,0)\) is an ordered triple.</p><p>The <strong>Cartesian product</strong> of two sets is</p>\[A\times B=\{(a,b):a\in A\text{ and }b\in B\}.\]<p>For example, \(\mathbb R\times\mathbb R\) is the usual coordinate plane. We write \(A^2\) for \(A\times A\).</p><h3>List a small product</h3><p>Let \(A=\{0,1\}\) and \(B=\{a,b,c\}\). List \(A\times B\). How does the product rule explain its size?</p><details><summary>Show solution</summary>\[A\times B=\{(0,a),(0,b),(0,c),(1,a),(1,b),(1,c)\}.\]<p>There are two choices for the first entry and three for the second, so there are \(2\cdot3=6\) ordered pairs.</p></details><p>A <strong>relation</strong> from \(A\) to \(B\) is any subset of \(A\times B\). For instance, \(\{(x,y)\in\mathbb Z^2:x\le y\}\) is a relation on the integers. A relation can pair an input with several outputs, or with none. A function satisfies an additional requirement.</p></article><article id="functions"><h2>3. What makes a relation a function?</h2><p>A function \(f:A\to B\) consists of a specified <strong>domain</strong> \(A\), a specified <strong>codomain</strong> \(B\), and a graph \(G\subseteq A\times B\) assigning exactly one output to each input:</p>\[\forall a\in A\;\exists!b\in B:\ (a,b)\in G.\]<p>The symbol \(\exists!\) means “there exists exactly one.” It combines two requirements:</p><ul><li><strong>Existence:</strong> each input in \(A\) has an output in \(B\).</li><li><strong>Uniqueness:</strong> each input has only one output.</li></ul><p>We write \(f(a)=b\) instead of \((a,b)\in G\). Different inputs are allowed to have the same output.</p><h3>Which requirement fails?</h3><p>Use domain \(\{0,1\}\) and codomain \(\{a,b,c\}\). Which graphs define functions?</p>\[G_1=\{(0,a),(0,b),(1,c)\},\]\[G_2=\{(0,a)\},\qquad G_3=\{(0,a),(1,a)\}.\]<details><summary>Show solution</summary><ol><li>\(G_1\) fails uniqueness: input 0 has two different outputs.</li><li>\(G_2\) fails existence: input 1 has no output.</li><li>\(G_3\) is a function: each input has exactly one output. Sharing the output \(a\) is allowed.</li></ol><p>If we change the domain to \(\{0\}\), then \(G_2\) does define a function to \(\{a,b,c\}\).</p></details><p>The familiar vertical-line test checks that each input has <em>at most</em> one output. For a specified domain, we must also check that every input has an output.</p><h3>Domain, codomain, and image</h3><p>The domain and codomain are part of the function specification. A formula alone does not tell us all of this information.</p><p>For example, the rules \(f(n)=n\) and \(g(n)=n\), with</p>\[f:\mathbb N\to\mathbb N,\qquad g:\mathbb N\to\mathbb Z,\]<p>have the same graph, but different specified codomains. We treat them as different functions in this course.</p><p>The <strong>image</strong> of an input \(x\) is \(f(x)\). If \(X\subseteq A\), the image of \(X\) is</p>\[f(X)=\{f(x):x\in X\}.\]<p>The image of the whole domain, \(f(A)\), is the set of outputs actually attained. Always \(f(A)\subseteq B\); equality need not hold.</p><h3>A quick counting question</h3><p>How many functions are there from \(\{0,1\}\) to \(\{a,b,c\}\)?</p><details><summary>Show solution</summary><p>There are three choices for the output of 0 and three independent choices for the output of 1. Thus there are \(3^2=9\) functions. The choices may be equal.</p></details></article><article id="injective"><h2>4. Injectivity</h2><p>A function is <strong>injective</strong>, or <strong>one-to-one</strong>, if different inputs always have different outputs. Equivalently, equal outputs force equal inputs:</p>\[\forall u,v\in A,\quad f(u)=f(v)\rightarrow u=v.\]<p>By contraposition, this is equivalent to</p>\[\forall u,v\in A,\quad u\ne v\rightarrow f(u)\ne f(v).\]<h3>Negate the definition</h3><p>What would demonstrate that a function is not injective?</p><details><summary>Show solution</summary>\[\exists u,v\in A:\quad u\ne v\land f(u)=f(v).\]<p>Find two distinct inputs with the same output. Both inputs must belong to the domain.</p></details><h3>Squaring on two different domains</h3><p>Consider \(f:\mathbb Z\to\mathbb Z\), \(f(n)=n^2\). It is not injective: \(1\ne-1\), but \(f(1)=f(-1)=1\).</p><p>Now consider \(g:\mathbb N\to\mathbb N\), \(g(n)=n^2\). Recall that \(\mathbb N=\{0,1,2,\ldots\}\).</p><p>Prove that \(g\) is injective. Start with arbitrary \(m,n\in\mathbb N\) and assume \(g(m)=g(n)\). What must you conclude?</p><details><summary>Show solution</summary><p>We have \(m^2=n^2\), so \[(m-n)(m+n)=0.\]Either \(m-n=0\), giving \(m=n\), or \(m+n=0\). Since both numbers are nonnegative, the second possibility gives \(m=n=0\). In either case \(m=n\), so \(g\) is injective.</p></details><p>A few different outputs do not prove injectivity. A proof must cover arbitrary inputs; one pair of distinct inputs sharing an output disproves it.</p></article><article id="surjective"><h2>5. Surjectivity</h2><p>A function \(f:A\to B\) is <strong>surjective</strong>, or <strong>onto</strong>, if every element of its codomain is attained:</p>\[\forall y\in B\;\exists x\in A:\ f(x)=y.\]<p>Equivalently, \(f(A)=B\). The input \(x\) may depend on the target \(y\).</p><h3>Negate the definition</h3><p>Complete: “There is a target in the codomain such that…”</p><details><summary>Show solution</summary>\[\exists y\in B\;\forall x\in A:\ f(x)\ne y.\]<p>To disprove surjectivity, give one target and show that <em>no</em> input maps to it. One unsuccessful choice of input is not enough.</p></details><h3>Find the gap in this argument</h3><p>Let \(f:\mathbb Z\to\mathbb Z\) be \(f(n)=2n\). A student writes:</p><blockquote><p>Given \(y\in\mathbb Z\), choose \(n=y/2\). Then \(f(n)=y\), so \(f\) is onto.</p></blockquote><ol><li>What has the student failed to check?</li><li>Find a target that exposes the problem.</li><li>Explain why no valid input maps to that target.</li></ol><details><summary>Show solution</summary><p>The proposed input \(y/2\) need not be an integer. Choose \(y=1\). If \(2n=1\), then \(n=1/2\notin\mathbb Z\). Thus 1 has no preimage in the domain, and \(f\) is not onto.</p></details><h3>Repair the codomain</h3><p>Let \(2\mathbb Z=\{2k:k\in\mathbb Z\}\). Define \(g:\mathbb Z\to2\mathbb Z\) by \(g(n)=2n\). Prove that \(g\) is onto.</p><details><summary>Show solution</summary><p>Let \(y\in2\mathbb Z\) be arbitrary. By definition, \(y=2k\) for some \(k\in\mathbb Z\). This integer is a valid input, and \(g(k)=2k=y\). Therefore \(g\) is surjective.</p></details><p>Solving an equation gives a candidate input. Completing the proof requires checking that the candidate belongs to the domain.</p><h3>Return to squaring</h3><p>Let \(S=\{n^2:n\in\mathbb N\}\), including zero. Compare the rule \(n\mapsto n^2\) as a function \(\mathbb N\to\mathbb N\) and as a function \(\mathbb N\to S\). Which is injective? Which is surjective?</p><details><summary>Show solution</summary><p>Both are injective by the earlier argument. The first is not surjective: no natural number has square 2. Indeed, the squares of 0 and 1 are 0 and 1, and the square of any natural number at least 2 is at least 4.</p><p>The second is surjective: if \(s\in S\), then \(s=n^2\) for some \(n\in\mathbb N\), and that input maps to \(s\).</p></details></article><article id="bijections"><h2>6. Bijections and counting subsets</h2><p>A <strong>bijection</strong> is a function that is both injective and surjective. We also call it a <strong>one-to-one correspondence</strong>.</p><p>For finite sets, a bijection pairs every input with a different output and reaches every target. Therefore the two sets have the same number of elements.</p><p>Conversely, if two finite sets have the same number of elements, list their elements and pair the first with the first, the second with the second, and so on. This gives a bijection. If both sets are empty, the empty graph gives the bijection.</p><h3>Encode a subset with three bits</h3><p>Return to \(A=\{a,b,c\}\). A binary string of length three is an ordered triple with each entry either 0 or 1. We write these strings compactly as 000, 001, and so on. The set of all such strings is \(\{0,1\}^3\).</p><p>Fix the coordinate order \(a,b,c\). A 1 means “include this element”; a 0 means “leave it out.” Define</p>\[F:\{0,1\}^3\to\mathcal P(A).\]<p>For instance, \(F(011)=\{b,c\}\). The first bit excludes \(a\), and the other two include \(b\) and \(c\).</p><p>Before opening the table, find \(F(000)\), \(F(101)\), and the string that maps to \(\{a,b\}\).</p><details><summary>Show the complete correspondence</summary><table><caption>The correspondence with coordinate order a, b, c</caption><thead><tr><th scope="col">Binary string</th><th scope="col">Subset</th></tr></thead><tbody><tr><td><code>000</code></td><td>\(\emptyset\)</td></tr><tr><td><code>001</code></td><td>\(\{c\}\)</td></tr><tr><td><code>010</code></td><td>\(\{b\}\)</td></tr><tr><td><code>011</code></td><td>\(\{b,c\}\)</td></tr><tr><td><code>100</code></td><td>\(\{a\}\)</td></tr><tr><td><code>101</code></td><td>\(\{a,c\}\)</td></tr><tr><td><code>110</code></td><td>\(\{a,b\}\)</td></tr><tr><td><code>111</code></td><td>\(\{a,b,c\}\)</td></tr></tbody></table></details><h3>Why is this a bijection?</h3><ol><li>Why does each string describe exactly one subset?</li><li>Why must different strings describe different subsets?</li><li>Given an arbitrary subset \(X\subseteq A\), how can you construct a string that maps to it?</li></ol><details><summary>Show solution</summary><p><strong>Function:</strong> each bit fixes whether its corresponding element is included, determining exactly one subset.</p><p><strong>Injective:</strong> two different strings differ in some coordinate. The corresponding element belongs to one output subset and not the other, so the output subsets differ.</p><p><strong>Surjective:</strong> let \(X\subseteq A\). Write 1 in the first position if \(a\in X\), and 0 otherwise. Do the same for \(b\) and \(c\). The resulting string maps to exactly \(X\).</p></details><h3>Count the strings to count the subsets</h3><p>There are two independent choices for each of three bits. By the product rule, there are \(2^3=8\) strings. The bijection therefore gives eight subsets.</p><p>For a finite set \(A\) with \(n\) elements, fix a listing of those elements and use one bit for each. The same argument gives</p>\[|\mathcal P(A)|=2^n.\]<p>Here \(|A|\) denotes the number of elements in a finite set \(A\). For \(n=0\), there is one string of length zero and one subset of the empty set, consistent with \(2^0=1\).</p></article><article id="afterthoughts"><h2>7. Afterthought proofs</h2><p>Work independently first, then compare with a partner. Write an argument for each core problem before opening its solution. The extension is optional in class.</p><h3>1. A function with a missing output</h3><p>Let \(f:\mathbb Z\to\mathbb Z\) be \(f(n)=2n+1\).</p><ol><li>Prove that \(f\) is injective.</li><li>Disprove that \(f\) is surjective.</li></ol><details><summary>Show hint</summary><p>For injectivity, start with equal outputs for arbitrary integer inputs. For surjectivity, look for an integer that cannot be expressed as \(2n+1\) with an integer \(n\).</p></details><details><summary>Show solution</summary><p>If \(f(m)=f(n)\), then \(2m+1=2n+1\), so \(m=n\). Thus \(f\) is injective.</p><p>The target 0 is not attained. The equation \(2n+1=0\) would require \(n=-1/2\), which is not an integer. Thus \(f\) is not surjective.</p></details><h3>2. Change the codomain</h3><p>Let \(O=\{2k+1:k\in\mathbb Z\}\), the set of odd integers. Define \(g:\mathbb Z\to O\) by \(g(n)=2n+1\). Prove that \(g\) is a bijection. You may reuse your injectivity argument.</p><details><summary>Show hint</summary><p>Let \(y\in O\). What does the definition of \(O\) tell you? Use it to find a valid input.</p></details><details><summary>Show solution</summary><p>Each integer input gives exactly one odd integer output, so the rule defines a function with the specified domain and codomain. Injectivity follows from the same algebra as in Problem 1.</p><p>Let \(y\in O\). There is an integer \(k\) such that \(y=2k+1\). Then \(g(k)=y\). Thus \(g\) is surjective, and hence bijective.</p></details><h3>Extension. Equal images under an injection</h3><p>Suppose \(f:A\to B\) is injective and \(X,Y\subseteq A\). Prove</p>\[f(X)=f(Y)\rightarrow X=Y.\]<details><summary>Show hint</summary><p>Let \(x\in X\). Since \(f(x)\in f(Y)\), there is some \(y\in Y\) with \(f(x)=f(y)\). What does injectivity tell you?</p></details><details><summary>Show solution</summary><p>Assume \(f(X)=f(Y)\). Let \(x\in X\). Then \(f(x)\in f(Y)\), so there exists \(y\in Y\) with \(f(x)=f(y)\). Injectivity gives \(x=y\), so \(x\in Y\). Thus \(X\subseteq Y\).</p><p>Conversely, let \(y\in Y\). Since \(f(y)\in f(X)\), there is \(x\in X\) with \(f(y)=f(x)\). Injectivity gives \(y=x\), so \(y\in X\). Thus \(Y\subseteq X\), and therefore \(X=Y\).</p></details><h3>Before the closing preview</h3><p>Let \(h:\mathbb Z\to\mathbb Z\) be \(h(n)=n+1\). Prove that it is injective and surjective. In your surjectivity proof, explicitly check that your chosen input is an integer.</p><details><summary>Review after writing your proof</summary><p>If \(h(m)=h(n)\), then \(m+1=n+1\), giving \(m=n\). Thus \(h\) is injective.</p><p>Given \(y\in\mathbb Z\), choose \(n=y-1\in\mathbb Z\). Then \(h(n)=(y-1)+1=y\). Thus \(h\) is surjective.</p></details></article><article id="infinity"><h2>8. A preview of infinite cardinality</h2><p>For finite sets, bijections capture the idea of having the same number of elements. We use this to define equal <strong>cardinality</strong> for sets that may be infinite:</p>\[|A|=|B|\quad\text{if and only if there is a bijection }f:A\to B.\]<p>Let \(2\mathbb N=\{2n:n\in\mathbb N\}\), the set of even natural numbers. Consider</p>\[f:\mathbb N\to2\mathbb N,\qquad f(n)=2n.\]<p>Our earlier doubling argument shows that this function is bijective. Can you identify the injectivity and surjectivity steps?</p><details><summary>Show solution</summary><p>If \(2m=2n\), then \(m=n\), so \(f\) is injective. If \(y\in2\mathbb N\), then \(y=2k\) for some \(k\in\mathbb N\), and \(f(k)=y\), so \(f\) is surjective.</p></details><p>Consequently, \(|\mathbb N|=|2\mathbb N|\), even though \(2\mathbb N\) is a proper subset of \(\mathbb N\): it leaves out every odd natural number.</p><p>This is surprising, but it is not a logical contradiction. Being a proper subset and having smaller cardinality are different claims for infinite sets. We will explore that distinction further.</p></article><p class="back-to-top"><a href="#top">Back to top ↑</a></p></main><div id="footer-placeholder"><footer>
+</div>
+
+  <main>
+    <p class="lead">A function assigns exactly one output to each input. Today we make that familiar idea precise, use quantifiers to guide proofs, and see how a function can help us count.</p><nav class="lesson-nav" aria-label="In this lecture"><ol><li><a href="#warm-up">Subsets</a></li><li><a href="#pairs">Ordered pairs</a></li><li><a href="#functions">Functions</a></li><li><a href="#injective">Injectivity</a></li><li><a href="#surjective">Surjectivity</a></li><li><a href="#bijections">Bijections and counting</a></li><li><a href="#afterthoughts">Afterthought proofs</a></li><li><a href="#infinity">Infinite sets</a></li></ol></nav><article id="warm-up"><h2>1. Begin with subsets</h2><p>Let \(A=\{a,b,c\}\). List all subsets of \(A\), organized by size.</p><ol><li>How many subsets have zero, one, two, or three elements?</li><li>How do you know your list is complete?</li><li>Explain why \(X\subseteq A\) and \(X\in\mathcal P(A)\) mean the same thing.</li></ol><details><summary>Show solution</summary><ul><li>Zero elements: \(\emptyset\).</li><li>One element: \(\{a\},\{b\},\{c\}\).</li><li>Two elements: \(\{a,b\},\{a,c\},\{b,c\}\).</li><li>Three elements: \(\{a,b,c\}\).</li></ul><p>There are eight subsets. Every subset has one of these four sizes, and the list includes all possibilities of each size. By definition, the elements of \(\mathcal P(A)\) are precisely the subsets of \(A\).</p></details><p>Keep the question of completeness in mind. Later we will describe a systematic way to encode every subset.</p></article><article id="pairs"><h2>2. Ordered pairs and Cartesian products</h2><p>Sets do not record order, but sometimes order matters:</p>\[\{0,1\}=\{1,0\},\qquad (0,1)\ne(1,0).\]<p>In an <strong>ordered pair</strong>, the first and second positions have different roles. Two ordered pairs are equal exactly when their corresponding entries agree:</p>\[(a,b)=(c,d)\iff(a=c\land b=d).\]<p>More generally, we can use ordered triples and ordered \(n\)-tuples. Entries may repeat: \((0,1,0)\) is an ordered triple.</p><p>The <strong>Cartesian product</strong> of two sets is</p>\[A\times B=\{(a,b):a\in A\text{ and }b\in B\}.\]<p>For example, \(\mathbb R\times\mathbb R\) is the usual coordinate plane. We write \(A^2\) for \(A\times A\).</p><h3>List a small product</h3><p>Let \(A=\{0,1\}\) and \(B=\{a,b,c\}\). List \(A\times B\). How does the product rule explain its size?</p><details><summary>Show solution</summary>\[A\times B=\{(0,a),(0,b),(0,c),(1,a),(1,b),(1,c)\}.\]<p>There are two choices for the first entry and three for the second, so there are \(2\cdot3=6\) ordered pairs.</p></details><p>A <strong>relation</strong> from \(A\) to \(B\) is any subset of \(A\times B\). For instance, \(\{(x,y)\in\mathbb Z^2:x\le y\}\) is a relation on the integers. A relation can pair an input with several outputs, or with none. A function satisfies an additional requirement.</p></article><article id="functions"><h2>3. What makes a relation a function?</h2><p>A function \(f:A\to B\) consists of a specified <strong>domain</strong> \(A\), a specified <strong>codomain</strong> \(B\), and a graph \(G\subseteq A\times B\) assigning exactly one output to each input:</p>\[\forall a\in A\;\exists!b\in B:\ (a,b)\in G.\]<p>The symbol \(\exists!\) means “there exists exactly one.” It combines two requirements:</p><ul><li><strong>Existence:</strong> each input in \(A\) has an output in \(B\).</li><li><strong>Uniqueness:</strong> each input has only one output.</li></ul><p>We write \(f(a)=b\) instead of \((a,b)\in G\). Different inputs are allowed to have the same output.</p><h3>Which requirement fails?</h3><p>Use domain \(\{0,1\}\) and codomain \(\{a,b,c\}\). Which graphs define functions?</p>\[G_1=\{(0,a),(0,b),(1,c)\},\]\[G_2=\{(0,a)\},\qquad G_3=\{(0,a),(1,a)\}.\]<details><summary>Show solution</summary><ol><li>\(G_1\) fails uniqueness: input 0 has two different outputs.</li><li>\(G_2\) fails existence: input 1 has no output.</li><li>\(G_3\) is a function: each input has exactly one output. Sharing the output \(a\) is allowed.</li></ol><p>If we change the domain to \(\{0\}\), then \(G_2\) does define a function to \(\{a,b,c\}\).</p></details><p>The familiar vertical-line test checks that each input has <em>at most</em> one output. For a specified domain, we must also check that every input has an output.</p><h3>Domain, codomain, and image</h3><p>The domain and codomain are part of the function specification. A formula alone does not tell us all of this information.</p><p>For example, the rules \(f(n)=n\) and \(g(n)=n\), with</p>\[f:\mathbb N\to\mathbb N,\qquad g:\mathbb N\to\mathbb Z,\]<p>have the same graph, but different specified codomains. We treat them as different functions in this course.</p><p>The <strong>image</strong> of an input \(x\) is \(f(x)\). If \(X\subseteq A\), the image of \(X\) is</p>\[f(X)=\{f(x):x\in X\}.\]<p>The image of the whole domain, \(f(A)\), is the set of outputs actually attained. Always \(f(A)\subseteq B\); equality need not hold.</p><h3>A quick counting question</h3><p>How many functions are there from \(\{0,1\}\) to \(\{a,b,c\}\)?</p><details><summary>Show solution</summary><p>There are three choices for the output of 0 and three independent choices for the output of 1. Thus there are \(3^2=9\) functions. The choices may be equal.</p></details></article><article id="injective"><h2>4. Injectivity</h2><p>A function is <strong>injective</strong>, or <strong>one-to-one</strong>, if different inputs always have different outputs. Equivalently, equal outputs force equal inputs:</p>\[\forall u,v\in A,\quad f(u)=f(v)\rightarrow u=v.\]<p>By contraposition, this is equivalent to</p>\[\forall u,v\in A,\quad u\ne v\rightarrow f(u)\ne f(v).\]<h3>Negate the definition</h3><p>What would demonstrate that a function is not injective?</p><details><summary>Show solution</summary>\[\exists u,v\in A:\quad u\ne v\land f(u)=f(v).\]<p>Find two distinct inputs with the same output. Both inputs must belong to the domain.</p></details><h3>Squaring on two different domains</h3><p>Consider \(f:\mathbb Z\to\mathbb Z\), \(f(n)=n^2\). It is not injective: \(1\ne-1\), but \(f(1)=f(-1)=1\).</p><p>Now consider \(g:\mathbb N\to\mathbb N\), \(g(n)=n^2\). Recall that \(\mathbb N=\{0,1,2,\ldots\}\).</p><p>Prove that \(g\) is injective. Start with arbitrary \(m,n\in\mathbb N\) and assume \(g(m)=g(n)\). What must you conclude?</p><details><summary>Show solution</summary><p>We have \(m^2=n^2\), so \[(m-n)(m+n)=0.\]Either \(m-n=0\), giving \(m=n\), or \(m+n=0\). Since both numbers are nonnegative, the second possibility gives \(m=n=0\). In either case \(m=n\), so \(g\) is injective.</p></details><p>A few different outputs do not prove injectivity. A proof must cover arbitrary inputs; one pair of distinct inputs sharing an output disproves it.</p></article><article id="surjective"><h2>5. Surjectivity</h2><p>A function \(f:A\to B\) is <strong>surjective</strong>, or <strong>onto</strong>, if every element of its codomain is attained:</p>\[\forall y\in B\;\exists x\in A:\ f(x)=y.\]<p>Equivalently, \(f(A)=B\). The input \(x\) may depend on the target \(y\).</p><h3>Negate the definition</h3><p>Complete: “There is a target in the codomain such that…”</p><details><summary>Show solution</summary>\[\exists y\in B\;\forall x\in A:\ f(x)\ne y.\]<p>To disprove surjectivity, give one target and show that <em>no</em> input maps to it. One unsuccessful choice of input is not enough.</p></details><h3>Find the gap in this argument</h3><p>Let \(f:\mathbb Z\to\mathbb Z\) be \(f(n)=2n\). A student writes:</p><blockquote><p>Given \(y\in\mathbb Z\), choose \(n=y/2\). Then \(f(n)=y\), so \(f\) is onto.</p></blockquote><ol><li>What has the student failed to check?</li><li>Find a target that exposes the problem.</li><li>Explain why no valid input maps to that target.</li></ol><details><summary>Show solution</summary><p>The proposed input \(y/2\) need not be an integer. Choose \(y=1\). If \(2n=1\), then \(n=1/2\notin\mathbb Z\). Thus 1 has no preimage in the domain, and \(f\) is not onto.</p></details><h3>Repair the codomain</h3><p>Let \(2\mathbb Z=\{2k:k\in\mathbb Z\}\). Define \(g:\mathbb Z\to2\mathbb Z\) by \(g(n)=2n\). Prove that \(g\) is onto.</p><details><summary>Show solution</summary><p>Let \(y\in2\mathbb Z\) be arbitrary. By definition, \(y=2k\) for some \(k\in\mathbb Z\). This integer is a valid input, and \(g(k)=2k=y\). Therefore \(g\) is surjective.</p></details><p>Solving an equation gives a candidate input. Completing the proof requires checking that the candidate belongs to the domain.</p><h3>Return to squaring</h3><p>Let \(S=\{n^2:n\in\mathbb N\}\), including zero. Compare the rule \(n\mapsto n^2\) as a function \(\mathbb N\to\mathbb N\) and as a function \(\mathbb N\to S\). Which is injective? Which is surjective?</p><details><summary>Show solution</summary><p>Both are injective by the earlier argument. The first is not surjective: no natural number has square 2. Indeed, the squares of 0 and 1 are 0 and 1, and the square of any natural number at least 2 is at least 4.</p><p>The second is surjective: if \(s\in S\), then \(s=n^2\) for some \(n\in\mathbb N\), and that input maps to \(s\).</p></details></article><article id="bijections"><h2>6. Bijections and counting subsets</h2><p>A <strong>bijection</strong> is a function that is both injective and surjective. We also call it a <strong>one-to-one correspondence</strong>.</p><p>For finite sets, a bijection pairs every input with a different output and reaches every target. Therefore the two sets have the same number of elements.</p><p>Conversely, if two finite sets have the same number of elements, list their elements and pair the first with the first, the second with the second, and so on. This gives a bijection. If both sets are empty, the empty graph gives the bijection.</p><h3>Encode a subset with three bits</h3><p>Return to \(A=\{a,b,c\}\). A binary string of length three is an ordered triple with each entry either 0 or 1. We write these strings compactly as 000, 001, and so on. The set of all such strings is \(\{0,1\}^3\).</p><p>Fix the coordinate order \(a,b,c\). A 1 means “include this element”; a 0 means “leave it out.” Define</p>\[F:\{0,1\}^3\to\mathcal P(A).\]<p>For instance, \(F(011)=\{b,c\}\). The first bit excludes \(a\), and the other two include \(b\) and \(c\).</p><p>Before opening the table, find \(F(000)\), \(F(101)\), and the string that maps to \(\{a,b\}\).</p><details><summary>Show the complete correspondence</summary><table><caption>The correspondence with coordinate order a, b, c</caption><thead><tr><th scope="col">Binary string</th><th scope="col">Subset</th></tr></thead><tbody><tr><td><code>000</code></td><td>\(\emptyset\)</td></tr><tr><td><code>001</code></td><td>\(\{c\}\)</td></tr><tr><td><code>010</code></td><td>\(\{b\}\)</td></tr><tr><td><code>011</code></td><td>\(\{b,c\}\)</td></tr><tr><td><code>100</code></td><td>\(\{a\}\)</td></tr><tr><td><code>101</code></td><td>\(\{a,c\}\)</td></tr><tr><td><code>110</code></td><td>\(\{a,b\}\)</td></tr><tr><td><code>111</code></td><td>\(\{a,b,c\}\)</td></tr></tbody></table></details><h3>Why is this a bijection?</h3><ol><li>Why does each string describe exactly one subset?</li><li>Why must different strings describe different subsets?</li><li>Given an arbitrary subset \(X\subseteq A\), how can you construct a string that maps to it?</li></ol><details><summary>Show solution</summary><p><strong>Function:</strong> each bit fixes whether its corresponding element is included, determining exactly one subset.</p><p><strong>Injective:</strong> two different strings differ in some coordinate. The corresponding element belongs to one output subset and not the other, so the output subsets differ.</p><p><strong>Surjective:</strong> let \(X\subseteq A\). Write 1 in the first position if \(a\in X\), and 0 otherwise. Do the same for \(b\) and \(c\). The resulting string maps to exactly \(X\).</p></details><h3>Count the strings to count the subsets</h3><p>There are two independent choices for each of three bits. By the product rule, there are \(2^3=8\) strings. The bijection therefore gives eight subsets.</p><p>For a finite set \(A\) with \(n\) elements, fix a listing of those elements and use one bit for each. The same argument gives</p>\[|\mathcal P(A)|=2^n.\]<p>Here \(|A|\) denotes the number of elements in a finite set \(A\). For \(n=0\), there is one string of length zero and one subset of the empty set, consistent with \(2^0=1\).</p></article><article id="afterthoughts"><h2>7. Afterthought proofs</h2><p>Work independently first, then compare with a partner. Write an argument for each core problem before opening its solution. The extension is optional in class.</p><h3>1. A function with a missing output</h3><p>Let \(f:\mathbb Z\to\mathbb Z\) be \(f(n)=2n+1\).</p><ol><li>Prove that \(f\) is injective.</li><li>Disprove that \(f\) is surjective.</li></ol><details><summary>Show hint</summary><p>For injectivity, start with equal outputs for arbitrary integer inputs. For surjectivity, look for an integer that cannot be expressed as \(2n+1\) with an integer \(n\).</p></details><details><summary>Show solution</summary><p>If \(f(m)=f(n)\), then \(2m+1=2n+1\), so \(m=n\). Thus \(f\) is injective.</p><p>The target 0 is not attained. The equation \(2n+1=0\) would require \(n=-1/2\), which is not an integer. Thus \(f\) is not surjective.</p></details><h3>2. Change the codomain</h3><p>Let \(O=\{2k+1:k\in\mathbb Z\}\), the set of odd integers. Define \(g:\mathbb Z\to O\) by \(g(n)=2n+1\). Prove that \(g\) is a bijection. You may reuse your injectivity argument.</p><details><summary>Show hint</summary><p>Let \(y\in O\). What does the definition of \(O\) tell you? Use it to find a valid input.</p></details><details><summary>Show solution</summary><p>Each integer input gives exactly one odd integer output, so the rule defines a function with the specified domain and codomain. Injectivity follows from the same algebra as in Problem 1.</p><p>Let \(y\in O\). There is an integer \(k\) such that \(y=2k+1\). Then \(g(k)=y\). Thus \(g\) is surjective, and hence bijective.</p></details><h3>Extension. Equal images under an injection</h3><p>Suppose \(f:A\to B\) is injective and \(X,Y\subseteq A\). Prove</p>\[f(X)=f(Y)\rightarrow X=Y.\]<details><summary>Show hint</summary><p>Let \(x\in X\). Since \(f(x)\in f(Y)\), there is some \(y\in Y\) with \(f(x)=f(y)\). What does injectivity tell you?</p></details><details><summary>Show solution</summary><p>Assume \(f(X)=f(Y)\). Let \(x\in X\). Then \(f(x)\in f(Y)\), so there exists \(y\in Y\) with \(f(x)=f(y)\). Injectivity gives \(x=y\), so \(x\in Y\). Thus \(X\subseteq Y\).</p><p>Conversely, let \(y\in Y\). Since \(f(y)\in f(X)\), there is \(x\in X\) with \(f(y)=f(x)\). Injectivity gives \(y=x\), so \(y\in X\). Thus \(Y\subseteq X\), and therefore \(X=Y\).</p></details><h3>Before the closing preview</h3><p>Let \(h:\mathbb Z\to\mathbb Z\) be \(h(n)=n+1\). Prove that it is injective and surjective. In your surjectivity proof, explicitly check that your chosen input is an integer.</p><details><summary>Review after writing your proof</summary><p>If \(h(m)=h(n)\), then \(m+1=n+1\), giving \(m=n\). Thus \(h\) is injective.</p><p>Given \(y\in\mathbb Z\), choose \(n=y-1\in\mathbb Z\). Then \(h(n)=(y-1)+1=y\). Thus \(h\) is surjective.</p></details></article><article id="infinity"><h2>8. A preview of infinite cardinality</h2><p>For finite sets, bijections capture the idea of having the same number of elements. We use this to define equal <strong>cardinality</strong> for sets that may be infinite:</p>\[|A|=|B|\quad\text{if and only if there is a bijection }f:A\to B.\]<p>Let \(2\mathbb N=\{2n:n\in\mathbb N\}\), the set of even natural numbers. Consider</p>\[f:\mathbb N\to2\mathbb N,\qquad f(n)=2n.\]<p>Our earlier doubling argument shows that this function is bijective. Can you identify the injectivity and surjectivity steps?</p><details><summary>Show solution</summary><p>If \(2m=2n\), then \(m=n\), so \(f\) is injective. If \(y\in2\mathbb N\), then \(y=2k\) for some \(k\in\mathbb N\), and \(f(k)=y\), so \(f\) is surjective.</p></details><p>Consequently, \(|\mathbb N|=|2\mathbb N|\), even though \(2\mathbb N\) is a proper subset of \(\mathbb N\): it leaves out every odd natural number.</p><p>This is surprising, but it is not a logical contradiction. Being a proper subset and having smaller cardinality are different claims for infinite sets. We will explore that distinction further.</p></article>
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder">
+<footer>
 
 
 <p class="small">
@@ -714,19 +50,45 @@ Unless otherwise noted, original course materials are licensed under the
 Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
 </a>
 Third-party materials remain subject to their respective copyright and license terms.
-Last updated: September 2026
+Last updated: August 2026
 </p>
 
 </footer></div>
-<!-- Static includes above support local viewing. Refresh from course includes when served from the course root. -->
-<script>
-if(location.protocol==='http:' || location.protocol==='https:') {
- const siteRoot=new URL('./',location.href);
- for(const [file,id] of [['navigation.html','navigation-placeholder'],['footer.html','footer-placeholder']]) {
-  fetch(new URL('assets/includes/'+file,siteRoot)).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()}).then(html=>{
-   const el=document.getElementById(id);el.innerHTML=html;
-   el.querySelectorAll('a[data-path]').forEach(a=>{a.href=new URL(a.dataset.path,siteRoot).href});
-  }).catch(()=>{});
- }
-}
-</script></body></html>
+
+  <script>
+  if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+  const siteRoot = new URL("../", window.location.href).href;
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+  }
+</script>
+
+</body>
+</html>

@@ -1,710 +1,47 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="Irina Shablinsky"><meta name="description" content="Sets, operations, subsets, equality, power sets, and in-class proofs using predicate logic."><title>Discrete Math – Lesson 4: Sets and Proofs</title>
-<!-- Course stylesheet embedded so this draft opens as a single file. -->
-<style>/* Shared styling for course pages */
-
-:root {
-  --bg: #ffffff;
-  --text: #111111;
-  --link: #0b63c7;
-  --link-hover: #084a93;
-  --border: #111111;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #121212;
-    --text: #e9e9e9;
-    --link: #8ab4f8;
-    --link-hover: #a9c7ff;
-    --border: #e9e9e9;
-  }
-}
-
-html, body {
-  background: var(--bg);
-  color: var(--text);
-}
-
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  margin: 0 auto;
-  max-width: 800px;
-  padding: 20px;
-}
-
-h1 {
-  text-align: center;
-}
-
-h3 {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-p {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-ul {
-  list-style-type: disc;
-  margin: 10px 0;
-  padding-left: 20px;
-}
-
-ul ul {
-  list-style-type: circle; /* nested lists */
-  margin: 5px 0;
-  padding-left: 20px;
-}
-
-li {
-  margin: 5px 0;
-}
-
-a {
-  color: var(--link);
-  text-decoration: none;
-}
-
-a:hover,
-a:focus {
-  text-decoration: underline;
-  color: var(--link-hover);
-}
-
-
-/* Responsive YouTube embeds (optional utility) */
-     @media (prefers-color-scheme: dark) {
-         html {
-           filter: invert(100%);
-        }
-
-        .youtube-container iframe {
-          filter: invert(100%);
-        }
-
-        .noreverse {
-          filter: invert(100%);
-        }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Sets, operations, subsets, equality, power sets, and in-class proofs using predicate logic.">
+  <title>Discrete Math – Lesson 4: Sets and Proofs</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
       }
-      .desmos-container {
-        overflow: hidden;
-        padding-bottom: 100%;
-        position: relative;
-        height: 0;
-      }
-
-      .desmos-container iframe {
-        height: 95%;
-        width: 95%;
-        left: 0;
-        position: absolute;
-        top: 0;
-      }
-
-      .youtube-container {
-        overflow: hidden;
-        padding-bottom: 56.25%;
-        position: relative;
-        height: 0;
-      }
-
-      .youtube-container iframe {
-        height: 100%;
-        width: 100%;
-        left: 0;
-        position: absolute;
-        top: 0;
-      }
-/* ---- Page utilities (safe defaults) ---- */
-
-ol {
-  margin: 10px 0;
-  padding-left: 28px;
-}
-
-ol li {
-  margin: 10px 0;
-}
-
-code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.95em;
-}
-
-pre {
-  margin: 10px 0;
-  padding: 12px 14px;
-  overflow: auto;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.04);
-}
-
-@media (prefers-color-scheme: dark) {
-  pre {
-    background: rgba(255, 255, 255, 0.06);
-  }
-}
-
-.callout {
-  border-left: 6px solid var(--border);
-  padding: 10px 14px;
-  margin: 14px 0;
-  background: rgba(0, 0, 0, 0.03);
-  border-radius: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .callout {
-    background: rgba(255, 255, 255, 0.05);
-  }
-}
-/* ---- Grading page components ---- */
-
-.grid {
-  display: grid;
-  gap: 14px;
-}
-
-@media (min-width: 780px) {
-  .grid.two {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.card {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px 16px;
-  background: rgba(0, 0, 0, 0.02);
-}
-
-@media (prefers-color-scheme: dark) {
-  .card {
-    background: rgba(255, 255, 255, 0.04);
-  }
-}
-
-.card h3 {
-  margin-top: 0;
-}
-
-.badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  font-size: 0.9em;
-  margin-right: 8px;
-}
-
-.small {
-  font-size: 0.85em;
-}
-
-blockquote {
-  margin: 10px 0;
-  padding-left: 12px;
-  border-left: 4px solid var(--border);
-}
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--link);
-    color: white;
-    border-radius: 6px;
-    text-decoration: none;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-.button:hover {
-    background-color: var(--link-hover);
-    text-decoration: none;
-    color: white;
-}
-/* ---- Lecture content utilities ---- */
-
-figure {
-  margin: 14px 0;
-}
-
-figure img {
-  max-width: 100%;
-  height: auto;
-}
-
-figcaption {
-  margin-top: 6px;
-  font-size: 0.95em;
-  opacity: 0.9;
-}
-footer {
-  text-align: center;
-  margin-top: 4rem;
-  font-size: 0.9em;
-  color: #666;
-}
-.site-footer {
-  text-align: center;
-  margin-top: 4rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #ccc;
-  font-size: 0.9em;
-  color: #666;
-}
-.site-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #ccc;
-}
-
-.site-header h1 {
-  margin-bottom: 0.3rem;
-}
-
-.course-meta {
-  font-size: 0.9em;
-  color: #666;
-}
-/* Live format validation (while typing) */
-main .exercise input.format-bad {
-  border: 3px solid #ff0000 !important;
-  background: rgba(255, 0, 0, 0.15) !important;
-  box-shadow: 0 0 6px rgba(255, 0, 0, 0.6) !important;
-}
-main .exercise input.format-ok {
-  border: 3px solid #00b050 !important;
-  background: rgba(0, 176, 80, 0.12) !important;
-  box-shadow: 0 0 6px rgba(0, 176, 80, 0.5) !important;
-}
-/* Hint button highlight when format is wrong */
-main .exercise button.hint-glow {
-  background: #ff9800 !important;
-  box-shadow: 0 0 8px rgba(255, 152, 0, 0.9);
-  transform: scale(1.05);
-}
-.binary-grid{
-display:grid;
-grid-template-columns:repeat(6,60px);
-text-align:center;
-font-family:monospace;
-}
-
-.binary-grid div{
-border:1px solid #444;
-padding:8px;
-}
-.binary-grid{
-  display:grid;
-  grid-template-columns: repeat(6, 70px);
-  justify-content:center;
-  margin:20px 0;
-  font-family:monospace;
-}
-
-.binary-grid div{
-  border:2px solid #444;
-  padding:10px;
-  text-align:center;
-  font-size:18px;
-  background:#fafafa;
-}
-
-.binary-grid .bit{
-  font-weight:bold;
-  background:#eef3ff;
-}
-
-.grid-caption{
-  text-align:center;
-  font-family:monospace;
-}
-pre {
-  background: #f6f8fa;
-  padding: 14px;
-  border-radius: 6px;
-  overflow-x: auto;
-  border-left: 4px solid #4a6fa5;
-  line-height: 1.4;
-}
-
-code {
-  font-family: "Courier New", monospace;
-  font-size: 0.95em;
-}
-
-pre code {
-  color: #222;
-}
-/* ===========================
-   Tables
-   =========================== */
-
-table {
-     border-collapse: collapse;
-  width: 100%;
-}
-
-th,
-td {
-    border: 2px solid var(--border);
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-    background: #eef2f7;
-}
-
-table th:first-child,
-table td:first-child {
-    white-space: nowrap;
-}
-section {
-  margin-bottom: 35px;
-}
-.callout {
-  background: #ffffe0;
-  border-left: 5px solid #FDFD96;
-  padding: 14px 16px;
-  margin: 20px 0;
-  border-radius: 4px;
-}
-
-.callout h3 {
-  margin-top: 0;
-}
-
-.callout ul {
-  margin: 6px 0 0 18px;
-}
-.warning {
-  background: #fff4e5;
-  border-left: 5px solid #f39c12;
-}
-
-.tip {
-  background: #eaf7ff;
-  border-left: 5px solid #3498db;
-}
-
-.note {
-  background: #f3f5f7;
-  border-left: 5px solid #888;
-  
-}
-/*=============================
-       Navigation
-===============================*/
-
-
-.course-navigation {
-  margin: 1rem 0 2rem;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-}
-
-.course-navigation ul {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.course-navigation a {
-  display: block;
-  padding: 0.75rem 1rem;
-  text-decoration: none;
-}
-
-.course-navigation a:hover,
-.course-navigation a:focus {
-  text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-  .course-navigation ul {
-    flex-direction: column;
-  }
-}
-/*======================
-   Announcement box
-========================*/
-.announcements {
-  margin-top: 2rem;
-  padding: 1rem 1.25rem;
-  background-color: #f5f1e8;
-  border-left: 4px solid #7a4f32;
-  border-radius: 6px;
-}
-
-.announcements h2 {
-  margin-top: 0;
-}
-
-.announcements p:last-child {
-  margin-bottom: 0;
-}
-
-/* ===========================
-   Narrative lesson components
-   =========================== */
-
-:root {
-  --accent: #8a4f2d;
-  --accent-soft: #f5e9dc;
-  --surface: #f7f4ef;
-  --muted: #5f5a54;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --accent: #e5ad83;
-    --accent-soft: #35271f;
-    --surface: #1d1b19;
-    --muted: #c4bdb5;
-  }
-}
-
-.lesson-header {
-  margin: 2rem 0 2.75rem;
-  text-align: left;
-}
-
-.lesson-header h1 {
-  max-width: 16ch;
-  margin: 0.2rem 0 0.65rem;
-  text-align: left;
-  font-size: clamp(2.25rem, 8vw, 4.6rem);
-  line-height: 0.98;
-  letter-spacing: -0.045em;
-}
-
-.eyebrow,
-.section-kicker {
-  color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.lesson-deck {
-  max-width: 62ch;
-  color: var(--muted);
-  font-size: 1.15rem;
-}
-
-.lesson-nav {
-  margin-bottom: 3rem;
-  border-block: 1px solid color-mix(in srgb, var(--border) 25%, transparent);
-}
-
-.lesson-nav ol {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.25rem;
-  margin: 0;
-  padding: 0.75rem 0;
-  list-style-position: inside;
-}
-.back-to-top {
-  margin-top: 2rem;
-  text-align: right;
-}
-
-.lesson-nav li {
-  margin: 0;
-}
-
-.lesson-section {
-  scroll-margin-top: 1rem;
-  margin-bottom: 4.5rem;
-}
-
-.lesson-section > h2 {
-  margin: 0.25rem 0 1rem;
-  font-size: clamp(1.8rem, 5vw, 2.7rem);
-  line-height: 1.1;
-}
-
-.lead {
-  font-size: 1.12rem;
-}
-
-.challenge,
-.worked-example,
-.evidence-note {
-  margin: 1.5rem 0;
-  padding: 1.1rem 1.25rem;
-  border: 1px solid color-mix(in srgb, var(--border) 20%, transparent);
-  border-radius: 12px;
-  background: var(--surface);
-}
-
-.challenge {
-  border-left: 5px solid var(--accent);
-}
-
-.challenge h3,
-.worked-example h3,
-.evidence-note h3 {
-  margin: 0 0 0.35rem;
-}
-
-.need-grid,
-.glyph-grid,
-.example-grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.need-grid {
-  margin: 1.5rem 0;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
-
-.need-grid article {
-  padding-top: 0.8rem;
-  border-top: 3px solid var(--accent);
-}
-
-.need-grid h3 {
-  margin: 0;
-}
-
-.need-grid p {
-  color: var(--muted);
-}
-
-.glyph-grid {
-  margin: 1.5rem 0;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-}
-
-.glyph-card {
-  display: grid;
-  min-height: 135px;
-  place-items: center;
-  padding: 0.75rem;
-  border: 1px solid color-mix(in srgb, var(--border) 20%, transparent);
-  border-radius: 10px;
-  text-align: center;
-}
-
-.glyph-card img {
-  width: auto;
-  max-width: 76px;
-  height: 65px;
-  object-fit: contain;
-  filter: var(--glyph-filter, none);
-}
-
-.glyph-card strong,
-.glyph-card span {
-  display: block;
-}
-
-.glyph-card span {
-  color: var(--muted);
-  font-size: 0.8rem;
-}
-
-.example-grid {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-.numeral-figure,
-.exchange-figure {
-  margin: 1rem 0;
-  padding: 1rem;
-  border-radius: 10px;
-  background: #fff;
-  color: #111;
-  text-align: center;
-}
-
-.numeral-figure img,
-.exchange-figure img {
-  max-height: 135px;
-  object-fit: contain;
-}
-
-.exchange-pair {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-details.answer {
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  background: var(--accent-soft);
-}
-
-details.answer summary {
-  cursor: pointer;
-  font-weight: 700;
-}
-
-mjx-container[display="true"] {
-  margin: 1.1rem 0 !important;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.math-line {
-  text-align: center;
-  font-size: 1.08rem;
-}
-
-@media (max-width: 520px) {
-  body {
-    padding: 16px;
-  }
-
-  .lesson-nav ol {
-    display: block;
-  }
-
-  .glyph-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-/* ===================================
-   article tag saying that the file is
-   one self-contained piece of content
-    inside the page’s <main>
-   =================================== */
-article {
-  max-width: 900px;
-  margin: 0 auto;
-}
-html { filter: none !important; } body { font-size:16px; } section { scroll-margin-top:1rem; margin-bottom:3rem; } figure { max-width:480px; margin:1.5rem auto; } figure svg { display:block; width:100%; height:auto; } figure figcaption { text-align:center; } summary { cursor:pointer; } summary:focus-visible, a:focus-visible { outline:3px solid var(--link); outline-offset:4px; } .lead { margin-top:1.5rem; } .course-navigation a { padding:.65rem .8rem; } @media print { .course-navigation,.lesson-nav,.back-to-top {display:none} body {max-width:none;color:#111;background:white} .challenge,.worked-example,.evidence-note {break-inside:avoid} details {break-inside:avoid} }
-/* Plain lecture articles and unboxed exercises. */
-main article { margin-bottom: 2.5rem; scroll-margin-top: 1rem; }
-main details { margin: 1rem 0; padding: 0; background: transparent; border: 0; border-radius: 0; }
-main details summary { font-weight: 600; }
-main aside { margin: 1.5rem 0; padding: 0; background: transparent; border: 0; }
-</style>
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><header id="top"><h1>Lesson 4: Sets and Proofs</h1></header><div id="navigation-placeholder"><nav class="course-navigation" aria-label="Course navigation">
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 4: Sets and Proofs</h1>
+  </header>
+  <div id="navigation-placeholder">
+<nav class="course-navigation" aria-label="Course navigation">
   <ul>
-    <li><a data-path="index.html" href="index.html">Home</a></li>
-    <li><a data-path="resources/syllabus.html" href="resources/syllabus.html">Syllabus</a></li>
-    <li><a data-path="lessons.html" href="lessons.html">Lessons</a></li>
-    <li><a data-path="resources.html" href="resources.html">Resources</a></li>
+    <li><a data-path="index.html" href="../index.html">Home</a></li>
+    <li><a data-path="resources/syllabus.html" href="../resources/syllabus.html">Syllabus</a></li>
+    <li><a data-path="lessons.html" href="../lessons.html">Lessons</a></li>
+    <li><a data-path="resources.html" href="../resources.html">Resources</a></li>
   </ul>
 </nav>
-</div><main><p class="lead">Last time, we used predicates and quantifiers to organize proofs. Today we use that same logic to describe sets and prove statements about them.</p>
-<nav class="lesson-nav" aria-label="In this lecture"><ol><li><a href="#predicates">Sets and predicates</a></li><li><a href="#operations">Operations</a></li><li><a href="#subsets">Subsets</a></li><li><a href="#empty">Empty set</a></li><li><a href="#equality">Equality</a></li><li><a href="#power">Power sets</a></li><li><a href="#afterthoughts">Afterthought proofs</a></li></ol></nav><article id="predicates"><h2>1. From a predicate to a set</h2><h3>Opening question</h3><p>Consider \[A=\{x\in\mathbb Z:x^2&lt;9\}.\]</p><ol><li>List all elements of \(A\).</li><li>What does the statement \(x\in A\) tell you?</li><li>What changes if we replace \(\mathbb Z\) with \(\mathbb R\)?</li></ol><details><summary>Show solution</summary><p>\(A=\{-2,-1,0,1,2\}\). Membership means that \(x\) is an integer and \(x^2&lt;9\). Over the real numbers, every real number strictly between \(-3\) and \(3\) belongs to the set, so we get the interval \((-3,3)\).</p></details><p>A <strong>set</strong> is an unordered collection of distinct objects, called its <strong>elements</strong>. We write \(x\in A\) when \(x\) is an element of \(A\), and \(x\notin A\) when it is not.</p><p>We can describe a set by listing its elements or by giving a condition that selects elements from a specified domain:</p>\[\{x\in U:P(x)\}.\]<p>Read this as “the set of all \(x\) in \(U\) such that \(P(x)\).” For \(x\in U\), membership in this set is equivalent to \(P(x)\).</p><ul><li>Order does not matter: \(\{1,2,3\}=\{3,1,2\}\).</li><li>Repetition does not matter: \(\{1,1,2\}=\{1,2\}\).</li><li>Elements can themselves be sets. We will return to this idea when we discuss power sets.</li></ul><h3>Some familiar sets</h3><ul><li>\(\mathbb N=\{0,1,2,\ldots\}\): the natural numbers. In this course, zero is included.</li><li>\(\mathbb Z=\{\ldots,-2,-1,0,1,2,\ldots\}\): the integers.</li><li>\(\mathbb Q=\{m/n:m,n\in\mathbb Z,\ n\ne0\}\): the rational numbers.</li><li>\(\mathbb R\): the real numbers.</li><li>\(\emptyset\): the set with no elements.</li></ul><aside><h3>A short historical note</h3><p>Modern set theory grew out of nineteenth-century work on real numbers and infinite collections. Georg Cantor’s 1874 paper showed that the real numbers cannot all be placed in a sequence indexed by the natural numbers. It opened the way to distinguishing different sizes of infinity.</p><p>Today we begin with the language of sets. In the next lecture, functions and one-to-one correspondences will give us a way to compare their sizes.</p><p class="small">Historical source: <a href="https://mathshistory.st-andrews.ac.uk/HistTopics/Beginnings_of_set_theory/">MacTutor History of Mathematics, The beginnings of set theory</a>.</p></aside><details><summary>Optional historical afterthought: Russell’s paradox</summary><p>In 1901, Bertrand Russell found a contradiction in the idea that every condition defines a set. Suppose there were a set</p>\[R=\{X:X\text{ is a set and }X\notin X\}.\]<p>In words, it would contain exactly those sets that are not elements of themselves. Now ask: <strong>is \(R\in R\)?</strong></p><ul><li>If \(R\in R\), it must satisfy the defining condition, so \(R\notin R\).</li><li>If \(R\notin R\), it satisfies the defining condition, so \(R\in R\).</li></ul><p>Either answer leads to a contradiction. The conclusion is that no set with this unrestricted description exists.</p><p>We will not develop set-theory axioms here. Our set-builder notation \(\{x\in U:P(x)\}\) selects elements from an already specified set \(U\); it does not assume that every unrestricted description produces a set.</p><p class="small">Source: <a href="https://plato.stanford.edu/archives/spr2004/entries/russell-paradox/">Stanford Encyclopedia of Philosophy, Russell’s Paradox</a>.</p></details></article><article id="operations"><h2>2. Set operations and logical connectives</h2><p>Set operations let us build new sets from existing ones. Their definitions use the logical connectives we already know. In the formulas below, \(x\) ranges over an ambient set containing \(A\) and \(B\).</p><h3>Union</h3>\[x\in A\cup B\iff(x\in A\lor x\in B).\]<p>The union contains elements in either set, including elements in both. The word “or” is inclusive.</p><figure><svg viewBox="0 0 380 225" role="img" aria-labelledby="venn-union-title venn-union-desc" xmlns="http://www.w3.org/2000/svg"><title id="venn-union-title">Union</title><desc id="venn-union-desc">Both circles, including their overlap, are shaded.</desc><defs><pattern id="venn-union-hatch" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#dceaf7"/><path d="M-2 2L2 -2M0 9L9 0M7 11L11 7" stroke="#6597c3" stroke-width="1.4"/></pattern><clipPath id="venn-union-clip"><circle cx="235" cy="112" r="76"/></clipPath><mask id="venn-union-mask"><rect width="380" height="225" fill="white"/><circle cx="235" cy="112" r="76" fill="black"/></mask></defs><rect x="8" y="8" width="364" height="207" rx="8" fill="white" stroke="#77838e"/><circle cx="145" cy="112" r="76" fill="url(#venn-union-hatch)"/><circle cx="235" cy="112" r="76" fill="url(#venn-union-hatch)"/><g fill="none" stroke="#1c3248" stroke-width="2.5"><circle cx="145" cy="112" r="76"/><circle cx="235" cy="112" r="76"/></g><g fill="#152a40" font-family="Arial, sans-serif" font-size="20" font-weight="bold"><text x="105" y="116">A</text><text x="263" y="116">B</text></g></svg><figcaption>Union. Both circles, including their overlap, are shaded.</figcaption></figure><h3>Intersection</h3>\[x\in A\cap B\iff(x\in A\land x\in B).\]<p>The intersection contains precisely the elements common to both sets.</p><figure><svg viewBox="0 0 380 225" role="img" aria-labelledby="venn-intersection-title venn-intersection-desc" xmlns="http://www.w3.org/2000/svg"><title id="venn-intersection-title">Intersection</title><desc id="venn-intersection-desc">Only the overlap of the two circles is shaded.</desc><defs><pattern id="venn-intersection-hatch" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#dceaf7"/><path d="M-2 2L2 -2M0 9L9 0M7 11L11 7" stroke="#6597c3" stroke-width="1.4"/></pattern><clipPath id="venn-intersection-clip"><circle cx="235" cy="112" r="76"/></clipPath><mask id="venn-intersection-mask"><rect width="380" height="225" fill="white"/><circle cx="235" cy="112" r="76" fill="black"/></mask></defs><rect x="8" y="8" width="364" height="207" rx="8" fill="white" stroke="#77838e"/><g clip-path="url(#venn-intersection-clip)"><circle cx="145" cy="112" r="76" fill="url(#venn-intersection-hatch)"/></g><g fill="none" stroke="#1c3248" stroke-width="2.5"><circle cx="145" cy="112" r="76"/><circle cx="235" cy="112" r="76"/></g><g fill="#152a40" font-family="Arial, sans-serif" font-size="20" font-weight="bold"><text x="105" y="116">A</text><text x="263" y="116">B</text></g></svg><figcaption>Intersection. Only the overlap of the two circles is shaded.</figcaption></figure><h3>Set difference</h3>\[x\in A\setminus B\iff(x\in A\land x\notin B).\]<p>The difference keeps the elements of \(A\) that do not belong to \(B\). The order matters.</p><figure><svg viewBox="0 0 380 225" role="img" aria-labelledby="venn-difference-title venn-difference-desc" xmlns="http://www.w3.org/2000/svg"><title id="venn-difference-title">Set difference A minus B</title><desc id="venn-difference-desc">Only the part of A outside B is shaded.</desc><defs><pattern id="venn-difference-hatch" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#dceaf7"/><path d="M-2 2L2 -2M0 9L9 0M7 11L11 7" stroke="#6597c3" stroke-width="1.4"/></pattern><clipPath id="venn-difference-clip"><circle cx="235" cy="112" r="76"/></clipPath><mask id="venn-difference-mask"><rect width="380" height="225" fill="white"/><circle cx="235" cy="112" r="76" fill="black"/></mask></defs><rect x="8" y="8" width="364" height="207" rx="8" fill="white" stroke="#77838e"/><circle cx="145" cy="112" r="76" fill="url(#venn-difference-hatch)" mask="url(#venn-difference-mask)"/><g fill="none" stroke="#1c3248" stroke-width="2.5"><circle cx="145" cy="112" r="76"/><circle cx="235" cy="112" r="76"/></g><g fill="#152a40" font-family="Arial, sans-serif" font-size="20" font-weight="bold"><text x="105" y="116">A</text><text x="263" y="116">B</text></g></svg><figcaption>Set difference A minus B. Only the part of A outside B is shaded.</figcaption></figure><p>The rectangle gives a surrounding universe for each picture. Shading identifies the selected region; it does not tell us how many elements the sets contain.</p><h3>Compute, then explain</h3><p>Let \(A=\{1,2,3,4,5\}\) and \(B=\{2,4,6,8,10\}\). Find \(A\cap B\), \(A\cup B\), \(A\setminus B\), and \(B\setminus A\).</p><p>If \(x\in A\setminus B\), what two facts do you know? If \(x\in A\cup B\), can you conclude that \(x\in A\)?</p><details><summary>Show solution</summary><ul><li>\(A\cap B=\{2,4\}\).</li><li>\(A\cup B=\{1,2,3,4,5,6,8,10\}\).</li><li>\(A\setminus B=\{1,3,5\}\).</li><li>\(B\setminus A=\{6,8,10\}\).</li></ul><p>Membership in the difference tells us both \(x\in A\) and \(x\notin B\). Membership in the union does not guarantee membership in \(A\): for example, \(6\in A\cup B\), but \(6\notin A\).</p></details></article><article id="subsets"><h2>3. Subsets and proof setups</h2><p>We say \(A\) is a <strong>subset</strong> of \(B\), written \(A\subseteq B\), when every element of \(A\) is also an element of \(B\).</p>\[A\subseteq B\iff\forall x\,(x\in A\rightarrow x\in B).\]<p>Equality is allowed: every set is a subset of itself. For example, \(\mathbb N\subseteq\mathbb Z\) and \(\{1,2\}\subseteq\{1,2,3\}\).</p><h3>Negate the definition</h3><p>Complete the statement: “\(A\) is not a subset of \(B\) if and only if there exists…”</p><details><summary>Show solution</summary>\[A\nsubseteq B\iff\exists x\,(x\in A\land x\notin B).\]<p>A counterexample must belong to \(A\) and fail to belong to \(B\). Merely finding an element outside \(B\) is not enough.</p></details><h3>Build a proof together</h3><p>Prove \(B\subseteq A\cup B\).</p><ol><li>Take an arbitrary element of which set?</li><li>What must you show about that element?</li><li>Which definition lets you finish?</li></ol><details><summary>Show the completed proof</summary><p>Let \(x\in B\) be arbitrary. Then \(x\in A\) or \(x\in B\), since the second statement is true. By the definition of union, \(x\in A\cup B\). Therefore \(B\subseteq A\cup B\).</p></details><h3>Your turn</h3><p>Prove \(A\cap B\subseteq A\). Begin by stating your assumption about an arbitrary element.</p><details><summary>Show solution</summary><p>Let \(x\in A\cap B\). By definition, \(x\in A\) and \(x\in B\); in particular, \(x\in A\). Therefore \(A\cap B\subseteq A\).</p></details><h3>Proof or counterexample?</h3><p>Let \(A=\{x\in\mathbb Z:x^2&lt;9\}\) and \(B=\{x\in\mathbb Z:x&lt;3\}\).</p><ol><li>Is \(A\subseteq B\)?</li><li>Is \(B\subseteq A\)?</li></ol><p>Justify each answer.</p><details><summary>Show solution</summary><p>Yes, \(A\subseteq B\): the elements of \(A\) are \(-2,-1,0,1,2\), and each is less than 3.</p><p>No, \(B\nsubseteq A\): \(-3\in B\), but \((-3)^2=9\), so \(-3\notin A\).</p></details></article><article id="empty"><h2>4. The empty set</h2><p>The empty set contains no elements. Is it a subset of \(\{1,2,3\}\)? More generally, is it a subset of every set?</p><h3>What would failure require?</h3><p>If \(\emptyset\subseteq A\) were false, what would have to exist? Write the negation before explaining your answer.</p><details><summary>Show solution</summary><p>Failure would require \[\exists x\,(x\in\emptyset\land x\notin A).\]There is no element of \(\emptyset\), so this is impossible. Therefore \(\emptyset\subseteq A\) for every set \(A\).</p><p>Equivalently, the implication \(x\in\emptyset\rightarrow x\in A\) is true for every \(x\): its antecedent is always false. This is an application of vacuous truth.</p></details><h3>Element or subset?</h3><p>Explain why \(\emptyset\subseteq\{1,2\}\) is true, but \(\emptyset\in\{1,2\}\) is false.</p><details><summary>Show solution</summary><p>The empty set is a subset of every set. But the only elements of \(\{1,2\}\) are 1 and 2; the empty set is neither of those elements.</p></details></article><article id="equality"><h2>5. Equality of sets</h2><p><strong>Two sets are equal if and only if they have exactly the same elements.</strong> Different descriptions may define the same set.</p>\[A=B\iff\forall x\,(x\in A\leftrightarrow x\in B).\]<p>This gives a useful proof method:</p>\[A=B\iff(A\subseteq B\land B\subseteq A).\]<p>Prove that every element of the first set is in the second, and then prove the reverse inclusion.</p><h3>A different description of the same integers</h3>\[A=\{2n:n\in\mathbb Z\},\qquad B=\{2m+2:m\in\mathbb Z\}.\]<p>Both sets describe the even integers. Let us justify that observation by constructing witnesses.</p><h3>First inclusion, with a missing step</h3><p>Let \(x\in A\). There is an integer \(n\) such that \(x=2n\). To prove \(x\in B\), we need an integer \(m\) for which \(x=2m+2\).</p><p>What should \(m\) be? Why is your choice an integer?</p><details><summary>Show solution</summary><p>Choose \(m=n-1\). Since \(n\in\mathbb Z\), also \(m\in\mathbb Z\). Then \[2m+2=2(n-1)+2=2n=x.\]Thus \(x\in B\), proving \(A\subseteq B\).</p></details><h3>Reverse inclusion, on your own</h3><p>Prove \(B\subseteq A\). State the integer witness you choose and check that it works.</p><details><summary>Show solution</summary><p>Let \(x\in B\). Then \(x=2m+2\) for some \(m\in\mathbb Z\). Choose \(n=m+1\in\mathbb Z\). Since \(x=2(m+1)=2n\), we have \(x\in A\). Thus \(B\subseteq A\).</p><p>Both inclusions hold, so \(A=B\).</p></details><p>The witnesses \(m\) and \(n\) do not have to be the same integer. What matters is that each element has the required representation in the other set.</p></article><article id="power"><h2>6. Power sets</h2><p>The <strong>power set</strong> of \(A\) is the set of all subsets of \(A\):</p>\[\mathcal P(A)=\{X:X\subseteq A\}.\]<p>This definition connects two kinds of statements:</p>\[X\in\mathcal P(A)\iff X\subseteq A.\]<p>An element of a power set is itself a set.</p><h3>List the subsets</h3><p>Find \(\mathcal P(\{1,2\})\). Include the empty set and the original set.</p><details><summary>Show solution</summary>\[\mathcal P(\{1,2\})=\{\emptyset,\{1\},\{2\},\{1,2\}\}.\]<p>There are four elements, and each of them is a subset of \(\{1,2\}\).</p></details><h3>Read each symbol carefully</h3><p>For \(A=\{1,2\}\), decide whether each statement is true or false and explain why.</p><ol><li>\(1\in A\)</li><li>\(\{1\}\subseteq A\)</li><li>\(\{1\}\in\mathcal P(A)\)</li><li>\(\emptyset\in A\)</li><li>\(\emptyset\in\mathcal P(A)\)</li></ol><details><summary>Show solution</summary><p>The answers are true, true, true, false, true. In particular, \(\emptyset\) is not an element of \(A\), but it is a subset of \(A\), so it is an element of \(\mathcal P(A)\).</p></details><h3>The smallest power set</h3><p>What is \(\mathcal P(\emptyset)\)? How many elements does it have?</p><details><summary>Show solution</summary><p>The only subset of \(\emptyset\) is \(\emptyset\) itself. Thus \[\mathcal P(\emptyset)=\{\emptyset\}.\]This power set has one element. The sets \(\emptyset\) and \(\{\emptyset\}\) are different.</p></details><p><strong>Looking ahead:</strong> How can we systematically list every subset of a larger finite set? Next time, we will connect this question to binary strings and counting.</p></article><article id="afterthoughts"><h2>7. Afterthought proofs</h2><p>Use the final proof workshop to put today’s definitions together. Begin independently, then compare with a partner. Each person should write an argument. Try both core problems before opening the solutions; the extension is for early finishers.</p><h3>1. Subsets in a chain</h3><p>Suppose \(A\subseteq B\) and \(B\subseteq C\). Prove \(A\subseteq C\).</p><details><summary>Show hint</summary><p>Start with an arbitrary \(x\in A\). Apply each assumption in turn.</p></details><details><summary>Show solution</summary><p>Let \(x\in A\). Since \(A\subseteq B\), we have \(x\in B\). Since \(B\subseteq C\), we have \(x\in C\). Therefore \(A\subseteq C\).</p></details><h3>2. When does an intersection equal one of its sets?</h3><p>Prove both directions:</p>\[A\cap B=A\iff A\subseteq B.\]<details><summary>Show hint</summary><p>For the forward direction, assume the equality and start with an element of \(A\). For the reverse direction, assume the inclusion and prove the two inclusions needed for equality.</p></details><details><summary>Show solution</summary><p><strong>Forward:</strong> Assume \(A\cap B=A\). Let \(x\in A\). Then \(x\in A\cap B\), so \(x\in B\). Therefore \(A\subseteq B\).</p><p><strong>Reverse:</strong> Assume \(A\subseteq B\). If \(x\in A\cap B\), then \(x\in A\); hence \(A\cap B\subseteq A\). Conversely, if \(x\in A\), our assumption gives \(x\in B\), so \(x\in A\cap B\). Hence \(A\subseteq A\cap B\). The two inclusions prove \(A\cap B=A\).</p></details><h3>Extension. Power sets preserve inclusion</h3><p>Suppose \(A\subseteq B\). Prove \(\mathcal P(A)\subseteq\mathcal P(B)\).</p><details><summary>Show hint</summary><p>Start with \(X\in\mathcal P(A)\). Translate that membership statement, then use the chain result from Problem 1.</p></details><details><summary>Show solution</summary><p>Let \(X\in\mathcal P(A)\). Then \(X\subseteq A\). Since \(A\subseteq B\), Problem 1 gives \(X\subseteq B\). Thus \(X\in\mathcal P(B)\). Therefore \(\mathcal P(A)\subseteq\mathcal P(B)\).</p></details><h3>Before you leave</h3><ol><li>Prove \(A\setminus B\subseteq A\).</li><li>Explain the difference between \(\emptyset\) and \(\{\emptyset\}\).</li></ol><details><summary>Review after writing your answers</summary><p>Let \(x\in A\setminus B\). Then \(x\in A\) and \(x\notin B\); in particular, \(x\in A\). Therefore \(A\setminus B\subseteq A\).</p><p>The empty set has no elements. The set \(\{\emptyset\}\) has one element, namely the empty set.</p></details><p>There is no separate post-lecture practice for this lesson. Continue working on the assigned problem set.</p></article><p class="back-to-top"><a href="#top">Back to top ↑</a></p></main><div id="footer-placeholder"><footer>
+</div>
+
+  <main>
+    <p class="lead">Last time, we used predicates and quantifiers to organize proofs. Today we use that same logic to describe sets and prove statements about them.</p>
+<nav class="lesson-nav" aria-label="In this lecture"><ol><li><a href="#predicates">Sets and predicates</a></li><li><a href="#operations">Operations</a></li><li><a href="#subsets">Subsets</a></li><li><a href="#empty">Empty set</a></li><li><a href="#equality">Equality</a></li><li><a href="#power">Power sets</a></li><li><a href="#afterthoughts">Afterthought proofs</a></li></ol></nav><article id="predicates"><h2>1. From a predicate to a set</h2><h3>Opening question</h3><p>Consider \[A=\{x\in\mathbb Z:x^2&lt;9\}.\]</p><ol><li>List all elements of \(A\).</li><li>What does the statement \(x\in A\) tell you?</li><li>What changes if we replace \(\mathbb Z\) with \(\mathbb R\)?</li></ol><details><summary>Show solution</summary><p>\(A=\{-2,-1,0,1,2\}\). Membership means that \(x\) is an integer and \(x^2&lt;9\). Over the real numbers, every real number strictly between \(-3\) and \(3\) belongs to the set, so we get the interval \((-3,3)\).</p></details><p>A <strong>set</strong> is an unordered collection of distinct objects, called its <strong>elements</strong>. We write \(x\in A\) when \(x\) is an element of \(A\), and \(x\notin A\) when it is not.</p><p>We can describe a set by listing its elements or by giving a condition that selects elements from a specified domain:</p>\[\{x\in U:P(x)\}.\]<p>Read this as “the set of all \(x\) in \(U\) such that \(P(x)\).” For \(x\in U\), membership in this set is equivalent to \(P(x)\).</p><ul><li>Order does not matter: \(\{1,2,3\}=\{3,1,2\}\).</li><li>Repetition does not matter: \(\{1,1,2\}=\{1,2\}\).</li><li>Elements can themselves be sets. We will return to this idea when we discuss power sets.</li></ul><h3>Some familiar sets</h3><ul><li>\(\mathbb N=\{0,1,2,\ldots\}\): the natural numbers. In this course, zero is included.</li><li>\(\mathbb Z=\{\ldots,-2,-1,0,1,2,\ldots\}\): the integers.</li><li>\(\mathbb Q=\{m/n:m,n\in\mathbb Z,\ n\ne0\}\): the rational numbers.</li><li>\(\mathbb R\): the real numbers.</li><li>\(\emptyset\): the set with no elements.</li></ul><aside><h3>A short historical note</h3><p>Modern set theory grew out of nineteenth-century work on real numbers and infinite collections. Georg Cantor’s 1874 paper showed that the real numbers cannot all be placed in a sequence indexed by the natural numbers. It opened the way to distinguishing different sizes of infinity.</p><p>Today we begin with the language of sets. In the next lecture, functions and one-to-one correspondences will give us a way to compare their sizes.</p><p class="small">Historical source: <a href="https://mathshistory.st-andrews.ac.uk/HistTopics/Beginnings_of_set_theory/">MacTutor History of Mathematics, The beginnings of set theory</a>.</p></aside><details><summary>Optional historical afterthought: Russell’s paradox</summary><p>In 1901, Bertrand Russell found a contradiction in the idea that every condition defines a set. Suppose there were a set</p>\[R=\{X:X\text{ is a set and }X\notin X\}.\]<p>In words, it would contain exactly those sets that are not elements of themselves. Now ask: <strong>is \(R\in R\)?</strong></p><ul><li>If \(R\in R\), it must satisfy the defining condition, so \(R\notin R\).</li><li>If \(R\notin R\), it satisfies the defining condition, so \(R\in R\).</li></ul><p>Either answer leads to a contradiction. The conclusion is that no set with this unrestricted description exists.</p><p>We will not develop set-theory axioms here. Our set-builder notation \(\{x\in U:P(x)\}\) selects elements from an already specified set \(U\); it does not assume that every unrestricted description produces a set.</p><p class="small">Source: <a href="https://plato.stanford.edu/archives/spr2004/entries/russell-paradox/">Stanford Encyclopedia of Philosophy, Russell’s Paradox</a>.</p></details></article><article id="operations"><h2>2. Set operations and logical connectives</h2><p>Set operations let us build new sets from existing ones. Their definitions use the logical connectives we already know. In the formulas below, \(x\) ranges over an ambient set containing \(A\) and \(B\).</p><h3>Union</h3>\[x\in A\cup B\iff(x\in A\lor x\in B).\]<p>The union contains elements in either set, including elements in both. The word “or” is inclusive.</p><figure><svg width="100%" viewBox="0 0 380 225" role="img" aria-labelledby="venn-union-title venn-union-desc" xmlns="http://www.w3.org/2000/svg"><title id="venn-union-title">Union</title><desc id="venn-union-desc">Both circles, including their overlap, are shaded.</desc><defs><pattern id="venn-union-hatch" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#dceaf7"/><path d="M-2 2L2 -2M0 9L9 0M7 11L11 7" stroke="#6597c3" stroke-width="1.4"/></pattern><clipPath id="venn-union-clip"><circle cx="235" cy="112" r="76"/></clipPath><mask id="venn-union-mask"><rect width="380" height="225" fill="white"/><circle cx="235" cy="112" r="76" fill="black"/></mask></defs><rect x="8" y="8" width="364" height="207" rx="8" fill="white" stroke="#77838e"/><circle cx="145" cy="112" r="76" fill="url(#venn-union-hatch)"/><circle cx="235" cy="112" r="76" fill="url(#venn-union-hatch)"/><g fill="none" stroke="#1c3248" stroke-width="2.5"><circle cx="145" cy="112" r="76"/><circle cx="235" cy="112" r="76"/></g><g fill="#152a40" font-family="Arial, sans-serif" font-size="20" font-weight="bold"><text x="105" y="116">A</text><text x="263" y="116">B</text></g></svg><figcaption>Union. Both circles, including their overlap, are shaded.</figcaption></figure><h3>Intersection</h3>\[x\in A\cap B\iff(x\in A\land x\in B).\]<p>The intersection contains precisely the elements common to both sets.</p><figure><svg width="100%" viewBox="0 0 380 225" role="img" aria-labelledby="venn-intersection-title venn-intersection-desc" xmlns="http://www.w3.org/2000/svg"><title id="venn-intersection-title">Intersection</title><desc id="venn-intersection-desc">Only the overlap of the two circles is shaded.</desc><defs><pattern id="venn-intersection-hatch" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#dceaf7"/><path d="M-2 2L2 -2M0 9L9 0M7 11L11 7" stroke="#6597c3" stroke-width="1.4"/></pattern><clipPath id="venn-intersection-clip"><circle cx="235" cy="112" r="76"/></clipPath><mask id="venn-intersection-mask"><rect width="380" height="225" fill="white"/><circle cx="235" cy="112" r="76" fill="black"/></mask></defs><rect x="8" y="8" width="364" height="207" rx="8" fill="white" stroke="#77838e"/><g clip-path="url(#venn-intersection-clip)"><circle cx="145" cy="112" r="76" fill="url(#venn-intersection-hatch)"/></g><g fill="none" stroke="#1c3248" stroke-width="2.5"><circle cx="145" cy="112" r="76"/><circle cx="235" cy="112" r="76"/></g><g fill="#152a40" font-family="Arial, sans-serif" font-size="20" font-weight="bold"><text x="105" y="116">A</text><text x="263" y="116">B</text></g></svg><figcaption>Intersection. Only the overlap of the two circles is shaded.</figcaption></figure><h3>Set difference</h3>\[x\in A\setminus B\iff(x\in A\land x\notin B).\]<p>The difference keeps the elements of \(A\) that do not belong to \(B\). The order matters.</p><figure><svg width="100%" viewBox="0 0 380 225" role="img" aria-labelledby="venn-difference-title venn-difference-desc" xmlns="http://www.w3.org/2000/svg"><title id="venn-difference-title">Set difference A minus B</title><desc id="venn-difference-desc">Only the part of A outside B is shaded.</desc><defs><pattern id="venn-difference-hatch" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#dceaf7"/><path d="M-2 2L2 -2M0 9L9 0M7 11L11 7" stroke="#6597c3" stroke-width="1.4"/></pattern><clipPath id="venn-difference-clip"><circle cx="235" cy="112" r="76"/></clipPath><mask id="venn-difference-mask"><rect width="380" height="225" fill="white"/><circle cx="235" cy="112" r="76" fill="black"/></mask></defs><rect x="8" y="8" width="364" height="207" rx="8" fill="white" stroke="#77838e"/><circle cx="145" cy="112" r="76" fill="url(#venn-difference-hatch)" mask="url(#venn-difference-mask)"/><g fill="none" stroke="#1c3248" stroke-width="2.5"><circle cx="145" cy="112" r="76"/><circle cx="235" cy="112" r="76"/></g><g fill="#152a40" font-family="Arial, sans-serif" font-size="20" font-weight="bold"><text x="105" y="116">A</text><text x="263" y="116">B</text></g></svg><figcaption>Set difference A minus B. Only the part of A outside B is shaded.</figcaption></figure><p>The rectangle gives a surrounding universe for each picture. Shading identifies the selected region; it does not tell us how many elements the sets contain.</p><h3>Compute, then explain</h3><p>Let \(A=\{1,2,3,4,5\}\) and \(B=\{2,4,6,8,10\}\). Find \(A\cap B\), \(A\cup B\), \(A\setminus B\), and \(B\setminus A\).</p><p>If \(x\in A\setminus B\), what two facts do you know? If \(x\in A\cup B\), can you conclude that \(x\in A\)?</p><details><summary>Show solution</summary><ul><li>\(A\cap B=\{2,4\}\).</li><li>\(A\cup B=\{1,2,3,4,5,6,8,10\}\).</li><li>\(A\setminus B=\{1,3,5\}\).</li><li>\(B\setminus A=\{6,8,10\}\).</li></ul><p>Membership in the difference tells us both \(x\in A\) and \(x\notin B\). Membership in the union does not guarantee membership in \(A\): for example, \(6\in A\cup B\), but \(6\notin A\).</p></details></article><article id="subsets"><h2>3. Subsets and proof setups</h2><p>We say \(A\) is a <strong>subset</strong> of \(B\), written \(A\subseteq B\), when every element of \(A\) is also an element of \(B\).</p>\[A\subseteq B\iff\forall x\,(x\in A\rightarrow x\in B).\]<p>Equality is allowed: every set is a subset of itself. For example, \(\mathbb N\subseteq\mathbb Z\) and \(\{1,2\}\subseteq\{1,2,3\}\).</p><h3>Negate the definition</h3><p>Complete the statement: “\(A\) is not a subset of \(B\) if and only if there exists…”</p><details><summary>Show solution</summary>\[A\nsubseteq B\iff\exists x\,(x\in A\land x\notin B).\]<p>A counterexample must belong to \(A\) and fail to belong to \(B\). Merely finding an element outside \(B\) is not enough.</p></details><h3>Build a proof together</h3><p>Prove \(B\subseteq A\cup B\).</p><ol><li>Take an arbitrary element of which set?</li><li>What must you show about that element?</li><li>Which definition lets you finish?</li></ol><details><summary>Show the completed proof</summary><p>Let \(x\in B\) be arbitrary. Then \(x\in A\) or \(x\in B\), since the second statement is true. By the definition of union, \(x\in A\cup B\). Therefore \(B\subseteq A\cup B\).</p></details><h3>Your turn</h3><p>Prove \(A\cap B\subseteq A\). Begin by stating your assumption about an arbitrary element.</p><details><summary>Show solution</summary><p>Let \(x\in A\cap B\). By definition, \(x\in A\) and \(x\in B\); in particular, \(x\in A\). Therefore \(A\cap B\subseteq A\).</p></details><h3>Proof or counterexample?</h3><p>Let \(A=\{x\in\mathbb Z:x^2&lt;9\}\) and \(B=\{x\in\mathbb Z:x&lt;3\}\).</p><ol><li>Is \(A\subseteq B\)?</li><li>Is \(B\subseteq A\)?</li></ol><p>Justify each answer.</p><details><summary>Show solution</summary><p>Yes, \(A\subseteq B\): the elements of \(A\) are \(-2,-1,0,1,2\), and each is less than 3.</p><p>No, \(B\nsubseteq A\): \(-3\in B\), but \((-3)^2=9\), so \(-3\notin A\).</p></details></article><article id="empty"><h2>4. The empty set</h2><p>The empty set contains no elements. Is it a subset of \(\{1,2,3\}\)? More generally, is it a subset of every set?</p><h3>What would failure require?</h3><p>If \(\emptyset\subseteq A\) were false, what would have to exist? Write the negation before explaining your answer.</p><details><summary>Show solution</summary><p>Failure would require \[\exists x\,(x\in\emptyset\land x\notin A).\]There is no element of \(\emptyset\), so this is impossible. Therefore \(\emptyset\subseteq A\) for every set \(A\).</p><p>Equivalently, the implication \(x\in\emptyset\rightarrow x\in A\) is true for every \(x\): its antecedent is always false. This is an application of vacuous truth.</p></details><h3>Element or subset?</h3><p>Explain why \(\emptyset\subseteq\{1,2\}\) is true, but \(\emptyset\in\{1,2\}\) is false.</p><details><summary>Show solution</summary><p>The empty set is a subset of every set. But the only elements of \(\{1,2\}\) are 1 and 2; the empty set is neither of those elements.</p></details></article><article id="equality"><h2>5. Equality of sets</h2><p><strong>Two sets are equal if and only if they have exactly the same elements.</strong> Different descriptions may define the same set.</p>\[A=B\iff\forall x\,(x\in A\leftrightarrow x\in B).\]<p>This gives a useful proof method:</p>\[A=B\iff(A\subseteq B\land B\subseteq A).\]<p>Prove that every element of the first set is in the second, and then prove the reverse inclusion.</p><h3>A different description of the same integers</h3>\[A=\{2n:n\in\mathbb Z\},\qquad B=\{2m+2:m\in\mathbb Z\}.\]<p>Both sets describe the even integers. Let us justify that observation by constructing witnesses.</p><h3>First inclusion, with a missing step</h3><p>Let \(x\in A\). There is an integer \(n\) such that \(x=2n\). To prove \(x\in B\), we need an integer \(m\) for which \(x=2m+2\).</p><p>What should \(m\) be? Why is your choice an integer?</p><details><summary>Show solution</summary><p>Choose \(m=n-1\). Since \(n\in\mathbb Z\), also \(m\in\mathbb Z\). Then \[2m+2=2(n-1)+2=2n=x.\]Thus \(x\in B\), proving \(A\subseteq B\).</p></details><h3>Reverse inclusion, on your own</h3><p>Prove \(B\subseteq A\). State the integer witness you choose and check that it works.</p><details><summary>Show solution</summary><p>Let \(x\in B\). Then \(x=2m+2\) for some \(m\in\mathbb Z\). Choose \(n=m+1\in\mathbb Z\). Since \(x=2(m+1)=2n\), we have \(x\in A\). Thus \(B\subseteq A\).</p><p>Both inclusions hold, so \(A=B\).</p></details><p>The witnesses \(m\) and \(n\) do not have to be the same integer. What matters is that each element has the required representation in the other set.</p></article><article id="power"><h2>6. Power sets</h2><p>The <strong>power set</strong> of \(A\) is the set of all subsets of \(A\):</p>\[\mathcal P(A)=\{X:X\subseteq A\}.\]<p>This definition connects two kinds of statements:</p>\[X\in\mathcal P(A)\iff X\subseteq A.\]<p>An element of a power set is itself a set.</p><h3>List the subsets</h3><p>Find \(\mathcal P(\{1,2\})\). Include the empty set and the original set.</p><details><summary>Show solution</summary>\[\mathcal P(\{1,2\})=\{\emptyset,\{1\},\{2\},\{1,2\}\}.\]<p>There are four elements, and each of them is a subset of \(\{1,2\}\).</p></details><h3>Read each symbol carefully</h3><p>For \(A=\{1,2\}\), decide whether each statement is true or false and explain why.</p><ol><li>\(1\in A\)</li><li>\(\{1\}\subseteq A\)</li><li>\(\{1\}\in\mathcal P(A)\)</li><li>\(\emptyset\in A\)</li><li>\(\emptyset\in\mathcal P(A)\)</li></ol><details><summary>Show solution</summary><p>The answers are true, true, true, false, true. In particular, \(\emptyset\) is not an element of \(A\), but it is a subset of \(A\), so it is an element of \(\mathcal P(A)\).</p></details><h3>The smallest power set</h3><p>What is \(\mathcal P(\emptyset)\)? How many elements does it have?</p><details><summary>Show solution</summary><p>The only subset of \(\emptyset\) is \(\emptyset\) itself. Thus \[\mathcal P(\emptyset)=\{\emptyset\}.\]This power set has one element. The sets \(\emptyset\) and \(\{\emptyset\}\) are different.</p></details><p><strong>Looking ahead:</strong> How can we systematically list every subset of a larger finite set? Next time, we will connect this question to binary strings and counting.</p></article><article id="afterthoughts"><h2>7. Afterthought proofs</h2><p>Use the final proof workshop to put today’s definitions together. Begin independently, then compare with a partner. Each person should write an argument. Try both core problems before opening the solutions; the extension is for early finishers.</p><h3>1. Subsets in a chain</h3><p>Suppose \(A\subseteq B\) and \(B\subseteq C\). Prove \(A\subseteq C\).</p><details><summary>Show hint</summary><p>Start with an arbitrary \(x\in A\). Apply each assumption in turn.</p></details><details><summary>Show solution</summary><p>Let \(x\in A\). Since \(A\subseteq B\), we have \(x\in B\). Since \(B\subseteq C\), we have \(x\in C\). Therefore \(A\subseteq C\).</p></details><h3>2. When does an intersection equal one of its sets?</h3><p>Prove both directions:</p>\[A\cap B=A\iff A\subseteq B.\]<details><summary>Show hint</summary><p>For the forward direction, assume the equality and start with an element of \(A\). For the reverse direction, assume the inclusion and prove the two inclusions needed for equality.</p></details><details><summary>Show solution</summary><p><strong>Forward:</strong> Assume \(A\cap B=A\). Let \(x\in A\). Then \(x\in A\cap B\), so \(x\in B\). Therefore \(A\subseteq B\).</p><p><strong>Reverse:</strong> Assume \(A\subseteq B\). If \(x\in A\cap B\), then \(x\in A\); hence \(A\cap B\subseteq A\). Conversely, if \(x\in A\), our assumption gives \(x\in B\), so \(x\in A\cap B\). Hence \(A\subseteq A\cap B\). The two inclusions prove \(A\cap B=A\).</p></details><h3>Extension. Power sets preserve inclusion</h3><p>Suppose \(A\subseteq B\). Prove \(\mathcal P(A)\subseteq\mathcal P(B)\).</p><details><summary>Show hint</summary><p>Start with \(X\in\mathcal P(A)\). Translate that membership statement, then use the chain result from Problem 1.</p></details><details><summary>Show solution</summary><p>Let \(X\in\mathcal P(A)\). Then \(X\subseteq A\). Since \(A\subseteq B\), Problem 1 gives \(X\subseteq B\). Thus \(X\in\mathcal P(B)\). Therefore \(\mathcal P(A)\subseteq\mathcal P(B)\).</p></details><h3>Before you leave</h3><ol><li>Prove \(A\setminus B\subseteq A\).</li><li>Explain the difference between \(\emptyset\) and \(\{\emptyset\}\).</li></ol><details><summary>Review after writing your answers</summary><p>Let \(x\in A\setminus B\). Then \(x\in A\) and \(x\notin B\); in particular, \(x\in A\). Therefore \(A\setminus B\subseteq A\).</p><p>The empty set has no elements. The set \(\{\emptyset\}\) has one element, namely the empty set.</p></details><p>There is no separate post-lecture practice for this lesson. Continue working on the assigned problem set.</p></article>
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder">
+<footer>
 
 
 <p class="small">
@@ -714,19 +51,45 @@ Unless otherwise noted, original course materials are licensed under the
 Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
 </a>
 Third-party materials remain subject to their respective copyright and license terms.
-Last updated: September 2026
+Last updated: August 2026
 </p>
 
 </footer></div>
-<!-- Static includes above support local viewing. Refresh from course includes when served from the course root. -->
-<script>
-if(location.protocol==='http:' || location.protocol==='https:') {
- const siteRoot=new URL('./',location.href);
- for(const [file,id] of [['navigation.html','navigation-placeholder'],['footer.html','footer-placeholder']]) {
-  fetch(new URL('assets/includes/'+file,siteRoot)).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()}).then(html=>{
-   const el=document.getElementById(id);el.innerHTML=html;
-   el.querySelectorAll('a[data-path]').forEach(a=>{a.href=new URL(a.dataset.path,siteRoot).href});
-  }).catch(()=>{});
- }
-}
-</script></body></html>
+
+  <script>
+  if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+  const siteRoot = new URL("../", window.location.href).href;
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+  }
+</script>
+
+</body>
+</html>
