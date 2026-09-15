@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Practice problems on functions, injectivity, surjectivity, bijections, composition, and inverse functions, organized by difficulty.">
+  <title>Discrete Math – Lesson 5 Practice: Functions and Bijections</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 5 Practice: Functions and Bijections</h1>
+  </header>
+  <div id="navigation-placeholder">
+<nav class="course-navigation" aria-label="Course navigation">
+  <ul>
+    <li><a data-path="index.html" href="../index.html">Home</a></li>
+    <li><a data-path="resources/syllabus.html" href="../resources/syllabus.html">Syllabus</a></li>
+    <li><a data-path="lessons.html" href="../lessons.html">Lessons</a></li>
+    <li><a data-path="resources.html" href="../resources.html">Resources</a></li>
+  </ul>
+</nav>
+</div>
+
+  <main>
+    <p class="lead">These problems extend Lesson 5. Work them independently before opening the hints, and write a full argument before opening the solutions. The problems are grouped into a <strong>Core</strong> tier for essential skills and a <strong>Challenge</strong> tier for deeper arguments. A <strong>Mixed Review</strong> section at the end combines injectivity, surjectivity, and composition in a single proof.</p>
+
+    <nav class="lesson-nav" aria-label="In this practice set">
+      <ol>
+        <li><a href="#core">Core problems</a>
+          <ol>
+            <li><a href="#c1">Bijection between finite sets</a></li>
+            <li><a href="#c2">Image and preimage</a></li>
+            <li><a href="#c3">Composition and injectivity</a></li>
+            <li><a href="#c4">Pigeonhole principle</a></li>
+            <li><a href="#c5">Counting bijections</a></li>
+          </ol>
+        </li>
+        <li><a href="#challenge">Challenge problems</a>
+          <ol>
+            <li><a href="#h1">Inverse functions</a></li>
+            <li><a href="#h2">Composition and bijections</a></li>
+            <li><a href="#h3">Infinite cardinality</a></li>
+            <li><a href="#h4">Proving a function is not injective</a></li>
+            <li><a href="#h5">Function definition and well-definedness</a></li>
+          </ol>
+        </li>
+        <li><a href="#mixed">Mixed review</a>
+          <ol>
+            <li><a href="#m1">A function on the integers</a></li>
+            <li><a href="#m2">A function on the reals</a></li>
+            <li><a href="#m3">A composition with a twist</a></li>
+          </ol>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- ================= CORE TIER ================= -->
+    <article id="core">
+      <h2>Part I. Core problems</h2>
+      <p>These problems build fluency with the definitions. Aim to finish them without looking at the hints.</p>
+    </article>
+
+    <!-- Core 1 -->
+    <article id="c1">
+      <h3>C1. Bijection between finite sets</h3>
+      <p>Let \(A=\{1,2,3\}\) and \(B=\{x,y,z\}\). Define \(f:A\to B\) by</p>
+      \[f(1)=y,\quad f(2)=z,\quad f(3)=x.\]
+      <ol>
+        <li>Prove that \(f\) is a bijection.</li>
+        <li>Find \(f^{-1}\).</li>
+        <li>Compute \(f^{-1}\circ f\) and \(f\circ f^{-1}\).</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For injectivity, check that the three outputs are distinct. For surjectivity, check that every element of \(B\) appears among the outputs.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> <em>Injective:</em> the outputs \(y,z,x\) are all distinct, so different inputs have different outputs. <em>Surjective:</em> the codomain is \(B=\{x,y,z\}\), and all three elements are attained: \(x=f(3)\), \(y=f(1)\), \(z=f(2)\). Hence \(f\) is bijective.</p>
+        <p><strong>2.</strong> Reversing each pair gives \(f^{-1}(x)=3\), \(f^{-1}(y)=1\), \(f^{-1}(z)=2\).</p>
+        <p><strong>3.</strong> \(f^{-1}\circ f\) is the identity on \(A\), and \(f\circ f^{-1}\) is the identity on \(B\).</p>
+      </details>
+    </article>
+
+    <!-- Core 2 -->
+    <article id="c2">
+      <h3>C2. Image and preimage</h3>
+      <p>Let \(f:\mathbb Z\to\mathbb Z\), \(f(n)=n^2\). Let \(X=\{-2,-1,0,1,2\}\) and \(Y=\{0,1,4\}\).</p>
+      <ol>
+        <li>Compute \(f(X)\).</li>
+        <li>Compute the preimage \(f^{-1}(Y)=\{n\in\mathbb Z:f(n)\in Y\}\).</li>
+        <li>Is \(f^{-1}(Y)\) the same as the inverse function applied to \(Y\)? Explain.</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For part 2, find every integer whose square lies in \(Y\). For part 3, recall that an inverse function exists only when the original function is a bijection.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> Squaring each element of \(X\) gives \(f(X)=\{0,1,4\}\).</p>
+        <p><strong>2.</strong> We need all \(n\in\mathbb Z\) with \(n^2\in\{0,1,4\}\). These are \(n=0\), \(n=\pm 1\), and \(n=\pm 2\). So \(f^{-1}(Y)=\{-2,-1,0,1,2\}\).</p>
+        <p><strong>3.</strong> No. The notation \(f^{-1}(Y)\) here denotes the <em>preimage</em> of the set \(Y\), which is defined for any function. The inverse <em>function</em> \(f^{-1}\) exists only when \(f\) is a bijection, and this \(f\) is neither injective (since \(f(1)=f(-1)\)) nor surjective (since no integer squares to 2). So \(f^{-1}(Y)\) is a set of inputs, not the result of applying an inverse function.</p>
+      </details>
+    </article>
+
+    <!-- Core 3 -->
+    <article id="c3">
+      <h3>C3. Composition and injectivity</h3>
+      <p>Let \(f:\mathbb R\to\mathbb R\), \(f(x)=2x+3\), and \(g:\mathbb R\to\mathbb R\), \(g(x)=x^2\).</p>
+      <ol>
+        <li>Compute \((g\circ f)(x)\) and \((f\circ g)(x)\).</li>
+        <li>Is \(g\circ f\) injective? Prove or disprove.</li>
+        <li>Is \(g\circ f\) surjective? Prove or disprove.</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For part 2, look for two distinct inputs that produce the same squared output. For part 3, ask what values a square can take.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> \((g\circ f)(x)=g(2x+3)=(2x+3)^2\). \((f\circ g)(x)=f(x^2)=2x^2+3\). These are different functions, so composition is not commutative.</p>
+        <p><strong>2.</strong> \(g\circ f\) is not injective. Take \(x=-1\) and \(x=-2\). Then \((g\circ f)(-1)=1\) and \((g\circ f)(-2)=1\). Since \(-1\ne -2\) but the outputs agree, injectivity fails.</p>
+        <p><strong>3.</strong> \(g\circ f\) is not surjective. Every value of \((2x+3)^2\) is nonnegative, so no negative target is attained. For instance, there is no \(x\in\mathbb R\) with \((g\circ f)(x)=-1\).</p>
+      </details>
+    </article>
+
+    <!-- Core 4 -->
+    <article id="c4">
+      <h3>C4. Pigeonhole principle</h3>
+      <p>Let \(A=\{1,2,3,4,5\}\) and \(B=\{a,b,c\}\).</p>
+      <ol>
+        <li>How many functions are there from \(A\) to \(B\)?</li>
+        <li>Prove that no function from \(A\) to \(B\) is injective.</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For part 1, count independent choices of output for each of the five inputs. For part 2, compare the sizes of \(A\) and \(B\).</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> Each of the five inputs has three independent choices of output, so there are \(3^5=243\) functions.</p>
+        <p><strong>2.</strong> Suppose \(f:A\to B\) is injective. Then distinct elements of \(A\) must map to distinct elements of \(B\), so the image \(f(A)\) would have exactly \(|A|=5\) elements. But \(f(A)\subseteq B\) and \(|B|=3\), so \(|f(A)|\le 3\). This contradicts \(|f(A)|=5\). Hence no such \(f\) is injective.</p>
+      </details>
+    </article>
+
+    <!-- Core 5 -->
+    <article id="c5">
+      <h3>C5. Counting bijections</h3>
+      <p>Let \(A=\{1,2,3\}\) and \(B=\{a,b,c\}\).</p>
+      <ol>
+        <li>How many functions are there from \(A\) to \(B\)?</li>
+        <li>How many of them are injective?</li>
+        <li>How many are bijective?</li>
+        <li>Generalize: how many bijections are there from a set of \(n\) elements to itself?</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For injective functions, count the available choices for the first input, then the second, then the third. For part 4, extend the same product to \(n\) inputs.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> \(3^3=27\).</p>
+        <p><strong>2.</strong> The first input has 3 choices, the second has 2 remaining choices, and the third has 1 remaining choice. So there are \(3\cdot 2\cdot 1=6\) injective functions.</p>
+        <p><strong>3.</strong> Every injective function from a finite set to a set of the same size is automatically surjective, hence bijective. So there are 6 bijections.</p>
+        <p><strong>4.</strong> The same argument gives \(n!=n\cdot(n-1)\cdots 1\) bijections from an \(n\)-element set to itself. These are called <em>permutations</em> of the set.</p>
+      </details>
+    </article>
+
+    <!-- ================= CHALLENGE TIER ================= -->
+    <article id="challenge">
+      <h2>Part II. Challenge problems</h2>
+      <p>These problems require more careful quantifier manipulation and multi-step arguments.</p>
+    </article>
+
+    <!-- Challenge 1 -->
+    <article id="h1">
+      <h3>H1. Inverse functions</h3>
+      <p>Let \(f:\mathbb R\setminus\{1\}\to\mathbb R\setminus\{0\}\) be defined by</p>
+      \[f(x)=\frac{1}{x-1}.\]
+      <ol>
+        <li>Prove that \(f\) is injective.</li>
+        <li>Prove that \(f\) is surjective.</li>
+        <li>Find \(f^{-1}\).</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For surjectivity, start with an arbitrary \(y\ne 0\) and solve \(y=1/(x-1)\) for \(x\). Check that your answer lies in the domain \(\mathbb R\setminus\{1\}\).</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> Suppose \(f(x_1)=f(x_2)\). Then \(1/(x_1-1)=1/(x_2-1)\). Cross-multiplying gives \(x_2-1=x_1-1\), so \(x_1=x_2\). Hence \(f\) is injective.</p>
+        <p><strong>2.</strong> Let \(y\in\mathbb R\setminus\{0\}\). Solve \(y=1/(x-1)\): multiply both sides by \(x-1\) to get \(y(x-1)=1\), so \(x-1=1/y\) and \(x=1+1/y\). Since \(y\ne 0\), this expression is defined. Also \(1/y\ne 0\), so \(x\ne 1\), meaning \(x\) lies in the domain. Finally, \(f(x)=y\). Hence \(f\) is surjective.</p>
+        <p><strong>3.</strong> From the surjectivity computation, \(f^{-1}(y)=1+1/y\).</p>
+      </details>
+    </article>
+
+    <!-- Challenge 2 -->
+    <article id="h2">
+      <h3>H2. Composition and bijections</h3>
+      <p>Let \(f:A\to B\) and \(g:B\to C\) be bijections.</p>
+      <ol>
+        <li>Prove that \(g\circ f:A\to C\) is a bijection.</li>
+        <li>Prove that \((g\circ f)^{-1}=f^{-1}\circ g^{-1}\).</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For part 1, prove injectivity and surjectivity separately, using the corresponding property of \(f\) and \(g\) at each step. For part 2, show that the two functions agree on every element of \(C\).</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> <em>Injective:</em> suppose \((g\circ f)(x_1)=(g\circ f)(x_2)\). Then \(g(f(x_1))=g(f(x_2))\). Since \(g\) is injective, \(f(x_1)=f(x_2)\). Since \(f\) is injective, \(x_1=x_2\). <em>Surjective:</em> let \(c\in C\). Since \(g\) is surjective, there is \(b\in B\) with \(g(b)=c\). Since \(f\) is surjective, there is \(a\in A\) with \(f(a)=b\). Then \((g\circ f)(a)=g(f(a))=g(b)=c\). Hence \(g\circ f\) is bijective.</p>
+        <p><strong>2.</strong> Let \(c\in C\). Write \(b=g^{-1}(c)\in B\) and \(a=f^{-1}(b)\in A\). Then \((g\circ f)(a)=c\), so \((g\circ f)^{-1}(c)=a\). On the other hand, \((f^{-1}\circ g^{-1})(c)=f^{-1}(g^{-1}(c))=f^{-1}(b)=a\). Since the two functions agree on every \(c\in C\), they are equal.</p>
+      </details>
+    </article>
+
+    <!-- Challenge 3 -->
+    <article id="h3">
+      <h3>H3. Infinite cardinality</h3>
+      <p>Let \(S=\{n\in\mathbb Z:n\ge 0\}\) and \(T=\{n\in\mathbb Z:n\ge 1\}\). Define \(f:S\to T\) by \(f(n)=n+1\).</p>
+      <ol>
+        <li>Prove that \(f\) is a bijection.</li>
+        <li>What does this imply about \(|S|\) and \(|T|\)?</li>
+        <li>Is \(T\) a proper subset of \(S\)? Does this contradict your answer to part 2?</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For surjectivity, given \(y\in T\), you need an input in \(S\) whose successor is \(y\). For part 3, recall how cardinality is defined for infinite sets.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> <em>Injective:</em> if \(f(m)=f(n)\), then \(m+1=n+1\), so \(m=n\). <em>Surjective:</em> let \(y\in T\). Then \(y\ge 1\), so \(y-1\ge 0\), meaning \(y-1\in S\). Also \(f(y-1)=y\). Hence \(f\) is bijective.</p>
+        <p><strong>2.</strong> Since there is a bijection between \(S\) and \(T\), the sets have the same cardinality: \(|S|=|T|\).</p>
+        <p><strong>3.</strong> Yes, \(T\) is a proper subset of \(S\): the element \(0\) lies in \(S\) but not in \(T\). This does not contradict part 2, because for infinite sets a proper subset can have the same cardinality as the whole set.</p>
+      </details>
+    </article>
+
+    <!-- Challenge 4 -->
+    <article id="h4">
+      <h3>H4. Proving a function is not injective</h3>
+      <p>Let \(f:\mathbb R\to\mathbb R\), \(f(x)=x^4-x^2\).</p>
+      <ol>
+        <li>Prove that \(f\) is not injective.</li>
+        <li>Find all \(x\) such that \(f(x)=0\).</li>
+        <li>Is \(f\) surjective? Prove or disprove.</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For part 1, symmetric inputs often produce equal outputs. For part 3, look for a real number that no input maps to; a discriminant argument may help.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> Note that \(f(-1)=0\) and \(f(1)=0\). Since \(-1\ne 1\) but \(f(-1)=f(1)\), \(f\) is not injective.</p>
+        <p><strong>2.</strong> Factor: \(x^4-x^2=x^2(x^2-1)=x^2(x-1)(x+1)\). So \(f(x)=0\) exactly when \(x=0\), \(x=1\), or \(x=-1\).</p>
+        <p><strong>3.</strong> \(f\) is not surjective. Consider the target \(-1\). If \(f(x)=-1\), then \(x^4-x^2+1=0\). Let \(u=x^2\ge 0\). Then \(u^2-u+1=0\), whose discriminant is \(1-4=-3<0\), so there are no real solutions for \(u\), hence none for \(x\). Thus \(-1\) is not in the image of \(f\).</p>
+      </details>
+    </article>
+
+    <!-- Challenge 5 -->
+    <article id="h5">
+      <h3>H5. Function definition and well-definedness</h3>
+      <p>Let \(A=\{0,1,2,3\}\). Define a relation \(R\subseteq A\times A\) by</p>
+      \[R=\{(0,0),(1,1),(2,2),(3,3),(0,1),(1,0)\}.\]
+      <ol>
+        <li>Is \(R\) a function from \(A\) to \(A\)? Explain.</li>
+        <li>If not, can you remove elements from \(R\) to make it a function? What is the smallest number of elements to remove?</li>
+        <li>Can you remove elements to make it an injective function? A surjective function? A bijection?</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>Recall the definition: a function must assign exactly one output to each input in the domain. Check each input \(0,1,2,3\) separately.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> \(R\) is not a function. Input \(0\) has two outputs, \(0\) and \(1\). Input \(1\) also has two outputs, \(1\) and \(0\). Uniqueness of outputs fails for these two inputs.</p>
+        <p><strong>2.</strong> Inputs \(2\) and \(3\) already have exactly one output each. To repair input \(0\), remove either \((0,0)\) or \((0,1)\). To repair input \(1\), remove either \((1,1)\) or \((1,0)\). At least 2 elements must be removed. For example, removing \((0,1)\) and \((1,0)\) leaves \(R'=\{(0,0),(1,1),(2,2),(3,3)\}\), which is a function.</p>
+        <p><strong>3.</strong> The repaired relation \(R'\) is injective, surjective, and therefore bijective. So removing 2 elements suffices to obtain a bijection.</p>
+      </details>
+    </article>
+
+    <!-- ================= MIXED REVIEW ================= -->
+    <article id="mixed">
+      <h2>Part III. Mixed review</h2>
+      <p>Each problem below combines injectivity, surjectivity, and composition in a single argument. Write a complete proof before opening the solution.</p>
+    </article>
+
+    <!-- Mixed 1 -->
+    <article id="m1">
+      <h3>M1. A function on the integers</h3>
+      <p>Let \(f:\mathbb Z\to\mathbb Z\) be defined by \(f(n)=3n+1\), and let \(g:\mathbb Z\to\mathbb Z\) be defined by \(g(n)=n-1\).</p>
+      <ol>
+        <li>Prove that \(f\) is injective.</li>
+        <li>Prove that \(f\) is not surjective.</li>
+        <li>Compute \(g\circ f\) and \(f\circ g\). Are these the same function?</li>
+        <li>Prove that \(g\circ f\) is injective but not surjective.</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For part 4, you may use the earlier results about composition: if \(g\circ f\) is injective then \(f\) is injective, and if \(g\circ f\) is surjective then \(g\) is surjective. But be careful — the converses do not hold. Here you need a direct argument for injectivity of \(g\circ f\), and a direct witness for its failure to be surjective.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> Suppose \(f(m)=f(n)\). Then \(3m+1=3n+1\), so \(3m=3n\), giving \(m=n\). Hence \(f\) is injective.</p>
+        <p><strong>2.</strong> Consider the target \(0\in\mathbb Z\). If \(f(n)=0\), then \(3n+1=0\), so \(n=-1/3\notin\mathbb Z\). Hence \(0\) is not attained, and \(f\) is not surjective. More generally, the image of \(f\) is \(\{3n+1:n\in\mathbb Z\}\), the integers congruent to \(1\) modulo \(3\).</p>
+        <p><strong>3.</strong> \((g\circ f)(n)=g(3n+1)=(3n+1)-1=3n\). \((f\circ g)(n)=f(n-1)=3(n-1)+1=3n-2\). These are different functions: for example, \((g\circ f)(0)=0\) while \((f\circ g)(0)=-2\).</p>
+        <p><strong>4.</strong> <em>Injective:</em> suppose \((g\circ f)(m)=(g\circ f)(n)\). Then \(3m=3n\), so \(m=n\). Hence \(g\circ f\) is injective. <em>Not surjective:</em> the image of \(g\circ f\) is \(\{3n:n\in\mathbb Z\}\), the multiples of \(3\). The target \(1\in\mathbb Z\) is not a multiple of \(3\), so it is not attained. Hence \(g\circ f\) is not surjective.</p>
+      </details>
+    </article>
+
+    <!-- Mixed 2 -->
+    <article id="m2">
+      <h3>M2. A function on the reals</h3>
+      <p>Let \(f:\mathbb R\to\mathbb R\) be defined by \(f(x)=2x+5\), and let \(g:\mathbb R\to\mathbb R\) be defined by \(g(x)=(x-5)/2\).</p>
+      <ol>
+        <li>Prove that \(f\) is a bijection.</li>
+        <li>Find \(f^{-1}\).</li>
+        <li>Prove that \(g=f^{-1}\).</li>
+        <li>Compute \(g\circ f\) and \(f\circ g\), and explain why the results are identity functions.</li>
+        <li>Now let \(h:\mathbb R\to\mathbb R\) be defined by \(h(x)=x^3\). Prove that \(h\circ f\) is a bijection.</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For part 5, use the fact that a composition of bijections is a bijection, and prove separately that \(h\) is a bijection. Alternatively, prove the result directly by showing \(h\circ f\) is injective and surjective.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> <em>Injective:</em> if \(f(x_1)=f(x_2)\), then \(2x_1+5=2x_2+5\), so \(x_1=x_2\). <em>Surjective:</em> let \(y\in\mathbb R\). Choose \(x=(y-5)/2\in\mathbb R\). Then \(f(x)=2\cdot(y-5)/2+5=y\). Hence \(f\) is a bijection.</p>
+        <p><strong>2.</strong> From the surjectivity argument, \(f^{-1}(y)=(y-5)/2\).</p>
+        <p><strong>3.</strong> The formula for \(g\) matches \(f^{-1}\) exactly: \(g(y)=(y-5)/2=f^{-1}(y)\). Hence \(g=f^{-1}\).</p>
+        <p><strong>4.</strong> \((g\circ f)(x)=g(2x+5)=((2x+5)-5)/2=x\). \((f\circ g)(x)=f((x-5)/2)=2\cdot(x-5)/2+5=x\). Both compositions return the input unchanged, so they are the identity functions on \(\mathbb R\). This is exactly the defining property of inverse functions.</p>
+        <p><strong>5.</strong> First, \(h\) is a bijection. <em>Injective:</em> if \(m^3=n^3\), then \(m=n\), since the cube function is strictly increasing on \(\mathbb R\). <em>Surjective:</em> given \(y\in\mathbb R\), choose \(x=\sqrt[3]{y}\in\mathbb R\); then \(h(x)=y\). Since \(f\) and \(h\) are bijections, their composition \(h\circ f\) is a bijection by the composition theorem. Concretely, \((h\circ f)(x)=(2x+5)^3\), which is injective and surjective on \(\mathbb R\).</p>
+      </details>
+    </article>
+
+    <!-- Mixed 3 -->
+    <article id="m3">
+      <h3>M3. A composition with a twist</h3>
+      <p>Let \(f:\mathbb R\to\mathbb R\) be defined by \(f(x)=x^2\), and let \(g:\mathbb R\to\mathbb R\) be defined by \(g(x)=x+1\).</p>
+      <ol>
+        <li>Prove that \(f\) is neither injective nor surjective.</li>
+        <li>Prove that \(g\) is a bijection.</li>
+        <li>Compute \(g\circ f\) and \(f\circ g\). Are they injective? Surjective? Justify your answers.</li>
+        <li>Explain why the fact that \(g\) is a bijection does not make \(g\circ f\) a bijection.</li>
+      </ol>
+      <details>
+        <summary>Show hint</summary>
+        <p>For part 3, plug in values and look for repeated outputs and missing outputs. For part 4, recall the composition theorem: the composition of two bijections is a bijection, but here only one of the two functions is a bijection.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>1.</strong> <em>Not injective:</em> \(f(-1)=1=f(1)\), but \(-1\ne 1\). <em>Not surjective:</em> every square is nonnegative, so no negative real number is attained. For instance, \(-1\) is not in the image of \(f\).</p>
+        <p><strong>2.</strong> <em>Injective:</em> if \(g(x_1)=g(x_2)\), then \(x_1+1=x_2+1\), so \(x_1=x_2\). <em>Surjective:</em> given \(y\in\mathbb R\), choose \(x=y-1\in\mathbb R\); then \(g(x)=y\). Hence \(g\) is a bijection.</p>
+        <p><strong>3.</strong> \((g\circ f)(x)=g(x^2)=x^2+1\). \((f\circ g)(x)=f(x+1)=(x+1)^2\). <em>\(g\circ f\):</em> not injective, since \((g\circ f)(-1)=2=(g\circ f)(1)\); not surjective, since \(x^2+1\ge 1\), so \(0\) is not attained. <em>\(f\circ g\):</em> not injective, since \((f\circ g)(-2)=1=(f\circ g)(0)\); not surjective, since \((x+1)^2\ge 0\), so \(-1\) is not attained.</p>
+        <p><strong>4.</strong> The theorem states that the composition of two bijections is a bijection. Here \(f\) is not a bijection, so the theorem does not apply. The outer function \(g\) being bijective is not enough to rescue injectivity or surjectivity of the composition, because the inner function \(f\) already collapses distinct inputs together (breaking injectivity) and misses negative outputs (breaking surjectivity). The composition inherits both failures.</p>
+      </details>
+    </article>
+
+    <p class="back-to-top">
+      <a href="#top">↑ Back to top</a>
+    </p>
+  </main>
+
+  <div id="footer-placeholder">
+<footer>
+<p class="small">
+© 2026 Irina Shablinsky.
+Unless otherwise noted, original course materials are licensed under the
+<a href="https://creativecommons.org/licenses/by-nc/4.0/">
+Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
+</a>
+Third-party materials remain subject to their respective copyright and license terms.
+Last updated: August 2026
+</p>
+</footer>
+</div>
+
+  <script>
+  if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+    const siteRoot = new URL("../", window.location.href).href;
+
+    fetch(`${siteRoot}assets/includes/navigation.html`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Navigation request failed: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then(html => {
+        const placeholder = document.getElementById("navigation-placeholder");
+        placeholder.innerHTML = html;
+
+        placeholder.querySelectorAll("a[data-path]").forEach(link => {
+          link.href = `${siteRoot}${link.dataset.path}`;
+        });
+      })
+      .catch(error => console.error("Navigation load failed:", error));
+
+    fetch(`${siteRoot}assets/includes/footer.html`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Footer request failed: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(error => console.error("Footer load failed:", error));
+  }
+</script>
+
+</body>
+</html>
