@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lesson 6: Cardinality</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 6: Cardinality</h1>
+  </header>
+  <div id="navigation-placeholder"><nav class="course-navigation" aria-label="Course navigation">
+  <ul>
+    <li><a data-path="index.html" href="../index.html">Home</a></li>
+    <li><a data-path="resources/syllabus.html" href="../resources/syllabus.html">Syllabus</a></li>
+    <li><a data-path="lessons.html" href="../lessons.html">Lessons</a></li>
+    <li><a data-path="resources.html" href="../resources.html">Resources</a></li>
+  </ul>
+</nav>
+</div>
+
+  <main>
+    <p>Last time, bijections gave us a way to compare sizes. Today we ask which infinite sets can be listed and how to prove that a set cannot be listed at all.</p><nav aria-label="In this lecture"><ol><li><a href="#countable">Countability and bijections</a></li><li><a href="#integers">Integers</a></li><li><a href="#rationals">Rational numbers</a></li><li><a href="#binary">Infinite binary sequences</a></li><li><a href="#reals">Real numbers</a></li><li><a href="#afterthoughts">Afterthought proofs</a></li></ol></nav>
+<article id="countable"><h2>1. Countability and bijections</h2>
+<p>A set is <strong>countably infinite</strong> if there is a bijection from \(\mathbb N\) to it. We use \(\mathbb N=\{0,1,2,\ldots\}\). A set is <strong>countable</strong> if it is finite or countably infinite; otherwise it is <strong>uncountable</strong>. We will use these meanings consistently.</p><p>The cardinality of \(\mathbb N\) is denoted \(\aleph_0\), pronounced “aleph naught.” Last time, \(f(n)=2n\) gave a bijection \(\mathbb N\to2\mathbb N\), so the even natural numbers also have cardinality \(\aleph_0\).</p><p>Listing a countably infinite set means arranging its elements as \(a_0,a_1,a_2,\ldots\), with every element appearing exactly once at a finite index. The associated bijection is \(n\mapsto a_n\).</p><h3>Retrieve the function tools</h3><p>Suppose \(f:A\to B\) and \(g:B\to C\) are bijections.</p><ol><li>Which function establishes \(|B|=|A|\)?</li><li>Which function establishes \(|A|=|C|\)?</li><li>Which function establishes \(|A|=|A|\)?</li></ol>
+<details><summary>Show solution</summary><p>The inverse \(f^{-1}:B\to A\) establishes symmetry. Every target of \(f\) has exactly one preimage, so the inverse is well-defined and bijective.</p><p>The composition \(g\circ f:A\to C\) establishes transitivity. Equal outputs imply equal intermediate values by injectivity of \(g\), then equal inputs by injectivity of \(f\). Given \(c\in C\), choose \(b\in B\) with \(g(b)=c\), then \(a\in A\) with \(f(a)=b\); thus \(g(f(a))=c\).</p><p>The identity function establishes reflexivity. These properties show that our definition of equal cardinality behaves as equality should.</p></details>
+<p>Our definition uses a bijection in one direction. The inverse verifies that reversing the direction gives an equivalent condition; composition lets us connect two comparisons.</p>
+</article>
+<article id="integers"><h2>2. Listing all integers</h2>
+<p>The integers include all natural numbers and all negative integers. We can list them by alternating outward from zero:</p>\[0,-1,1,-2,2,-3,3,\ldots.\]<p>The corresponding function \(f:\mathbb N\to\mathbb Z\) is</p>\[f(n)=\begin{cases}n/2,&n\text{ even},\\-(n+1)/2,&n\text{ odd}.\end{cases}\]<p>Even natural-number inputs give nonnegative integers; odd natural-number inputs give negative integers. Define the odd natural numbers as \(\mathbb O=\{2k+1:k\in\mathbb N\}\). Then \(f(2\mathbb N)=\mathbb N\) and \(f(\mathbb O)=\{-1,-2,-3,\ldots\}\).</p><h3>Find the position</h3><p>Given an integer \(z\), find its natural-number index in this list. Consider separately \(z\ge0\) and \(z&lt;0\). Explain why the index is unique.</p>
+<details><summary>Show solution</summary><p>If \(z\ge0\), choose \(n=2z\in\mathbb N\). It is even and \(f(n)=z\). Any input giving a nonnegative output must be even, and \(n/2=z\) forces \(n=2z\).</p><p>If \(z&lt;0\), choose \(n=-2z-1\). This is a positive odd integer and \(f(n)=-((-2z-1)+1)/2=z\). Any input giving a negative output must be odd, and \(-(n+1)/2=z\) forces this same value of \(n\).</p><p>Every integer therefore occurs at exactly one index. This proves that \(f\) is bijective and \(|\mathbb Z|=\aleph_0\).</p></details>
+<h3>A quick composition check</h3><p>Let \(d:2\mathbb N\to\mathbb N\) be \(d(y)=y/2\). The composite \(F=f\circ d\) is a bijection from the even natural numbers to the integers. Compute \(F(0),F(2),F(4)\).</p>
+<details><summary>Show solution</summary>\[F(0)=f(0)=0,\quad F(2)=f(1)=-1,\quad F(4)=f(2)=1.\]<p>We know the composite is bijective because both component functions are bijective.</p></details>
+<h3>Why this attempted list fails</h3>\[0,1,2,3,\ldots,-1,-2,-3,\ldots\]<p>At which natural-number index would \(-5\) appear?</p>
+<details><summary>Show solution</summary><p>There is no such index. Listing all the nonnegative integers first never reaches a point at which the negative integers begin. A valid enumeration must reach every element after finitely many steps.</p></details>
+</article>
+<article id="rationals"><h2>3. Listing the rational numbers</h2>
+<p>Start with the positive rationals \(\mathbb Q_{&gt;0}\). Put \(m/n\) in row \(m\), column \(n\), with row and column indices starting at 1.</p><figure><img src="../assets/images/r0.png" alt="An array whose entry in row m and column n is the fraction m over n." width="500"><figcaption>The array contains a representation of every positive rational number.</figcaption></figure><p>Reading an entire row before starting the next would never reach the second row. Instead, visit successive finite diagonals:</p>\[m+n=2,3,4,5,\ldots.\]<p>Move back and forth along those diagonals in a zigzag, retaining only fractions in lowest terms.</p><figure><img src="../assets/images/r1.png" alt="Arrows traverse the fraction array along diagonals of constant numerator plus denominator, alternating direction. Reducible fractions are marked in red and omitted." width="500"><figcaption>A diagonal zigzag, with reducible fractions omitted.</figcaption></figure><p>The resulting list begins</p>\[1,2,\frac12,\frac13,3,4,\frac32,\frac23,\frac14,\ldots.\]<h3>Three things to justify</h3><ol><li><strong>Coverage:</strong> why does every positive rational number occur?</li><li><strong>No repetitions:</strong> why retain only fractions in lowest terms?</li><li><strong>Finite position:</strong> why is every retained fraction reached after finitely many steps?</li></ol>
+<details><summary>Show solution</summary><p><strong>Coverage.</strong> Every positive rational has a representation \(p/q\) with positive integers \(p,q\) having no common divisor greater than 1. This entry appears in the array and is retained.</p><p><strong>No repetitions.</strong> A positive rational has a unique lowest-terms representation with positive numerator and denominator. Keeping these representations prevents entries such as \(1/1\), \(2/2\), and \(3/3\) from repeating the same number.</p><p><strong>Finite position.</strong> The entry \(p/q\) lies on diagonal \(p+q\). Each earlier diagonal is finite, and there are only finitely many earlier diagonals. Thus the entry is reached after finitely many steps. Omitting reducible entries cannot delay it.</p><p>There are infinitely many retained entries, including every positive integer. Numbering them from zero gives a bijection \(\mathbb N\to\mathbb Q_{&gt;0}\).</p></details>
+<h3>Include zero and negative rationals</h3><p>Suppose \(r_0,r_1,r_2,\ldots\) lists every positive rational exactly once. Explain why</p>\[0,r_0,-r_0,r_1,-r_1,r_2,-r_2,\ldots\]<p>lists all of \(\mathbb Q\) exactly once.</p>
+<details><summary>Show solution</summary><p>Zero occurs at index 0. Each positive rational \(r_k\) occurs at index \(2k+1\), and its negative occurs at index \(2k+2\). These positions are finite and distinct. The positive list has no repetitions, and positive, negative, and zero entries cannot coincide. Therefore \(\mathbb Q\) is countably infinite.</p></details>
+<p><strong>Optional extension:</strong> how could diagonal traversal and the enumeration of \(\mathbb Z\) be combined to list all ordered pairs of integers?</p>
+<details><summary>Show solution</summary><p>First list pairs \((i,j)\in\mathbb N^2\) by the finite diagonals \(i+j=0,1,2,\ldots\). Replace each pair with \((f(i),f(j))\), where \(f:\mathbb N\to\mathbb Z\) is our bijection. Each integer pair has unique preimage coordinates, so it occurs exactly once at a finite position.</p></details>
+</article>
+<article id="binary"><h2>4. A set that cannot be listed</h2>
+<p>Not finding a clever enumeration is not a proof of uncountability. We need an argument that defeats <strong>every proposed list</strong>.</p><p>An <strong>infinite binary sequence</strong> is a function \(s:\mathbb N\to\{0,1\}\). Its entries are \(s(0),s(1),s(2),\ldots\). Let \(\mathcal B\) be the set of all such sequences. Unlike the finite strings from Lesson 5, these sequences have no last position.</p><p>Take any proposed list \(s_0,s_1,s_2,\ldots\) of infinite binary sequences. The list need not have distinct rows: we will show that it fails to reach every sequence regardless.</p><p>Here is an illustrative beginning. The bold entries lie on the diagonal: row \(n\), position \(n\).</p>
+\[\begin{array}{c|ccccc}
+ &0&1&2&3&\cdots\\\hline
+s_0&\mathbf{0}&1&0&1&\cdots\\
+s_1&1&\mathbf{1}&0&0&\cdots\\
+s_2&0&0&\mathbf{1}&1&\cdots\\
+s_3&1&0&1&\mathbf{0}&\cdots\\
+\vdots&\vdots&\vdots&\vdots&\vdots&\ddots
+\end{array}\]
+<h3>Construct a missing sequence</h3><p>Define a new sequence by flipping the diagonal bits:</p>\[t(n)=1-s_n(n).\]<p>In the illustrative table, \(t\) begins \(1,0,0,1,\ldots\).</p><ol><li>Why is \(t\) a valid infinite binary sequence?</li><li>Why is \(t\ne s_0\)? Why is \(t\ne s_1\)?</li><li>For an arbitrary index \(k\), which position proves \(t\ne s_k\)?</li></ol>
+<details><summary>Show solution</summary><p>Each value \(s_n(n)\) is 0 or 1, so \(t(n)=1-s_n(n)\) is also 0 or 1. Thus \(t\in\mathcal B\).</p><p>At position 0, \(t(0)\ne s_0(0)\); at position 1, \(t(1)\ne s_1(1)\). More generally, for every \(k\in\mathbb N\),</p>\[t(k)=1-s_k(k)\ne s_k(k).\]<p>Two functions are different if they differ at even one input. Therefore \(t\ne s_k\) for every \(k\). The proposed list misses \(t\).</p></details>
+<p>This argument works for any list, so no function \(\mathbb N\to\mathcal B\) is surjective. Every nonempty finite set can be covered by a repeating list, and every countably infinite set can be listed bijectively. Since \(\mathcal B\) is nonempty and cannot be covered by any list, it is uncountable.</p><h3>What the quantifiers say</h3><p><strong>For every proposed list, we construct a sequence missing from that list.</strong> The constructed sequence depends on the list. We do not claim that one fixed sequence is absent from every possible list.</p><p>Nor must \(t\) differ from every row at every position. One carefully chosen difference per row is enough. This is Cantor’s diagonal argument.</p>
+</article>
+<article id="reals"><h2>5. The real numbers are uncountable</h2>
+<p>Adapt the same idea to the interval \((0,1)\). Suppose someone proposes a list \(x_0,x_1,x_2,\ldots\) of all real numbers in this interval.</p><p>Decimal representations need care: \(0.4999\ldots=0.5000\ldots\). For each listed number, choose the representation that does <strong>not</strong> end in repeating 9s; write terminating decimals with trailing zeros.</p><p>Write</p>\[x_n=0.d_{n,1}d_{n,2}d_{n,3}\ldots.\]<p>Rows are indexed from 0, while decimal places are indexed from 1. To change the diagonal, use digit \(n+1\) of row \(n\).</p><h3>A precise construction</h3><p>Define \(r=0.c_1c_2c_3\ldots\) by</p>\[c_{n+1}=\begin{cases}2,&d_{n,n+1}=1,\\1,&d_{n,n+1}\ne1.\end{cases}\]
+<p>We are defining digits of the new number \(r\), not changing the proposed list. Here is an illustrative list:</p>
+\[\begin{array}{c|cccccc}
+x_0=0.&\mathbf{1}&3&1&5&6&\cdots\\
+x_1=0.&7&\mathbf{1}&8&2&8&\cdots\\
+x_2=0.&1&4&\mathbf{1}&5&9&\cdots\\
+x_3=0.&7&4&1&\mathbf{2}&1&\cdots\\
+x_4=0.&6&1&8&1&\mathbf{2}&\cdots
+\end{array}\]
+<p>The diagonal begins \(1,1,1,2,2\), so \(r\) begins \(0.22211\ldots\).</p><h3>Finish the argument</h3><ol><li>Why does the construction give a number in \((0,1)\)?</li><li>Why is \(r\ne x_k\) for each index \(k\)?</li><li>Why does the decimal ambiguity not spoil this argument?</li></ol>
+<details><summary>Show solution</summary><p>Every digit of \(r\) is 1 or 2, so \(0&lt;r&lt;1\). For each \(k\), digit \(k+1\) of \(r\) differs from digit \(k+1\) of \(x_k\).</p><p>Neither decimal expansion ends in repeating 9s, and \(r\) also does not terminate. The ambiguity between a terminating expansion and one ending in 9s therefore cannot identify these different digit strings as the same number. Hence \(r\ne x_k\).</p><p>The proposed list misses \(r\). Because the list was arbitrary, no list covers \((0,1)\), so this interval is uncountable.</p></details>
+<h3>From the interval to all real numbers</h3><p>If \(\mathbb R\) could be listed, deleting entries outside \((0,1)\) would list all numbers in that interval. Every retained number would still be reached after finitely many steps. This contradicts what we just proved. Thus \(\mathbb R\) is uncountable.</p><p>Showing that one particular function misses a real number would not establish this result. The strength of the proof is that the construction applies to every proposed list.</p>
+</article>
+<article id="afterthoughts"><h2>6. Afterthought proofs</h2>
+<h3>A list of subsets</h3><p>Suppose \(A_0,A_1,A_2,\ldots\) is any proposed list of all subsets of \(\mathbb N\). Define</p>\[D=\{n\in\mathbb N:n\notin A_n\}.\]<ol><li>Why is \(D\) an element of \(\mathcal P(\mathbb N)\)?</li><li>Fix an arbitrary \(k\). Explain why \(D\ne A_k\), considering whether \(k\in A_k\).</li><li>What does this prove about \(\mathcal P(\mathbb N)\)?</li></ol>
+<details><summary>Show hint</summary><p>Compare membership of the single element \(k\) in \(D\) and \(A_k\). Recall that two sets are different if some element belongs to one and not the other.</p></details>
+<details><summary>Show solution</summary><p>By definition, \(D\subseteq\mathbb N\), so \(D\in\mathcal P(\mathbb N)\). Let \(k\in\mathbb N\) be arbitrary.</p><ul><li>If \(k\in A_k\), then \(k\notin D\).</li><li>If \(k\notin A_k\), then \(k\in D\).</li></ul><p>In either case, the sets disagree on membership of \(k\), so \(D\ne A_k\). Thus the proposed list omits \(D\). Every proposed list fails, so \(\mathcal P(\mathbb N)\) is uncountable.</p><p>This is binary diagonalization in set notation: membership corresponds to 1 and nonmembership to 0.</p></details>
+<h3>Before you leave</h3><ol><li>Explain why \(0,1,2,\ldots,-1,-2,\ldots\) is not an enumeration of \(\mathbb Z\).</li><li>A student says, “The new sequence differs from the first four rows, so it is not on the list.” What is missing from that argument?</li></ol>
+<details><summary>Review after writing your answers</summary><p>The first expression never reaches a negative integer at a finite index. In the second argument, checking four rows is insufficient: the sequence could occur later. We must use an arbitrary index \(k\) and show a difference at position \(k\), covering every row.</p></details>
+</article>
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder"><footer>
+
+
+<p class="small">
+© 2026 Irina Shablinsky.
+Unless otherwise noted, original course materials are licensed under the
+<a href="https://creativecommons.org/licenses/by-nc/4.0/">
+Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
+</a>
+Third-party materials remain subject to their respective copyright and license terms.
+Last updated: August 2026
+</p>
+
+</footer></div>
+
+  <script>
+  if (location.protocol === "http:" || location.protocol === "https:") {
+  const siteRoot = new URL("../", window.location.href).href;
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+  }
+</script>
+
+</body>
+</html>
