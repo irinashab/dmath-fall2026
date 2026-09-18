@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lesson 6: Post-Lesson Exercises</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 6: Post-Lesson Exercises</h1>
+  </header>
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <p>These exercises review countability, bijections, and Cantor’s diagonal argument. Attempt each problem before opening the solution. Write full sentences in your proofs, and state clearly which function or construction you are using.</p>
+
+    <nav aria-label="Exercise list">
+      <ol>
+        <li><a href="#ex1">Warm-up: countability of a subset</a></li>
+        <li><a href="#ex2">Bijection from a finite set plus \(\mathbb N\)</a></li>
+        <li><a href="#ex3">Countable union of finite sets</a></li>
+        <li><a href="#ex4">An injection that is not a bijection</a></li>
+        <li><a href="#ex5">Diagonal argument with ternary digits</a></li>
+        <li><a href="#ex6">The set of all functions \(\mathbb N\to\{0,1,2\}\)</a></li>
+        <li><a href="#ex7">Challenge: algebraic numbers are countable</a></li>
+      </ol>
+    </nav>
+
+    <article id="ex1">
+      <h2>1. Warm-up: countability of a subset</h2>
+      <p>Let \(A=\{n\in\mathbb N:n\text{ is a perfect square}\}=\{0,1,4,9,16,\ldots\}\).</p>
+      <ol>
+        <li>Write down an explicit bijection \(f:\mathbb N\to A\).</li>
+        <li>Conclude that \(|A|=\aleph_0\).</li>
+      </ol>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>(1)</strong> Define \(f(n)=n^2\). This maps \(\mathbb N\) to \(A\), since every natural number squares to a perfect square, and every perfect square is of the form \(n^2\) for a unique \(n\in\mathbb N\).</p>
+        <p><strong>(2)</strong> The function \(f\) is injective: if \(n^2=m^2\) with \(n,m\ge0\), then \(n=m\). It is surjective by definition of \(A\). Hence \(f\) is a bijection, so \(|A|=|\mathbb N|=\aleph_0\).</p>
+      </details>
+    </article>
+
+    <article id="ex2">
+      <h2>2. Bijection from a finite set plus \(\mathbb N\)</h2>
+      <p>Let \(S=\{a,b,c\}\cup\mathbb N\), where \(a,b,c\) are three distinct objects not in \(\mathbb N\). Show that \(S\) is countably infinite by constructing an explicit bijection \(f:\mathbb N\to S\).</p>
+      <details>
+        <summary>Show hint</summary>
+        <p>Send the first three natural numbers to \(a,b,c\), then shift the remaining natural numbers by 3.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p>Define</p>
+        \[
+        f(n)=\begin{cases}
+        a,&n=0,\\
+        b,&n=1,\\
+        c,&n=2,\\
+        n-3,&n\ge3.
+        \end{cases}
+        \]
+        <p><strong>Injective.</strong> The values \(a,b,c\) are distinct and not in \(\mathbb N\), so they cannot equal any \(n-3\). For \(n,m\ge3\), \(n-3=m-3\) implies \(n=m\).</p>
+        <p><strong>Surjective.</strong> Every element of \(\{a,b,c\}\) is hit by \(0,1,2\). Every natural number \(k\in\mathbb N\) is hit by \(n=k+3\).</p>
+        <p>Thus \(f\) is a bijection, so \(|S|=\aleph_0\).</p>
+      </details>
+    </article>
+
+    <article id="ex3">
+      <h2>3. Countable union of finite sets</h2>
+      <p>For each \(n\in\mathbb N\), let \(A_n=\{0,1,2,\ldots,n\}\), so each \(A_n\) is finite. Show that</p>
+      \[
+      S=\bigcup_{n=0}^{\infty}A_n
+      \]
+      <p>is countably infinite by finding a bijection \(\mathbb N\to S\).</p>
+      <details>
+        <summary>Show hint</summary>
+        <p>What is \(S\) as a set? It is just \(\mathbb N\) itself.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p>Since \(A_n\subseteq\mathbb N\) for every \(n\), we have \(S\subseteq\mathbb N\). Conversely, for any \(k\in\mathbb N\), \(k\in A_k\), so \(\mathbb N\subseteq S\). Hence \(S=\mathbb N\), and the identity function \(\mathrm{id}_{\mathbb N}:\mathbb N\to S\) is a bijection. Therefore \(|S|=\aleph_0\).</p>
+        <p><em>Remark.</em> This is a degenerate case of the countable-union theorem: the union of countably many finite sets can be finite or countably infinite, never uncountable.</p>
+      </details>
+    </article>
+
+    <article id="ex4">
+      <h2>4. An injection that is not a bijection</h2>
+      <p>Define \(f:\mathbb N\to\mathbb N\) by \(f(n)=2n\).</p>
+      <ol>
+        <li>Show that \(f\) is injective but not surjective.</li>
+        <li>Does this contradict the statement “a set is countably infinite if there is a bijection from \(\mathbb N\) to it”? Explain.</li>
+      </ol>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>(1)</strong> If \(2n=2m\), then \(n=m\), so \(f\) is injective. But \(1\in\mathbb N\) has no preimage: \(2n=1\) has no natural-number solution. So \(f\) is not surjective.</p>
+        <p><strong>(2)</strong> No contradiction. The definition requires <em>some</em> bijection \(\mathbb N\to A\), not that every injection is a bijection. Here \(2\mathbb N\) is countably infinite via the bijection \(n\mapsto2n\) from \(\mathbb N\) to \(2\mathbb N\), viewed with codomain \(2\mathbb N\) rather than \(\mathbb N\).</p>
+        <p>This exercise highlights the difference between an injection \(A\to B\) and a bijection \(A\to B\): an injection only shows \(|A|\le|B|\), not \(|A|=|B|\).</p>
+      </details>
+    </article>
+
+    <article id="ex5">
+      <h2>5. Diagonal argument with ternary digits</h2>
+      <p>Let \(T\) be the set of infinite sequences \(s:\mathbb N\to\{0,1,2\}\) (ternary sequences). Suppose \(s_0,s_1,s_2,\ldots\) is any proposed list of elements of \(T\). Define \(t\) by</p>
+      \[
+      t(n)=\begin{cases}
+      0,&s_n(n)=1,\\
+      1,&s_n(n)\ne1.
+      \end{cases}
+      \]
+      <ol>
+        <li>Show that \(t\in T\).</li>
+        <li>Show that \(t\ne s_k\) for every \(k\in\mathbb N\).</li>
+        <li>Conclude that \(T\) is uncountable.</li>
+      </ol>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>(1)</strong> Each \(t(n)\) is 0 or 1, hence lies in \(\{0,1,2\}\). So \(t\in T\).</p>
+        <p><strong>(2)</strong> Fix \(k\in\mathbb N\). At position \(k\), \(t(k)\) is defined by flipping the value \(s_k(k)\): if \(s_k(k)=1\), then \(t(k)=0\ne1\); if \(s_k(k)\ne1\), then \(t(k)=1\ne s_k(k)\). In either case \(t(k)\ne s_k(k)\), so the sequences differ at position \(k\). Hence \(t\ne s_k\).</p>
+        <p><strong>(3)</strong> Since \(k\) was arbitrary, \(t\) differs from every sequence in the list. The list misses \(t\), so no list covers \(T\). Therefore \(T\) is uncountable.</p>
+        <p><em>Remark.</em> The same argument works for sequences over any alphabet with at least two symbols, using a rule that avoids the diagonal value.</p>
+      </details>
+    </article>
+
+    <article id="ex6">
+      <h2>6. The set of all functions \(\mathbb N\to\{0,1,2\}\)</h2>
+      <p>Let \(F\) be the set of all functions \(f:\mathbb N\to\{0,1,2\}\).</p>
+      <ol>
+        <li>Explain why \(F\) is in bijection with the set \(T\) of ternary sequences from Exercise 5.</li>
+        <li>Conclude that \(F\) is uncountable.</li>
+      </ol>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>(1)</strong> A function \(f:\mathbb N\to\{0,1,2\}\) is exactly the same data as the sequence \((f(0),f(1),f(2),\ldots)\) of its values. So the identity map on the underlying data is a bijection \(F\to T\).</p>
+        <p><strong>(2)</strong> A set in bijection with an uncountable set is uncountable. Since \(T\) is uncountable by Exercise 5, \(F\) is uncountable.</p>
+        <p><em>Remark.</em> More generally, the set of all functions \(\mathbb N\to A\) is uncountable whenever \(A\) has at least two elements, by the same diagonal argument.</p>
+      </details>
+    </article>
+
+    <article id="ex7">
+      <h2>7. Challenge: algebraic numbers are countable</h2>
+      <p>A real number \(x\) is <strong>algebraic</strong> if there exist integers \(a_0,a_1,\ldots,a_n\), not all zero, with \(a_n\ne0\), such that</p>
+      \[
+      a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0=0.
+      \]
+      <p>Let \(\mathbb A\) be the set of algebraic real numbers. Show that \(\mathbb A\) is countable.</p>
+      <details>
+        <summary>Show hint</summary>
+        <p>A polynomial of degree \(n\) has at most \(n\) real roots. Count the polynomials first: each polynomial is determined by a finite tuple of integers \((a_0,\ldots,a_n)\) with \(a_n\ne0\). Use the countability of finite tuples of integers and the countable-union theorem.</p>
+      </details>
+      <details>
+        <summary>Show solution</summary>
+        <p><strong>Step 1: Count the polynomials.</strong> For each \(n\ge1\), let \(P_n\) be the set of polynomials of degree exactly \(n\) with integer coefficients:</p>
+        \[
+        P_n=\{a_nx^n+\cdots+a_0:a_n\ne0,\ a_i\in\mathbb Z\}.
+        \]
+        <p>The map \(P_n\to\mathbb Z^{n+1}\) sending a polynomial to its coefficient tuple is a bijection. Since \(\mathbb Z\) is countable and finite products of countable sets are countable, \(\mathbb Z^{n+1}\) is countable. Hence \(P_n\) is countable for each \(n\).</p>
+
+        <p><strong>Step 2: Count all polynomials.</strong> The set of all nonconstant integer polynomials is</p>
+        \[
+        P=\bigcup_{n=1}^{\infty}P_n.
+        \]
+        <p>By the countable-union theorem (Exercise A of the lesson), \(P\) is countable.</p>
+
+        <p><strong>Step 3: Count the roots.</strong> For each polynomial \(p\in P\), let \(R(p)\) be its set of real roots. A polynomial of degree \(n\) has at most \(n\) real roots, so each \(R(p)\) is finite. The set of algebraic numbers is</p>
+        \[
+        \mathbb A=\bigcup_{p\in P}R(p).
+        \]
+        <p>This is a countable union of finite sets. Indexing \(P\) as \(p_0,p_1,p_2,\ldots\), we can list \(\mathbb A\) by listing the roots of \(p_0\) first, then the new roots of \(p_1\), then the new roots of \(p_2\), and so on, removing duplicates. Each root is reached after finitely many steps, so \(\mathbb A\) is countable.</p>
+
+        <p><em>Remark.</em> Since \(\mathbb R\) is uncountable and \(\mathbb A\) is countable, there must exist real numbers that are not algebraic. Such numbers are called <strong>transcendental</strong>. This argument shows they exist without exhibiting a single example.</p>
+      </details>
+    </article>
+
+    <p class="back-to-top">
+      <a href="#top">↑ Back to top</a>
+    </p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>
