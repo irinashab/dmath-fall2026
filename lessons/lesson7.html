@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Hilbert’s Hotel and Part 1 Workshop</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Hilbert’s Hotel and Part 1 Workshop</h1>
+  </header>
+  <div id="navigation-placeholder"><nav class="course-navigation" aria-label="Course navigation">
+  <ul>
+    <li><a data-path="index.html" href="../index.html">Home</a></li>
+    <li><a data-path="resources/syllabus.html" href="../resources/syllabus.html">Syllabus</a></li>
+    <li><a data-path="lessons.html" href="../lessons.html">Lessons</a></li>
+    <li><a data-path="resources.html" href="../resources.html">Resources</a></li>
+  </ul>
+</nav>
+</div>
+
+  <main>
+    <p>We close Part 1, <strong>Language and proof</strong>, with a mathematical toy and a problem-solving session. Our tools are logical equivalence, quantifiers, sets, functions, cardinality, and the proof methods we have practiced.</p><nav aria-label="Session sections"><ol><li><a href="#hotel">Hilbert’s Hotel</a></li><li><a href="#logic">Logic and quantifiers</a></li><li><a href="#sets">Sets and counterexamples</a></li><li><a href="#functions">Functions and witnesses</a></li><li><a href="#proofs">Choose a proof method</a></li><li><a href="#return">Return to the hotel</a></li><li><a href="#exit">A question for next time</a></li></ol></nav>
+<!-- Suggested 90-minute pacing: hotel 15; logic 10; sets 15; functions 15; proof choice 15; hotel application 15; exit 5. The infinitely many buses scenario is optional if discussion runs long. -->
+<article id="hotel"><h2>1. A mathematical toy — Hilbert’s Hotel</h2>
+        <p>In the realm of mathematics, some of the most profound truths are explored not with complex equations, but with simple, elegant, and often baffling thought experiments. These are the "toys" mathematicians play with—seemingly childish scenarios that reveal the deepest properties of logic, space, and number. Few toys are more famous or more illustrative of the bizarre nature of infinity than the Hilbert Hotel.</p>
+
+        <h3 id="history">A Grand Idea on a Grand Stage</h3>
+        <p>The "Hilbert's Hotel" paradox was conceived by the great German mathematician <strong>David Hilbert</strong> in the 1920s. He used it not as a proposal for a real hotelier's convention, but as a public demonstration during lectures on the nature of infinity in set theory, a field developed by Georg Cantor beginning in the nineteenth century.</p>
+        
+        <blockquote><p>
+            "The infinite! No other question has ever moved so profoundly the spirit of man; no other idea has so fruitfully stimulated his intellect; yet no other concept stands in greater need of clarification than that of the infinite." </p><footer>— David Hilbert</footer></blockquote>
+
+        <p>Hilbert was a towering figure in mathematics, and his goal was to illuminate Cantor's revolutionary, and to many, deeply unsettling, conclusion: that not all infinities are created equal. Some are "countable" and some are "larger," or "uncountable." The Hilbert Hotel perfectly encapsulates the strangeness of the smallest kind of infinity, the countable infinity of the natural numbers (1, 2, 3, 4, ...).</p>
+
+        
+<p>Imagine a hotel with rooms numbered \(1,2,3,\ldots\), and every room occupied by one guest. There is no last room. Throughout the hotel problems, room, seat, and passenger numbers start at 1. This does not change our course convention \(\mathbb N=\{0,1,2,\ldots\}\).</p><p>Imagine that the manager can announce a new room assignment to everyone at once. Our task is to give a rule that assigns every guest a room and never assigns two guests to the same room.</p><h3>One new guest</h3><p>A new guest arrives. Can the manager accommodate everyone? Give a rule before opening the answer.</p>
+<details><summary>Show solution</summary><p>Move the guest currently in room \(n\) to room \(n+1\), and put the new guest in room 1. Distinct old room numbers give distinct new room numbers. No old guest is assigned room 1, and every room numbered at least 2 receives the guest from the preceding room.</p><p>Write \(g_n\) for the guest originally in room \(n\), and \(a\) for the new arrival. Let \(\mathbb N_{>0}=\{1,2,3,\ldots\}\) denote the positive integers, our room numbers. The explicit bijection is</p>
+\[f:\{a\}\cup\{g_n:n\ge1\}\longrightarrow \mathbb N_{>0},\qquad
+f(u)=\begin{cases}1,&u=a,\\n+1,&u=g_n.\end{cases}\]
+<p>Room 1 receives the new arrival. Each room \(r\ge2\) receives the guest originally in room \(r-1\).</p><p>The combined assignment from all guests to all rooms is a bijection. The rule for old guests alone is not onto all rooms—it deliberately leaves room 1 free.</p></details>
+<h3>One bus with infinitely many passengers</h3><p>Begin again with a full hotel. A bus arrives with passengers numbered \(1,2,3,\ldots\). How can we accommodate both the current guests and all the passengers?</p>
+<details><summary>Show solution</summary><p>Send current guest \(n\) to room \(2n\), and new passenger \(n\) to room \(2n-1\). Current guests occupy the even rooms; passengers occupy the odd rooms.</p><p>With \(g_n\) denoting current guests and \(p_n\) bus passengers, define</p>
+\[f:\{g_n:n\ge1\}\cup\{p_n:n\ge1\}\longrightarrow \mathbb N_{>0},\qquad
+f(u)=\begin{cases}2n,&u=g_n,\\2n-1,&u=p_n.\end{cases}\]
+<p>Every room receives exactly one guest: room \(2n\) receives current guest \(n\), and room \(2n-1\) receives passenger \(n\) from the bus.</p><p>Within each group, different numbers give different rooms. Between groups, an even room cannot equal an odd room. Every positive integer is either even or odd, so every room is occupied exactly once.</p></details>
+<h3>Infinitely many buses — a final challenge</h3><p>Now buses \(1,2,3,\ldots\) arrive, each with seats \(1,2,3,\ldots\). Can we still accommodate everyone, including the existing guests?</p>
+<details><summary>Show solution</summary><p>Treat the existing guests as <strong>Bus 0</strong>, with the guest in room \(s\) regarded as its passenger in seat \(s\). Every guest now has a unique label \((b,s)\), where \(b\ge0\) and \(s\ge1\).</p><p>List these labels along finite diagonals of constant \(b+s\):</p>
+\[\begin{aligned}b+s=1:&\quad(0,1),\\b+s=2:&\quad(0,2),(1,1),\\b+s=3:&\quad(0,3),(1,2),(2,1),\\b+s=4:&\quad(0,4),(1,3),(2,2),(3,1),\ldots.\end{aligned}\]
+<p>Assign the first label to room 1, the second to room 2, and so on. Each guest’s label lies on one finite diagonal, reached after finitely many earlier entries. No label is repeated. The list gives one guest for each room, so the assignment is a bijection.</p><p>An explicit formula for this diagonal listing is</p>
+\[f:\mathbb N\times \mathbb N_{>0}\longrightarrow \mathbb N_{>0},\qquad f(b,s)=\frac{(b+s-1)(b+s)}2+b+1.\]
+<p>On diagonal \(d=b+s\), there are \(d\) entries, and the earlier diagonals contain \(d(d-1)/2\) entries. The label \((b,s)\) is entry \(b+1\) on its diagonal.</p>
+<p><strong>Worked example.</strong> Take the label \((b,s)=(1,2)\). Then \(b+s=3\), so it lies on diagonal 3. The earlier diagonals have \(1+2=3\) entries, and \((1,2)\) is the second entry on diagonal 3, so it is the \(3+2=5\)-th label overall and is assigned to room 5. Check with the formula:</p>
+\[f(1,2)=\frac{(1+2-1)(1+2)}2+1+1=\frac{2\cdot 3}{2}+2=3+2=5.\]
+<p>Now run the inverse. For room \(r=5\), find the unique positive integer \(d\) with \(\frac{d(d-1)}2<5\le\frac{d(d+1)}2\). Try \(d=3\): \(\frac{3\cdot2}{2}=3<5\le\frac{3\cdot4}{2}=6\). So \(d=3\). Then \(b=5-3-1=1\) and \(s=3-1=2\), recovering the label \((1,2)\).</p>
+<p>To find the guest assigned to room \(r\), choose the unique positive integer \(d\) satisfying</p>
+\[\frac{d(d-1)}2\le r\le\frac{d(d+1)}2.\]
+<p>Then set \(b=r-d(d-1)/2-1\) and \(s=d-b\). These satisfy \(0\le b\le d-1\) and \(s\ge1\), and give the unique guest in room \(r\). In particular, old guest \(s\), labeled \((0,s)\), goes to room \(s(s-1)/2+1\).</p><p>This is the same idea used to enumerate pairs when listing the rational numbers.</p></details>
+<h3>What the toy tells us</h3><p>A full countably infinite hotel can accommodate these additional countable collections. This is surprising, but not a logical contradiction.</p><p>It does not mean that every infinite collection fits. If one guest arrived for each infinite binary sequence, a collision-free assignment would be impossible: the occupied rooms would list those guests in increasing room order, contradicting the uncountability of infinite binary sequences.</p>
+</article>
+<article id="logic"><h2>2. Logic and quantifiers</h2>
+<p>For the remaining problems, work independently first, compare with a partner, and revise your own argument. Before writing, identify the claim and what would establish or refute it.</p><h3>Problem 1 — classify the formula</h3>
+\[(p\to q)\land(p\to\neg q).\]<p>Is this a tautology, satisfiable but not a tautology, or unsatisfiable? Justify your answer with a truth table or logical equivalences.</p>
+<details><summary>Show solution</summary><p>If \(p\) is false, both implications are true. If \(p\) is true, both would be true only if \(q\) and \(\neg q\) were both true, which is impossible. Thus the formula is equivalent to \(\neg p\).</p><p>It is <strong>satisfiable but not a tautology</strong>. For example, \(p=F,q=T\) makes it true, whereas \(p=T,q=T\) makes it false.</p></details>
+<h3>Problem 2 — negate a definition</h3><p>Let \(f:A\to B\). Negate</p>\[\forall y\in B\;\exists x\in A:\ f(x)=y.\]<p>Explain in words what evidence would disprove the original statement.</p>
+<details><summary>Show solution</summary>\[\exists y\in B\;\forall x\in A:\ f(x)\ne y.\]<p>There is a target in the codomain that no input reaches. One failed attempt to find a preimage is not enough: we must show that every input misses the chosen target.</p></details>
+</article>
+<article id="sets"><h2>3. Sets — prove or disprove</h2>
+<p>For arbitrary sets \(A,B,C\), decide whether each claim is true. Give a proof or a counterexample. If you choose a counterexample, verify the hypothesis as well as the failure of the conclusion.</p><h3>Problem 3 — difference and union</h3>\[A\setminus(B\cup C)=(A\setminus B)\cap(A\setminus C).\]
+<details><summary>Show hint</summary><p>Translate membership in the left-hand side into logical connectives. Use De Morgan’s law.</p></details>
+<details><summary>Show solution</summary><p>The claim is true. For an arbitrary element \(x\),</p>\[\begin{aligned}x\in A\setminus(B\cup C)&\iff x\in A\land\neg(x\in B\lor x\in C)\\&\iff x\in A\land x\notin B\land x\notin C\\&\iff x\in(A\setminus B)\cap(A\setminus C).\end{aligned}\]<p>These equivalences show that the sets have exactly the same elements.</p></details>
+<h3>Problem 4 — can we cancel a union?</h3>\[A\cup C=B\cup C\quad\Longrightarrow\quad A=B.\]
+<details><summary>Show solution</summary><p>The claim is false. Take \(A=\{1\}\), \(B=\{2\}\), and \(C=\{1,2\}\). Then \(A\cup C=B\cup C=\{1,2\}\), but \(A\ne B\).</p><p>Union with \(C\) can hide differences between \(A\) and \(B\); it cannot generally be canceled.</p></details>
+</article>
+<article id="functions"><h2>4. Functions and valid witnesses</h2>
+<h3>Problem 5 — one formula, two codomains</h3><p>Let \(f:\mathbb Z\to\mathbb Z\) be \(f(n)=3n-2\).</p><ol><li>Prove or disprove injectivity.</li><li>Prove or disprove surjectivity.</li><li>Choose a codomain that makes the same rule a bijection, and justify your choice.</li></ol>
+<details><summary>Show hint</summary><p>For injectivity, begin with equal outputs. For surjectivity, solve for a proposed input and check whether it must be an integer.</p></details>
+<details><summary>Show solution</summary><p><strong>Injective.</strong> If \(3m-2=3n-2\), then \(m=n\).</p><p><strong>Not onto \(\mathbb Z\).</strong> The target 0 has no integer preimage: \(3n-2=0\) requires \(n=2/3\notin\mathbb Z\).</p><p><strong>A suitable codomain.</strong> Let \(S=\{3k-2:k\in\mathbb Z\}\). The function \(g:\mathbb Z\to S\), \(g(n)=3n-2\), remains injective. Given \(y\in S\), its defining representation gives an integer \(k\) with \(y=3k-2=g(k)\). Thus \(g\) is onto \(S\), and is a bijection.</p></details>
+<h3>Extension — composition</h3><p>Suppose \(f:A\to B\), \(g:B\to C\), and \(g\circ f\) is injective. Must \(g\) be injective?</p>
+<details><summary>Show solution</summary><p>No. Let \(A=\{0,1\}\), \(B=\{0,1,2\}\), \(C=\{0,1\}\). Define \(f(0)=0\), \(f(1)=1\), and \(g(0)=0\), \(g(1)=1\), \(g(2)=1\).</p><p>The composite is the identity on \(A\), hence injective. But \(g(1)=g(2)\), so \(g\) is not injective. The composite tests \(g\) only on the image of \(f\).</p></details>
+</article>
+<article id="proofs"><h2>5. Choose a proof method</h2>
+<p>Choose one of the following problems and write a complete proof. Exchange proofs with a partner. Identify the assumptions, the conclusion, and the justification for each step. If time permits, attempt the other problem.</p><h3>Problem 6A — a sum and its summands</h3>
+<p>Let \(x,y\in\mathbb R\). Prove that if \(x+y>2\), then \(x>1\) or \(y>1\). Does the converse hold? Justify your answer.</p>
+<details><summary>Show hint</summary><p>Try the contrapositive. Use De Morgan’s law to negate the conclusion carefully. To test the converse, let one summand be negative.</p></details>
+<details><summary>Show solution</summary><p>The contrapositive is: if \(x\le1\) and \(y\le1\), then \(x+y\le2\). Adding the two inequalities proves it, and hence proves the original implication.</p><p>The converse is false. Take \(x=3\) and \(y=-2\). Then \(x>1\), but \(x+y=1\le2\).</p><p>The word “or” is inclusive: the conclusion permits either or both summands to exceed 1.</p></details>
+<h3>Problem 6B — rational plus irrational</h3><p>Let \(r\) be rational and \(x\) irrational. Prove that \(r+x\) is irrational.</p>
+<details><summary>Show hint</summary><p>Try contradiction. If the sum were rational, how could you express \(x\) using rational numbers?</p></details>
+<details><summary>Show solution</summary><p>Suppose, for contradiction, that \(r+x=s\) for some rational number \(s\). Then \(x=s-r\). The negative of a rational number is rational, and sums of rationals are rational, so \(s-r\) is rational. This contradicts the assumption that \(x\) is irrational. Therefore \(r+x\) is irrational.</p></details>
+<p><strong>Discuss:</strong> Why did the chosen method help? A correct proof may use a different method, but it must establish the whole claim rather than check a few examples.</p>
+</article>
+<article id="return"><h2>6. Return to the hotel — prove your assignment works</h2>
+<h3>Problem 7 — two infinite buses</h3><p>A full hotel receives two buses, A and B, each with passengers numbered \(1,2,3,\ldots\). Give a room assignment for all current guests and arriving passengers.</p><p>Your argument must explain:</p><ol><li>Why each assigned room is a positive integer.</li><li>Why nobody shares a room, either within a group or between groups.</li><li>Why every room receives a guest.</li></ol>
+<details><summary>Show hint</summary><p>Split the rooms into three repeating patterns: 1, 4, 7, …; 2, 5, 8, …; and 3, 6, 9, ….</p></details>
+<details><summary>Show solution</summary>\[\begin{aligned}\text{Current guest }n&\mapsto3n,\\\text{Bus A passenger }n&\mapsto3n-2,\\\text{Bus B passenger }n&\mapsto3n-1.\end{aligned}\]
+<p>More explicitly, let \(g_n,a_n,b_n\) label the current guests, Bus A passengers, and Bus B passengers. Then</p>
+\[f:\{g_n:n\ge1\}\cup\{a_n:n\ge1\}\cup\{b_n:n\ge1\}\longrightarrow \mathbb N_{>0},\qquad
+f(u)=\begin{cases}3n,&u=g_n,\\3n-2,&u=a_n,\\3n-1,&u=b_n.\end{cases}\]
+<p>Every room receives exactly one guest: room \(3n\) receives current guest \(n\), room \(3n-2\) receives Bus A passenger \(n\), and room \(3n-1\) receives Bus B passenger \(n\), for \(n\ge1\).</p><p>For \(n\ge1\), all room numbers are positive integers. Within any group, equality of assigned room numbers forces equality of passenger numbers.</p><p>The three groups occupy disjoint patterns: multiples of 3, numbers one above a multiple of 3, and numbers two above a multiple of 3. These are exactly the three possibilities for a positive integer upon division by 3.</p><p>Thus each guest receives one room, no two guests share a room, and every room is occupied. The combined assignment is a bijection.</p></details>
+<p><strong>Discuss:</strong> Which parts of your argument establish injectivity? Which establish surjectivity? Would accommodating every guest require every room to be occupied, or only that no guests share a room?</p>
+<details><summary>Show discussion answer</summary><p>Accommodating every guest requires an injective assignment from guests to rooms. Requiring every room to be occupied as well makes the assignment bijective.</p></details>
+</article>
+<article id="exit"><h2>7. A question for next time</h2>
+<p>Consider the claim that the sum of the first \(n\) positive odd integers is \(n^2\), for every positive integer \(n\).</p>\[1=1^2,\qquad1+3=2^2,\qquad1+3+5=3^2.\]<ol><li>Check the next two cases.</li><li>Have these checks proved the claim for every positive integer? Explain.</li><li>What still needs to be established?</li></ol><p>Submit your short response before leaving. Keep your problem-solving notes for reviewing Part 1. Next time, we will introduce mathematical induction and return to this claim.</p>
+</article>
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder"><footer>
+
+
+<p class="small">
+© 2026 Irina Shablinsky.
+Unless otherwise noted, original course materials are licensed under the
+<a href="https://creativecommons.org/licenses/by-nc/4.0/">
+Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
+</a>
+Third-party materials remain subject to their respective copyright and license terms.
+Last updated: August 2026
+</p>
+
+</footer></div>
+
+  <script>
+  if (location.protocol === "http:" || location.protocol === "https:") {
+  const siteRoot = new URL("../", window.location.href).href;
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+  }
+</script>
+
+</body>
+</html>
