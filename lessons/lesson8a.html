@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lesson 8: Mathematical Induction</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 8: Mathematical Induction</h1>
+  </header>
+  <div id="navigation-placeholder"><nav class="course-navigation" aria-label="Course navigation">
+  <ul>
+    <li><a data-path="index.html" href="../index.html">Home</a></li>
+    <li><a data-path="resources/syllabus.html" href="../resources/syllabus.html">Syllabus</a></li>
+    <li><a data-path="lessons.html" href="../lessons.html">Lessons</a></li>
+    <li><a data-path="resources.html" href="../resources.html">Resources</a></li>
+  </ul>
+</nav>
+</div>
+
+  <main>
+    <p>We begin Part 2 with <strong>mathematical induction</strong>: a way to prove statements about every natural number. We will use the same tools as before—predicates, quantifiers, and proofs of implications.</p>
+<nav aria-label="Lesson sections"><ol>
+<li><a href="#conjecture">From examples to a proof</a></li>
+<li><a href="#principle">The induction principle</a></li>
+<li><a href="#odd-sum">A proof together</a></li>
+<li><a href="#your-turn">Your turn</a></li>
+<li><a href="#power-sets">Counting subsets</a></li>
+<li><a href="#horses">Find the gap</a></li>
+<li><a href="#afterthoughts">Afterthought proofs</a></li>
+<li><a href="#peano">Why induction belongs to the natural numbers</a></li>
+<li><a href="#exit">Exit question</a></li>
+</ol></nav>
+<!-- Flexible 90-minute pacing: opening 5; principle 10; odd-sum proof 10; student proof 10; power sets 15; horses 10; selected afterthoughts 20; Peano discussion 5; exit 5. If the core proofs need more time, use only one afterthought. The third afterthought is a challenge for groups that finish early. -->
+<article id="conjecture">
+<h2>1. From examples to a proof</h2>
+<p>At the end of our workshop, we considered the claim</p>
+\[1+3+\cdots+(2n-1)=n^2\qquad\text{for every integer }n\ge1.\]
+<p>For \(n=1,2,3\), we checked</p>
+\[1=1^2,\qquad1+3=2^2,\qquad1+3+5=3^2.\]
+<p><strong>Think, then discuss:</strong> What did these checks establish? Why do even a thousand successful checks leave something unproved?</p>
+<details><summary>Show discussion answer</summary><p>The checks establish particular cases. The claim concerns every positive integer, including all those we have not checked. A pattern suggests a conjecture; a proof must explain why it continues for every allowed input.</p></details>
+<p>Instead of checking each case separately, we will prove a rule: whenever the claim holds at one stage, it holds at the next. We will also establish a starting case.</p>
+</article>
+<article id="principle">
+<h2>2. The principle of mathematical induction</h2>
+<p>Our convention remains \(\mathbb N=\{0,1,2,\ldots\}\). Let \(P(n)\) be a predicate on \(\mathbb N\). The induction principle says</p>
+\[\left[P(0)\land\forall k\in\mathbb N\,\bigl(P(k)\Rightarrow P(k+1)\bigr)\right]
+\Rightarrow\forall n\in\mathbb N\,P(n).\]
+<p>There are two obligations:</p>
+<ol><li><strong>Base case:</strong> prove \(P(0)\).</li><li><strong>Inductive step:</strong> for an arbitrary \(k\in\mathbb N\), prove \(P(k)\Rightarrow P(k+1)\).</li></ol>
+<p>Think of a row of dominoes: the first falls, and each falling domino causes the next to fall. Each particular domino is reached after finitely many steps. Likewise, each natural-number case follows from the base case by finitely many applications of the inductive step.</p>
+<h3>Starting somewhere other than zero</h3>
+<p>To prove a claim for all integers \(n\ge n_0\), begin by proving \(P(n_0)\). Then prove \(P(k)\Rightarrow P(k+1)\) for every integer \(k\ge n_0\). The conclusion covers the integers from \(n_0\) onward. Our odd-sum claim starts at \(n_0=1\).</p>
+<h3>Why may we assume the inductive hypothesis?</h3>
+<p>We are proving a conditional statement, just as in Part 1. Fix an arbitrary allowed \(k\). To prove \(P(k)\Rightarrow P(k+1)\), assume \(P(k)\) and derive \(P(k+1)\). The assumption \(P(k)\) is called the <strong>inductive hypothesis</strong>.</p>
+<p>We are not assuming that \(P(n)\) holds for every \(n\). We are establishing the implication for every allowed \(k\). The base case and induction principle then give the universal conclusion.</p>
+<p><strong>Quick check:</strong> What is missing from each proposed proof?</p>
+<ol><li>“I checked \(P(1),P(2),P(3)\), so \(P(n)\) holds for every \(n\ge1\).”</li><li>“I proved \(P(k)\Rightarrow P(k+1)\) for every \(k\ge1\), so \(P(n)\) holds for every \(n\ge1\).”</li></ol>
+<details><summary>Show answers</summary><p>The first has no general inductive step. The second has no base case. An implication alone does not establish its antecedent: for example, \(k=k+1\Rightarrow k+1=k+2\) is true for every integer \(k\), but none of those equalities is true.</p></details>
+</article>
+<article id="odd-sum">
+<h2>3. A proof together — the sum of odd integers</h2>
+<p>Define the predicate precisely:</p>
+\[P(n):\quad\sum_{i=1}^{n}(2i-1)=n^2,\qquad n\ge1.\]
+<p>The summation symbol abbreviates adding the terms \(2i-1\) as \(i\) runs from 1 through \(n\).</p>
+<p><strong>Base case:</strong> when \(n=1\), both sides equal 1, so \(P(1)\) is true.</p>
+<p><strong>Prepare the step:</strong> fix an arbitrary integer \(k\ge1\). Before doing any algebra, write these two statements separately:</p>
+<ul><li><strong>Inductive hypothesis:</strong> \(1+3+\cdots+(2k-1)=k^2\).</li><li><strong>Target:</strong> \(1+3+\cdots+(2k-1)+(2k+1)=(k+1)^2\).</li></ul>
+<p><strong>Pause:</strong> What new term appears? Which part of the target can the hypothesis replace? Complete the step with a partner.</p>
+<details><summary>Show the inductive step and conclusion</summary>
+\[\begin{aligned}
+\sum_{i=1}^{k+1}(2i-1)
+&=\sum_{i=1}^{k}(2i-1)+(2k+1) &&\text{separate the last term}\\
+&=k^2+(2k+1) &&\text{inductive hypothesis}\\
+&=(k+1)^2. &&\text{algebra}
+\end{aligned}\]
+<p>This proves \(P(k+1)\) under the assumption \(P(k)\). Since \(k\ge1\) was arbitrary, the inductive step holds for every such \(k\). By mathematical induction, the formula holds for every integer \(n\ge1\).</p>
+</details>
+<p><strong>Proof check:</strong> Point to the one equality that uses the inductive hypothesis. Why would simply writing the target equality not prove it?</p>
+<details><summary>Show discussion answer</summary><p>The hypothesis replaces the sum of the first \(k\) odd integers by \(k^2\). The target is the statement we must establish, so assuming it or merely repeating it would leave the proof unfinished.</p></details>
+</article>
+<article id="your-turn">
+<h2>4. Your turn — the sum of the first positive integers</h2>
+<p>Prove by induction that, for every integer \(n\ge1\),</p>
+\[\sum_{i=1}^{n}i=\frac{n(n+1)}2.\]
+<p>Write a complete proof. State the base case, fix an arbitrary allowed \(k\), write the inductive hypothesis and target separately, and mark where you use the hypothesis. Finish with a sentence stating the conclusion and its range.</p>
+<details><summary>Show hint</summary><p>The sum for \(k+1\) is the sum for \(k\), plus the new term \(k+1\). The target on the right is \((k+1)(k+2)/2\).</p></details>
+<details><summary>Show solution</summary>
+<p>For \(n=1\), the left side is 1 and the right side is \(1(2)/2=1\).</p>
+<p>Fix an arbitrary integer \(k\ge1\) and assume \(\sum_{i=1}^{k}i=k(k+1)/2\). Then</p>
+\[\begin{aligned}
+\sum_{i=1}^{k+1}i
+&=\sum_{i=1}^{k}i+(k+1)\\
+&=\frac{k(k+1)}2+(k+1) &&\text{inductive hypothesis}\\
+&=\frac{k(k+1)+2(k+1)}2\\
+&=\frac{(k+1)(k+2)}2.
+\end{aligned}\]
+<p>This is the desired formula for \(k+1\). By induction, the formula holds for every integer \(n\ge1\).</p>
+</details>
+<p><strong>Partner check:</strong> Did the proof add \(k+1\), rather than \(k\)? Does the target replace every occurrence of \(n\) by \(k+1\)?</p>
+</article>
+<article id="power-sets">
+<h2>5. Induction with sets — how many subsets?</h2>
+<p>Recall that \(\mathcal P(X)\) is the set of all subsets of \(X\). We have already seen the counting rule \(|\mathcal P(X)|=2^{|X|}\) for finite sets. Now we will prove it by induction.</p>
+<p>Our predicate must cover <em>every</em> set of a given size:</p>
+\[P(n):\quad\text{Every set with }n\text{ elements has exactly }2^n\text{ subsets}.\]
+<h3>Base case</h3>
+<p><strong>Discuss:</strong> What is \(\mathcal P(\varnothing)\)? How many elements does it have?</p>
+<details><summary>Show base case</summary><p>The only set of size 0 is \(\varnothing\), and \(\mathcal P(\varnothing)=\{\varnothing\}\). It has one element, which equals \(2^0\). Thus \(P(0)\) holds.</p></details>
+<h3>Build the inductive step</h3>
+<p>Fix \(k\in\mathbb N\). Assume every set of size \(k\) has \(2^k\) subsets. Let \(X\) be an arbitrary set with \(k+1\) elements. Choose \(a\in X\), and let \(Y=X\setminus\{a\}\). Then \(|Y|=k\).</p>
+<p>Work through the following questions:</p>
+<ol>
+<li>Split the subsets of \(X\) into those omitting \(a\) and those containing \(a\). Why is every subset in exactly one group?</li>
+<li>Why are the subsets omitting \(a\) exactly the subsets of \(Y\)? How many are there by the inductive hypothesis?</li>
+<li>Pair each \(B\subseteq Y\) with \(B\cup\{a\}\). Explain why this produces every subset containing \(a\) exactly once.</li>
+<li>Combine the two counts and state the induction conclusion.</li>
+</ol>
+<details><summary>Show a concrete example</summary><p>If \(X=\{1,2,3,4\}\) and \(a=4\), then \(Y=\{1,2,3\}\). The pairing begins</p>
+\[\varnothing\mapsto\{4\},\qquad\{1\}\mapsto\{1,4\},\qquad\{1,3\}\mapsto\{1,3,4\}.\]
+<p>Each subset on the left omits 4; its partner contains 4. Removing 4 recovers the original subset.</p></details>
+<details><summary>Show the general proof</summary>
+<p>Every subset either contains \(a\) or omits it, and cannot do both. The groups are therefore disjoint and include all subsets.</p>
+<p>The group omitting \(a\) is \(\mathcal P(Y)\), which has \(2^k\) elements by the inductive hypothesis. Define</p>
+\[h:\mathcal P(Y)\longrightarrow\{C\subseteq X:a\in C\},\qquad h(B)=B\cup\{a\}.\]
+<p>This is injective: if \(B_1\cup\{a\}=B_2\cup\{a\}\), removing \(a\) from both sides gives \(B_1=B_2\), since neither subset of \(Y\) contains \(a\).</p>
+<p>It is onto: given \(C\subseteq X\) with \(a\in C\), the set \(B=C\setminus\{a\}\) is a subset of \(Y\) and satisfies \(h(B)=C\).</p>
+<p>Thus the group containing \(a\) also has \(2^k\) members. Adding the sizes of the two disjoint groups gives</p>
+\[|\mathcal P(X)|=2^k+2^k=2^{k+1}.\]
+<p>Since \(X\) was an arbitrary set of size \(k+1\), this proves \(P(k+1)\). Together with the base case, induction proves the result for every \(n\in\mathbb N\).</p>
+</details>
+<p><strong>Connect to the workshop:</strong> We saw that union cannot generally be canceled. Why is removing \(\{a\}\) legitimate here?</p>
+<details><summary>Show answer</summary><p>Here \(a\notin B_1\) and \(a\notin B_2\). Thus \((B_i\cup\{a\})\setminus\{a\}=B_i\). Without that restriction, removing \(a\) could erase a difference between the original sets.</p></details>
+</article>
+<article id="horses">
+<h2>6. Find the gap — all horses have the same color?</h2>
+<p>Consider the following <strong>incorrect</strong> induction argument. Let \(P(n)\) mean that every group of \(n\) horses has only one color, for \(n\ge1\).</p>
+<p><strong>Base case:</strong> a group of one horse has only one color.</p>
+<p><strong>Proposed step:</strong> assume \(P(k)\), and consider \(k+1\) horses labeled \(H_1,\ldots,H_{k+1}\). The first \(k\) horses all have one color by the hypothesis. The last \(k\) horses also all have one color. The argument claims that their common horses force these colors to agree, so all \(k+1\) horses have one color.</p>
+<p><strong>Work with a partner:</strong> Draw the two groups when \(k=2\), then when \(k=1\). Where does the proposed step fail? Is the problem in the base case or in the step?</p>
+<details><summary>Show explanation</summary><p>When \(k=2\), the groups \(\{H_1,H_2\}\) and \(\{H_2,H_3\}\) overlap at \(H_2\). But when \(k=1\), the groups are \(\{H_1\}\) and \(\{H_2\}\), with no horse in common. Each single-horse group has one color, but those colors need not match.</p><p>The base case is valid. The proposed inductive step fails at \(k=1\): it does not establish \(P(1)\Rightarrow P(2)\). The overlap argument works only for \(k\ge2\), leaving a gap immediately after the base case.</p></details>
+<p><strong>Follow-up:</strong> Would starting the proof at \(n=2\) repair it?</p>
+<details><summary>Show answer</summary><p>No. We would then need a new base case asserting that every pair of horses has the same color. That assertion is false. Changing the starting index does not remove the obligation to prove the base case.</p></details>
+</article>
+<article id="afterthoughts">
+<h2>7. Afterthought proofs</h2>
+<p>Use these problems to test the parts of an induction argument that are easiest to overlook. Work on the selected problems with a partner; write your own justification before opening a hint or solution.</p>
+<h3>Afterthought 1 — a different starting point</h3>
+<p>Prove by induction that</p>
+\[2^n\ge n^2\qquad\text{for every integer }n\ge4.\]
+<p>State the base case, hypothesis, and target. Justify each inequality in the step. Why can we not state this claim for every \(n\in\mathbb N\)?</p>
+<details><summary>Show hint</summary><p>After using the hypothesis, you will have \(2^{k+1}\ge2k^2\). It remains to show \(2k^2\ge(k+1)^2\). Consider the difference \(k^2-2k-1=k(k-2)-1\) when \(k\ge4\).</p></details>
+<details><summary>Show solution</summary><p>At \(n=4\), \(2^4=16=4^2\). Fix an arbitrary integer \(k\ge4\), and assume \(2^k\ge k^2\). Then</p>
+\[2^{k+1}=2\cdot2^k\ge2k^2.\]
+<p>This inequality uses the inductive hypothesis. Also, since \(k\ge4\),</p>
+\[2k^2-(k+1)^2=k(k-2)-1\ge4\cdot2-1=7\ge0.\]
+<p>Consequently \(2^{k+1}\ge2k^2\ge(k+1)^2\), establishing the step. By induction, the claim holds for every integer \(n\ge4\).</p><p>The unrestricted claim is false at \(n=3\), since \(2^3=8\lt9=3^2\). True cases at smaller values do not bridge that failure.</p></details>
+<h3>Afterthought 2 — a valid step for a false claim</h3>
+<p>A student claims that, for every integer \(n\ge1\),</p>
+\[1+3+\cdots+(2n-1)=n^2+1.\]
+<p>The student assumes the formula for \(k\) and writes</p>
+\[\begin{aligned}
+1+3+\cdots+(2k-1)+(2k+1)
+&=(k^2+1)+(2k+1)\\
+&=(k+1)^2+1.
+\end{aligned}\]
+<p>Is this a valid inductive step? If so, why does it not prove the claim? Identify the missing obligation and check it.</p>
+<details><summary>Show hint</summary><p>A conditional can be true even when its antecedent is false. What happens at \(n=1\)?</p></details>
+<details><summary>Show solution</summary><p>The step correctly proves the conditional: if the displayed formula holds for \(k\), it holds for \(k+1\). The missing obligation is the base case. At \(n=1\), the left side is 1 while the right side is 2, so the base case is false.</p><p>A valid step propagates truth from a starting case; it does not supply a true starting case. In fact, the earlier odd-sum proof shows that the proposed formula is wrong for every positive integer.</p></details>
+<h3>Afterthought 3 — can we induct over all the integers?</h3>
+<p>Suppose a predicate \(P\) on \(\mathbb Z\) satisfies \(P(0)\) and</p>
+\[\forall k\in\mathbb Z,\quad P(k)\Rightarrow P(k+1).\]
+<p>Must \(P(n)\) hold for every integer \(n\)? Give a counterexample if not. What additional step would allow us to reach all the negative integers?</p>
+<details><summary>Show hint</summary><p>Try the predicate \(P(n): n\ge0\). Starting at 0, which integers can repeated successor steps reach?</p></details>
+<details><summary>Show solution</summary><p>No. Take \(P(n)\) to mean \(n\ge0\). Then \(P(0)\) is true, and for every integer \(k\), \(k\ge0\Rightarrow k+1\ge0\) is true. But \(P(-1)\) is false.</p><p>The base case and forward step establish the claim for all nonnegative integers. To reach the negative integers, it would be enough to prove an additional backward step:</p>
+\[\forall k\in\mathbb Z\text{ with }k\le0,\quad P(k)\Rightarrow P(k-1).\]
+<p>Formally, define \(Q(m)=P(-m)\) for \(m\in\mathbb N\). Its base case is \(Q(0)=P(0)\). The backward step for \(P\) gives \(Q(m)\Rightarrow Q(m+1)\). Induction on \(m\) proves \(P(-m)\) for all \(m\in\mathbb N\). Together with the forward argument, this covers every integer.</p></details>
+</article>
+<article id="peano">
+<h2>8. Why induction belongs to the natural numbers</h2>
+<p><strong>A brief foundations note.</strong> Why are we allowed to use the induction principle? It is part of the structure of the natural numbers, described by <strong>Peano’s axioms</strong>. These axioms describe a starting number 0 and a successor operation \(S(n)=n+1\), together with the induction principle.</p>
+<p>In the set formulation of induction: if a collection \(A\subseteq\mathbb N\) contains 0 and contains the successor of each of its members, then \(A=\mathbb N\). Symbolically,</p>
+\[\left[0\in A\ \land\ \forall k\in\mathbb N\,(k\in A\Rightarrow k+1\in A)\right]
+\Rightarrow A=\mathbb N.\]
+<p>To connect this with our proofs, take \(A=\{n\in\mathbb N:P(n)\}\). The base case says \(0\in A\); the inductive step says that membership passes from each number to its successor. The principle then says that every natural number belongs to \(A\), so \(P(n)\) holds for every natural number.</p>
+<p>This is an overview of the role of induction, rather than a list of all the axioms. In a formal first-order treatment, induction is expressed by an axiom schema, one instance for each formula in the language.</p>
+<p><strong>Discuss:</strong> Why did the same starting point and forward step fail to cover \(\mathbb Z\) in the last afterthought?</p>
+<details><summary>Show answer</summary><p>Starting at 0 and repeatedly taking successors reaches the nonnegative integers. It does not reach a negative integer. Induction depends on the domain and the starting point; it is not a rule that turns a successor implication into a universal conclusion on every domain.</p></details>
+</article>
+<article id="exit">
+<h2>9. Exit question</h2>
+<p>We want to prove \(2^n\ge n+1\) for every \(n\in\mathbb N\). Submit a short response:</p>
+<ol><li>Verify the base case at \(n=0\).</li><li>For an arbitrary \(k\in\mathbb N\), write the inductive hypothesis and the target separately.</li><li>Complete the chain and identify where the hypothesis is used:</li></ol>
+\[2^{k+1}=2\cdot2^k\ \ge\ \underline{\hspace{2cm}}\ \ge\ k+2.\]
+<p>Explain why the last inequality holds for every allowed \(k\).</p>
+<details><summary>Show solution after discussion</summary><p>At \(n=0\), \(2^0=1\ge1\). The hypothesis is \(2^k\ge k+1\); the target is \(2^{k+1}\ge k+2\). Then</p>
+\[2^{k+1}=2\cdot2^k\ge2(k+1)=2k+2\ge k+2.\]
+<p>The first inequality uses the inductive hypothesis, multiplied by the positive number 2. The last uses \(k\ge0\). By induction, the claim holds for all \(n\in\mathbb N\).</p></details>
+<p>Next time, we will consider strong induction and recursive definitions.</p>
+</article>
+
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder"><footer>
+
+
+<p class="small">
+© 2026 Irina Shablinsky.
+Unless otherwise noted, original course materials are licensed under the
+<a href="https://creativecommons.org/licenses/by-nc/4.0/">
+Creative Commons Attribution–NonCommercial 4.0 International License (CC BY-NC 4.0).
+</a>
+Third-party materials remain subject to their respective copyright and license terms.
+Last updated: August 2026
+</p>
+
+</footer></div>
+
+  <script>
+  if (location.protocol === "http:" || location.protocol === "https:") {
+  const siteRoot = new URL("../", window.location.href).href;
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+  }
+</script>
+
+</body>
+</html>
