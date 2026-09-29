@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lesson 9: Strong Induction and Exam Review</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 9: Strong Induction and Exam Review</h1>
+  </header>
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <p>Today we extend mathematical induction, then return to the material for Exam 1. <strong>Induction from Lessons 8 and 9 is not on Exam 1.</strong> </p>
+<nav aria-label="Lesson sections"><ol><li><a href="#strong">Strong induction</a></li><li><a href="#example">Worked example: products of primes</a></li><li><a href="#practice">Your turn: postage</a></li><li><a href="#review">Targeted Exam 1 review</a></li><li><a href="#exit">Exit check</a></li></ol></nav>
+<section id="strong">
+<h2>1. Strong induction</h2>
+<p>In ordinary induction, we assume \(P(k)\) to prove \(P(k+1)\). Sometimes our argument needs an earlier case whose index is not exactly \(k\). Strong induction lets us use every case already reached.</p>
+<p>To prove \(P(n)\) for every integer \(n\ge n_0\):</p>
+<ol><li><strong>Base case:</strong> prove \(P(n_0)\).</li><li><strong>Inductive step:</strong> fix an arbitrary integer \(k\ge n_0\). Assume \(P(j)\) for every integer \(j\) with \(n_0\le j\le k\). Use this assumption to prove \(P(k+1)\).</li><li>Conclude that \(P(n)\) holds for every integer \(n\ge n_0\).</li></ol>
+<p>Some proofs establish several initial cases before beginning the general step. The initial cases must cover every case that the step cannot reach.</p>
+<p><strong>Pause:</strong> If our proof starts at 2 and we are proving \(P(13)\), which cases may we assume? May we assume \(P(13)\) itself?</p>
+<details><summary>Discuss</summary><p>We may assume \(P(2),P(3),\ldots,P(12)\). We must prove \(P(13)\); it is not part of the hypothesis.</p></details>
+<p>Strong induction has the same proving power as ordinary induction. To see the connection, let \(Q(k)\) mean “\(P(j)\) holds for every integer \(j\) from \(n_0\) through \(k\).” The strong induction step proves the new case needed to pass from \(Q(k)\) to \(Q(k+1)\).</p>
+</section>
+<section id="example">
+<h2>2. Worked example: every integer at least 2 is a product of primes</h2>
+<p>A prime is an integer greater than 1 whose only positive divisors are 1 and itself. A nonprime integer greater than 1 is composite. We allow a product with just one prime factor; for example, 7 is already a product of primes.</p>
+<p><strong>Claim:</strong> Every integer \(n\ge2\) can be written as a product of primes. This claim concerns existence, not uniqueness.</p>
+<p><strong>Explore:</strong> Write 18 and 35 as products of smaller integers. To obtain a prime factorization of 35 from \(35=5\cdot7\), which earlier cases would be useful? Why is information about 34 alone not the natural hypothesis?</p>
+<h3>Proof</h3>
+<p>Let \(P(n)\) mean that \(n\) is a product of primes.</p>
+<p><strong>Base case:</strong> 2 is prime, so \(P(2)\) holds.</p>
+<p><strong>Hypothesis:</strong> Fix an arbitrary integer \(k\ge2\). Assume that every integer \(j\) with \(2\le j\le k\) is a product of primes.</p>
+<p><strong>Target:</strong> Prove that \(k+1\) is a product of primes. There are two cases.</p>
+<ul><li>If \(k+1\) is prime, it is itself the required product.</li><li>If \(k+1\) is composite, write \(k+1=ab\), where \(a,b\) are integers satisfying \(2\le a,b\le k\). By the hypothesis, both \(a\) and \(b\) are products of primes. Multiplying their prime products expresses \(k+1\) as a product of primes.</li></ul>
+<p>Thus \(P(k+1)\) follows in both cases. By strong induction, every integer \(n\ge2\) is a product of primes.</p>
+<p><strong>Proof check:</strong> Explain why both factors lie in the range covered by the hypothesis. Point to the exact place where we use that hypothesis.</p>
+<details><summary>Show explanation</summary><p>Both factors are at least 2 and strictly less than \(k+1\), so both are at most \(k\). The hypothesis supplies prime products for these two factors. We never assume a prime product for \(k+1\).</p></details>
+</section>
+<section id="practice">
+<h2>3. Your turn: postage using 4-cent and 5-cent stamps</h2>
+<p>Prove by strong induction that every whole-number postage amount \(n\ge12\) can be made using only 4-cent and 5-cent stamps, with an unlimited supply of each.</p>
+<p>This is an existence problem: we need to construct a way to make each amount, not count the possible ways.</p>
+<ol><li>Make 12, 13, 14, and 15 cents.</li><li>State the predicate and the strong induction hypothesis precisely.</li><li>For a target amount \(k+1\ge16\), which earlier amount lets you add one 4-cent stamp? Check that it lies in the range of your hypothesis.</li><li>Write the step and conclusion. Explain why checking only 12 would not justify this particular step for every later amount.</li></ol>
+<details><summary>Hint</summary><p>Subtract 4 from the target. The earlier amount is \(k-3\). When is \(k-3\ge12\)?</p></details>
+<details><summary>Solution—open after writing your proof</summary><p>Let \(P(n)\) mean that \(n=4a+5b\) for some nonnegative integers \(a,b\). The initial cases are</p>
+\[12=4+4+4,\quad13=4+4+5,\quad14=4+5+5,\quad15=5+5+5.\]
+<p>Fix an arbitrary integer \(k\ge15\), and assume \(P(j)\) for every integer \(12\le j\le k\). Since \(12\le k-3\le k\), the hypothesis gives \(k-3=4a+5b\) for some nonnegative integers \(a,b\). Hence</p>
+\[k+1=(k-3)+4=4(a+1)+5b.\]
+<p>This proves \(P(k+1)\). The initial cases and strong induction establish the claim for every integer \(n\ge12\). The step advances by adding 4; it cannot produce 13, 14, or 15 from a previously established amount at least 12, so we checked those separately.</p></details>
+</section>
+<section id="review">
+<h2>4. Targeted Exam 1 review</h2>
+<p><strong>Change of scope:</strong> We now return to logic, quantifiers, sets, functions, and direct or contrapositive proof. Counting and induction are not part of this exam.</p>
+<p>The exam is individual and closed notes, with the instructor-provided reference sheet permitted. The sheet includes definitions of injectivity and surjectivity but no truth table for implication. Practice using definitions to justify an answer.</p>
+<p><strong>How to work:</strong> Spend 20 minutes attempting the problems individually using only the reference sheet. Mark any point where you get stuck. Then spend 10 minutes comparing reasoning with a partner and 15 minutes discussing the questions that caused the most difficulty. Write an attempt before opening a solution.</p>
+<h3>A. Implication and reasoning</h3>
+<p>A student says, “If I submit the assignment, then I receive feedback.” Let \(p\) mean “I submit the assignment” and \(q\) mean “I receive feedback.”</p>
+<ol><li>Write the contrapositive and the converse in symbols and English.</li><li>Describe the situation that makes the original conditional false.</li><li>Explain why receiving feedback alone does not establish that the assignment was submitted.</li></ol>
+<details><summary>Solution</summary><p>The contrapositive is \(\neg q\to\neg p\): “If I do not receive feedback, then I did not submit the assignment.” The converse is \(q\to p\): “If I receive feedback, then I submitted the assignment.” The original is false exactly when the assignment is submitted but no feedback is received. Feedback could also be given without a submission; \(p\to q\) does not exclude that possibility.</p></details>
+<p>Classify \((p\land q)\to p\) and \(p\land\neg q\) as tautologies, satisfiable but not tautological, or never satisfiable. Justify your classifications.</p>
+<details><summary>Solution</summary><p>The first is a tautology: whenever the antecedent holds, \(p\) holds. The second is satisfiable but not tautological: it holds when \(p\) is true and \(q\) false, and fails when both are true.</p></details>
+<h3>B. Quantifier order and negation</h3>
+<p>Let \(R(s,b)\) mean “student \(s\) has read book \(b\).” Translate both statements, then describe a situation where the first holds and the second fails:</p>
+\[\forall s\,\exists b\,R(s,b),\qquad \exists b\,\forall s\,R(s,b).\]
+<p>Negate the first statement, moving the negation directly onto \(R\). State its negation in English.</p>
+<details><summary>Solution</summary><p>The first says every student has read at least one book, possibly different books. The second says there is one book every student has read. With two students and two books, let each student have read just one book, different from the other's. The first holds and the second fails. The negation is \(\exists s\,\forall b\,\neg R(s,b)\): some student has read no book in the domain.</p></details>
+<p>For each integer \(x\), find an integer \(y\) satisfying \(x+y=3\). Then explain why no single integer \(y\) works for every integer \(x\).</p>
+<details><summary>Solution</summary><p>Choose \(y=3-x\). A single \(y\) cannot work for both \(x=0\) and \(x=1\): those require \(y=3\) and \(y=2\), respectively.</p></details>
+<h3>C. Sets: compute, then explain</h3>
+<p>Let \(A=\{0,2,4,6\}\) and \(B=\{2,3,6\}\). Find \(A\setminus B\) and \(A\setminus(A\setminus B)\). Describe the latter set using intersection.</p>
+<p>A student claims that \(X\cup Z=Y\cup Z\) always implies \(X=Y\). Give a counterexample, and verify both the equality of unions and the inequality of the original sets.</p>
+<details><summary>Solution</summary><p>We obtain \(A\setminus B=\{0,4\}\) and \(A\setminus(A\setminus B)=\{2,6\}=A\cap B\). For the cancellation claim, take \(X=\{1\}\), \(Y=\{2\}\), and \(Z=\{1,2\}\). Both unions equal \(\{1,2\}\), while \(X\ne Y\).</p></details>
+<h3>D. Functions: use the domain and codomain</h3>
+<p>Let \(g:\mathbb Z\to\mathbb Z\) be given by \(g(n)=3n-2\).</p>
+<ol><li>Prove that \(g\) is injective.</li><li>Exhibit an integer with no preimage and justify your choice.</li><li>Choose a new codomain so that the same rule is bijective. Justify surjectivity onto that codomain.</li></ol>
+<details><summary>Solution</summary><p>If \(g(a)=g(b)\), then \(3a-2=3b-2\), hence \(a=b\), proving injectivity. The integer 0 has no preimage: \(3n-2=0\) would require \(n=2/3\notin\mathbb Z\). Choose the codomain \(C=\{3m-2:m\in\mathbb Z\}\). Every element of \(C\) is \(g(m)\) for some integer \(m\), so the function is onto \(C\); together with injectivity this makes it bijective.</p></details>
+<h3>E. A short proof</h3>
+<p>Prove: if \(a+b\) is odd, then the integers \(a\) and \(b\) have different parity. State the contrapositive before proving it.</p>
+<details><summary>Hint</summary><p>The contrapositive begins: “If \(a\) and \(b\) have the same parity, then…” Consider the even-even and odd-odd cases.</p></details>
+<details><summary>Solution</summary><p>The contrapositive is: if \(a,b\) have the same parity, then \(a+b\) is even. If \(a=2r\) and \(b=2s\), their sum is \(2(r+s)\). If \(a=2r+1\) and \(b=2s+1\), their sum is \(2(r+s+1)\). In both cases it is even, proving the contrapositive and therefore the original statement.</p></details>
+<p><strong>During discussion:</strong> Check whether each justification addresses every allowed input, supplies a specific counterexample, or gives a valid witness. A definition on the reference sheet is a starting point; connect it explicitly to the problem.</p>
+</section>
+<section id="exit"><h2>5. Exit check</h2><ol><li><strong>Today's new material:</strong> In the postage proof, which earlier case is used to prove \(P(k+1)\), and why is it allowed?</li><li><strong>Exam preparation:</strong> Identify one review problem you could complete independently and one step you need to practice. State what you will do to resolve that gap.</li></ol><p>Keep the scopes separate: strong induction continues our work after Exam 1; your exam preparation should focus on the review topics above.</p></section>
+
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>
