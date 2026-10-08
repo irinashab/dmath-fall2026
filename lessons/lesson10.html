@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Modular Arithmetic and Cycles</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1> Modular Arithmetic and Cycles</h1>
+  </header>
+  <div id="navigation-placeholder"></div>
+
+  <main>
+  <article>
+    <nav class="toc">
+<ol id="toc">
+  <li><a href="#intro">The Math of Things That Repeat</a></li>
+  <li><a href="#clocks">Clocks and Calendars</a></li>
+  <li><a href="#division">Relearning Division</a></li>
+  <li><a href="#divmod">The div and mod Operators</a></li>
+  <li><a href="#congruence">Congruence Modulo n</a></li>
+  <li><a href="#classes">Congruence Classes</a></li>
+  <li><a href="#addition">Adding Congruences</a></li>
+  <li><a href="#tables">Addition Tables</a></li>
+  <li><a href="#euclid">Greatest Common Divisors and Euclid’s Algorithm</a></li>
+  <li><a href="#ambiguous">Optional Counting Connection: Ambiguous Dates</a></li>
+  <li><a href="#post-lecture-practice">Post-Lecture Practice</a></li>
+</ol>
+</nav>
+
+<p><strong>Learning goals:</strong> Find quotients and nonnegative remainders, including for negative integers; translate between divisibility and congruence; describe congruence classes; justify calculations with modular arithmetic; and compute gcds using Euclid’s algorithm and explain its efficiency.</p>
+
+<section id="intro">
+<h2>1. The Math of Things That Repeat</h2>
+
+<p>Many things in life happen in <strong>cycles</strong>:</p>
+<ul>
+  <li>The hours on a clock repeat every 12 hours.</li>
+  <li>The days of the week repeat every 7 days.</li>
+  <li>A light switch returns to its original state every 2 flicks.</li>
+  <li>A counter that stores exactly 8 bits can wrap around after 256 increments.</li>
+</ul>
+
+<p>In each case, we only care about the <em>remainder</em> after dividing by the cycle length. If it's 9:00 now and you ask what time it is in 50 hours, the "50" doesn't matter directly — what matters is \(50 \bmod 12 = 2\), so the answer is 11:00.</p>
+
+
+<p><strong>Big idea:</strong> When things cycle, we do arithmetic on the <em>remainders</em>. This is called <strong>modular arithmetic</strong>.</p>
+
+
+<p>In this lecture we will make this precise. In the next lecture we will apply it to calendars and to computers.</p>
+</section>
+
+<section id="clocks">
+<h2>2. Clocks and Calendars</h2>
+
+<h3>Clocks</h3>
+<p>Suppose it is 6:00. What time is it in 8 hours?</p>
+<ul>
+  <li>\(6 + 8 = 14\), but the clock cycles every 12 hours, so \(14 - 12 = 2\). It will be <strong>2:00</strong>.</li>
+  <li>Equivalently: \(6 + 8 = 14\), and \(14 \bmod 12 = 2\).</li>
+</ul>
+
+<p>What time is it in 20 hours?</p>
+<ul>
+  <li>\(6 + 20 = 26\). Since \(26 \bmod 12 = 2\), it's 2:00 again.</li>
+  <li>Equivalently: 20 hours = 12 hours + 8 hours, and 12 hours changes nothing.</li>
+</ul>
+
+<p>What time <em>was</em> it 8 hours ago, if it's 2:00 now?</p>
+<ul>
+  <li>\(2 - 8 = -6\). On a 12-hour clock, \(-6\) is the same as \(12 - 6 = 6\). It was 6:00.</li>
+</ul>
+
+<p>Notice: adding 8 hours and subtracting 8 hours are still inverse operations. The cycle doesn't break addition or subtraction — it just wraps the result.</p>
+
+<p>We track the hour only, not AM/PM or the date. Remainder 0 is displayed as 12 on a clock.</p>
+<h3>Calendars</h3>
+<p>Suppose today is Tuesday, October 21. What day of the week is November 15?</p>
+<ul>
+  <li>There are \(31 - 21 = 10\) days from Oct 21 to Oct 31, so Nov 1 is 11 days away.</li>
+  <li>\(11 \bmod 7 = 4\), so Nov 1 is Tuesday + 4 days = <strong>Saturday</strong>.</li>
+  <li>Nov 8, 15 are also Saturdays. So Nov 15 is a <strong>Saturday</strong>.</li>
+</ul>
+
+<p>What day of the week is January 1?</p>
+<ul>
+  <li>Days until Jan 1: \(11 + 30 + 31 = 72\).</li>
+  <li>\(72 \bmod 7 = 2\) (since \(70 = 10 \times 7\)).</li>
+  <li>Tuesday + 2 days = <strong>Thursday</strong>.</li>
+</ul>
+
+
+<p><strong>Observation:</strong> In both examples, we only needed the <em>remainder</em> after dividing by the cycle length (12 or 7). Adding whole cycles changes nothing.</p>
+
+
+<h3>Exercise</h3>
+<ol>
+  <li>Starting at 3:00, what time will it be in 150 hours?</li>
+  <li>If today is Friday, what weekday will it be exactly 365 days from today?</li>
+</ol>
+<details>
+<summary>Click for answer</summary>
+<ol>
+  <li>\(150 \bmod 12 = 6\) (since \(12 \times 12 = 144\), remainder 6). So 3:00 + 6 hours = <strong>9:00</strong>.</li>
+  <li>\(365 \bmod 7 = 1\) (since \(364 = 52 \times 7\)). Friday + 1 day = <strong>Saturday</strong>.</li>
+</ol>
+</details>
+</section>
+
+<section id="division">
+<h2>3. Relearning Division</h2>
+
+<p><strong>Definition.</strong> Let \(n, m \in \mathbb{Z}\). We say <strong>\(m\) divides \(n\)</strong> if there is an integer \(k\) such that \(n = mk\). We write \(m \mid n\).</p>
+
+<p><strong>Theorem (Division Algorithm).</strong> Let \(n \in \mathbb{Z}\) and \(m > 0\). There are unique integers \(q, r\) such that</p>
+<p>\[ n = qm + r \qquad \text{and} \qquad 0 \leq r < m. \]</p>
+<details><summary>Why is the quotient–remainder pair unique?</summary>
+<p>If \(n=qm+r=q'm+r'\), then \((q-q')m=r'-r\). Since both remainders lie between 0 and \(m-1\), their difference has absolute value less than \(m\). The only multiple of \(m\) in that range is 0, so \(r=r'\) and \(q=q'\). Existence follows by taking \(q=\lfloor n/m\rfloor\) and \(r=n-qm\).</p></details>
+
+<p><strong>Terminology:</strong></p>
+<ul>
+  <li>\(m\) is the <strong>divisor</strong>.</li>
+  <li>\(q\) is the <strong>quotient</strong>.</li>
+  <li>\(r\) is the <strong>remainder</strong>.</li>
+  <li>For a positive integer \(n\), its <strong>proper positive divisors</strong> are its positive divisors smaller than \(n\).</li>
+</ul>
+
+<p><strong>Important:</strong> In mathematics, the remainder is <strong>always nonnegative</strong>. This is <em>not</em> always true in programming languages (Java, C, C++ can produce negative remainders).</p>
+
+<h3>Exercise</h3>
+<p>Find \(q\) and \(r\) for each pair:</p>
+<ol>
+  <li>\(n = 3,\ m = 5\)</li>
+  <li>\(n = -3,\ m = 5\)</li>
+  <li>\(n = 5,\ m = 3\)</li>
+  <li>\(n = -5,\ m = 3\)</li>
+  <li>\(n = 161,\ m = 17\)</li>
+  <li>\(n = -161,\ m = 17\)</li>
+</ol>
+<details>
+<summary>Click for answer</summary>
+<ul>
+  <li>\(3 = 0 \times 5 + 3\), so \(q = 0,\ r = 3\)</li>
+  <li>\(-3 = -1 \times 5 + 2\), so \(q = -1,\ r = 2\)</li>
+  <li>\(5 = 1 \times 3 + 2\), so \(q = 1,\ r = 2\)</li>
+  <li>\(-5 = -2 \times 3 + 1\), so \(q = -2,\ r = 1\)</li>
+  <li>\(161 = 9 \times 17 + 8\), so \(q = 9,\ r = 8\)</li>
+  <li>\(-161 = -10 \times 17 + 9\), so \(q = -10,\ r = 9\)</li>
+</ul>
+</details>
+</section>
+
+<section id="divmod">
+<h2>4. The div and mod Operators</h2>
+
+<p>The division algorithm lets us define two operations on integers:</p>
+
+<p><strong>Definition.</strong> Let \(n \in \mathbb{Z}\) and \(d \in \mathbb{N} \setminus \{0\}\). Then</p>
+<ul>
+  <li>\(n \ \mathbf{div} \ d = q\) — the quotient</li>
+  <li>\(n \ \mathbf{mod} \ d = r\) — the remainder</li>
+</ul>
+<p>where \(q\) and \(r\) are the unique integers from the division algorithm.</p>
+
+<p><strong>Mathematics versus Java:</strong> With a nonnegative dividend and a positive divisor, integer <code>/</code> and <code>%</code> match these operations. For negative dividends, Java truncates the quotient toward zero: <code>-7 / 4</code> is −1 and <code>-7 % 4</code> is −3. Our mathematical quotient and remainder are −2 and 1.</p>
+<p>For a positive divisor, use <code>Math.floorDiv(-7, 4)</code> and <code>Math.floorMod(-7, 4)</code> to obtain −2 and 1. In either convention, dividend = divisor × quotient + remainder. See the <a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Math.html">Java Math documentation</a>.</p>
+
+<h3>Examples</h3>
+<ul>
+  <li>\(n = 20,\ d = 7\): \(20 = 7 \times 2 + 6\), so \(20 \ \mathbf{div} \ 7 = 2\), \(20 \ \mathbf{mod} \ 7 = 6\).</li>
+  <li>\(n = -1,\ d = 3\): \(-1 = 3 \times (-1) + 2\), so \(-1 \ \mathbf{div} \ 3 = -1\), \(-1 \ \mathbf{mod} \ 3 = 2\).</li>
+</ul>
+
+<h3>Exercise</h3>
+<ol>
+  <li>\(n = 28,\ d = 6\)</li>
+  <li>\(n = -7,\ d = 4\)</li>
+  <li>\(n = -1,\ d = 5\)</li>
+</ol>
+<details>
+<summary>Click for answer</summary>
+<ol>
+  <li>\(28 = 6 \times 4 + 4\), so \(28 \ \mathbf{div} \ 6 = 4\), \(28 \ \mathbf{mod} \ 6 = 4\).</li>
+  <li>\(-7 = 4 \times (-2) + 1\), so \(-7 \ \mathbf{div} \ 4 = -2\), \(-7 \ \mathbf{mod} \ 4 = 1\).</li>
+  <li>\(-1 = 5 \times (-1) + 4\), so \(-1 \ \mathbf{div} \ 5 = -1\), \(-1 \ \mathbf{mod} \ 5 = 4\).</li>
+</ol>
+</details>
+</section>
+
+<section id="congruence">
+<h2>5. Congruence Modulo \(n\)</h2>
+
+<p><strong>Definition.</strong> Let \(n \in \mathbb{N}\), \(n > 0\), and \(x, y \in \mathbb{Z}\). We say <strong>\(x\) is congruent to \(y\) modulo \(n\)</strong>, written</p>
+<p>\[ x \equiv y \pmod{n}, \]</p>
+<p>if \(n\) divides \(x - y\).</p>
+
+<p><strong>Notation matters:</strong> \(17\bmod 5=2\) gives a particular remainder. The statement \(17\equiv 12\pmod 5\) says that two integers have the same remainder; it does not say they are equal.</p>
+
+<h3>Examples</h3>
+<ul>
+  <li>\(365 \equiv 1 \pmod{7}\) since \(365 - 1 = 364 = 7 \times 52\).</li>
+  <li>\(20 \equiv 8 \pmod{12}\) since \(20 - 8 = 12\).</li>
+  <li>\(37 \equiv 1 \pmod{2}\) since \(37 - 1 = 36 = 2 \times 18\).</li>
+</ul>
+
+<p>Equivalently: \(x \equiv y \pmod{n}\) iff \(x\) and \(y\) have the same remainder when divided by \(n\).</p>
+
+<h3>Exercise</h3>
+<ul>
+  <li>Write down four numbers congruent to 2 modulo 3.</li>
+  <li>Is \(18 \equiv 8 \pmod 2\)? What about modulo 3? Modulo 4?</li>
+</ul>
+<details>
+<summary>Click for answer</summary>
+<ul>
+  <li>\(2, 5, 8, 11\) (and many others).</li>
+  <li>Modulo 2: <strong>yes</strong>, because \(2\mid10\). Modulo 3: <strong>no</strong>, because \(3\nmid10\). Modulo 4: <strong>no</strong>, because \(4\nmid10\). In each case, test the difference \(18-8=10\).</li>
+</ul>
+</details>
+</section>
+
+<section id="classes">
+<h2>6. Congruence Classes</h2>
+
+<p>For a fixed \(n\), the relation "\(\equiv \pmod n\)" partitions \(\mathbb{Z}\) into exactly \(n\) disjoint sets, called <strong>congruence classes modulo \(n\)</strong>.</p>
+
+<p><strong>Definition.</strong> For an integer \(a\) and positive integer \(n\), its <strong>congruence class</strong> is</p>
+<p>\[ [a]_n=\{x\in\mathbb Z:x\equiv a\pmod n\}=\{a+kn:k\in\mathbb Z\}. \]</p>
+<p>Any member can represent the class. Its unique member in \(\{0,1,\ldots,n-1\}\) is its <strong>least nonnegative representative</strong>. For example, \([7]_4=[3]_4=[-1]_4\).</p>
+<p>Every integer has exactly one remainder, so it belongs to exactly one of these \(n\) classes. This explains why the classes cover all integers without overlapping.</p>
+
+<h3>Examples</h3>
+<ul>
+  <li>Mod 2: the two classes are the even numbers (representative 0) and the odd numbers (representative 1).</li>
+  <li>Mod 4: four classes — representatives 0, 1, 2, 3. The class of 3 contains \(3, 7, 11, 15, \ldots\) and also \(-1, -5, -9, \ldots\).</li>
+</ul>
+
+<p>The set \(\{1, 4, 7\}\) is <em>not</em> a congruence class modulo 3 because it is finite. Every congruence class modulo a positive integer \(n\) is infinite: it contains \(a+kn\) for every \(k\in\mathbb Z\). The three numbers belong to the same class, but they do not form the whole class:</p>
+<p>\[ [1]_3=\{\ldots,-5,-2,1,4,7,10,13,\ldots\}. \]</p>
+
+<h3>Exercise</h3>
+<ol>
+  <li>Find three positive and three negative numbers in the same class as 7 modulo 4.</li>
+  <li>Find three positive and three negative numbers in the same class as 10 modulo 5.</li>
+</ol>
+<details>
+<summary>Click for answer</summary>
+<ol>
+  <li>Positive: 7, 11, 15. Negative: −1, −5, −9.</li>
+  <li>Positive: 10, 15, 20. Negative: −5, −10, −15. (Zero is also in this class, but it is neither positive nor negative.)</li>
+</ol>
+</details>
+</section>
+
+<section id="addition">
+<h2>7. Adding Congruences</h2>
+
+<p>Recall the elementary-school rules for even and odd:</p>
+<ul>
+  <li>Even + Even = Even</li>
+  <li>Even + Odd = Odd</li>
+  <li>Odd + Odd = Even</li>
+</ul>
+
+<p>In modular language: \(0 + 0 \equiv 0\), \(0 + 1 \equiv 1\), \(1 + 1 \equiv 0 \pmod 2\). The reason \(1+1 \equiv 0\) is that \(2 \equiv 0 \pmod 2\).</p>
+
+<p>This is a special case of a general theorem:</p>
+
+<p><strong>Theorem.</strong> Let \(a, b, x, y \in \mathbb{Z}\) and \(n\) is a positive integer. If \(a \equiv x \pmod n\) and \(b \equiv y \pmod n\), then</p>
+<p>\[ a + b \equiv x + y \pmod n. \]</p>
+
+<p><strong>Proof.</strong> Since \(a \equiv x\), there is an integer \(k\) with \(a - x = kn\). Since \(b \equiv y\), there is an integer \(m\) with \(b - y = mn\). Then</p>
+<p>\[ (a+b) - (x+y) = (a-x) + (b-y) = kn + mn = (k+m)n, \]</p>
+<p>so \(n\) divides \((a+b) - (x+y)\). Therefore \(a+b \equiv x+y \pmod n\). \(\blacksquare\)</p>
+
+
+<p><strong>Consequence:</strong> To add two numbers modulo \(n\), you can reduce each one first. This is exactly what made the clock arithmetic work: \(9 + 50 \equiv 9 + 2 \equiv 11 \pmod{12}\).</p>
+
+
+<h3>Subtraction and multiplication also respect congruence</h3>
+<p>Under the same hypotheses, \(a-b\equiv x-y\pmod n\) and \(ab\equiv xy\pmod n\). For multiplication,</p>
+<p>\[ab-xy=a(b-y)+y(a-x),\]</p>
+<p>which is a multiple of \(n\). For example, \(17\cdot23\equiv2\cdot3\equiv1\pmod5\).</p>
+<p><strong>Do not divide congruences freely.</strong> Although \(2\cdot1\equiv2\cdot4\pmod6\), we do not have \(1\equiv4\pmod6\). Cancellation needs additional conditions.</p>
+
+<h3>Exercise</h3>
+<p>Determine whether each congruence is true or false:</p>
+<ol>
+  <li>\(37 + 25 \equiv 3 \pmod 4\)</li>
+  <li>\(21 + 18 \equiv 4 \pmod 5\)</li>
+  <li>\(7 + 16 \equiv 2 \pmod 3\)</li>
+</ol>
+<details>
+<summary>Click for answer</summary>
+<ol>
+  <li>\(37 \bmod 4 = 1\), \(25 \bmod 4 = 1\), sum \(\equiv 2\). <strong>False</strong>.</li>
+  <li>\(21 \bmod 5 = 1\), \(18 \bmod 5 = 3\), sum \(\equiv 4\). <strong>True</strong>.</li>
+  <li>\(7 \bmod 3 = 1\), \(16 \bmod 3 = 1\), sum \(\equiv 2\). <strong>True</strong>.</li>
+</ol>
+</details>
+</section>
+
+<section id="tables">
+<h2>8. Addition Tables</h2>
+
+<p>Since addition modulo \(n\) only depends on the congruence classes, we can summarize it with a table. Here is the addition table modulo 4:</p>
+
+<table class="cycle-table">
+  <tr><th>+</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
+  <tr><th>0</th><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+  <tr><th>1</th><td>1</td><td>2</td><td>3</td><td>0</td></tr>
+  <tr><th>2</th><td>2</td><td>3</td><td>0</td><td>1</td></tr>
+  <tr><th>3</th><td>3</td><td>0</td><td>1</td><td>2</td></tr>
+</table>
+
+<p>Do you see the cyclic pattern? Every row is the row above it, shifted left by one.</p>
+
+<h3>Exercise</h3>
+<p>Fill in the addition table modulo 5:</p>
+<table class="cycle-table">
+  <tr><th>+</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
+  <tr><th>0</th><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+  <tr><th>1</th><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+  <tr><th>2</th><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+  <tr><th>3</th><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+  <tr><th>4</th><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+</table>
+<details><summary>Click for answer</summary>
+<table class="cycle-table">
+  <tr><th>+</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
+  <tr><th>0</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+  <tr><th>1</th><td>1</td><td>2</td><td>3</td><td>4</td><td>0</td></tr>
+  <tr><th>2</th><td>2</td><td>3</td><td>4</td><td>0</td><td>1</td></tr>
+  <tr><th>3</th><td>3</td><td>4</td><td>0</td><td>1</td><td>2</td></tr>
+  <tr><th>4</th><td>4</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+</table>
+</details>
+</section>
+
+<section id="euclid">
+<h2>9. Greatest Common Divisors and Euclid’s Algorithm</h2>
+<p>The <strong>greatest common divisor</strong> of two positive integers \(a\) and \(b\), written \(\gcd(a,b)\), is the largest positive integer that divides both. For example, \(\gcd(18,30)=6\). Finding a gcd lets us reduce a fraction to lowest terms without listing every divisor.</p>
+<h3>The key observation</h3>
+<p>If \(a=qb+r\), then</p>
+<p>\[\gcd(a,b)=\gcd(b,r).\]</p>
+<p><strong>Why?</strong> A common divisor of \(a\) and \(b\) divides \(r=a-qb\). Conversely, a common divisor of \(b\) and \(r\) divides \(a=qb+r\). Thus the two pairs have exactly the same common divisors, including the greatest one.</p>
+<h3>The algorithm</h3>
+<p>Start with \(a\ge b&gt;0\). Divide \(a\) by \(b\), then replace the pair \((a,b)\) by \((b,r)\). Repeat until the remainder is 0. The <strong>last nonzero remainder</strong> (or the initial divisor if the first remainder is 0) is the gcd. This uses \(\gcd(b,0)=b\) for \(b&gt;0\).</p>
+<p><strong>Example:</strong> Find \(\gcd(252,105)\).</p>
+<p>\[
+\begin{aligned}
+252 &amp;=2\cdot105+42,\\
+105 &amp;=2\cdot42+21,\\
+42 &amp;=2\cdot21+0.
+\end{aligned}
+\]</p>
+<p>Therefore \(\gcd(252,105)=21\), and \(\frac{105}{252}=\frac{5}{12}\). Only three divisions were needed.</p>
+<h3>Why is it so fast?</h3>
+<p>The remainders strictly decrease, so the algorithm must stop. But they do more than decrease: <strong>within at most two divisions, the smaller number drops below half its previous value</strong>, unless the algorithm has already stopped.</p>
+<p>To see this, let \(r=a\bmod b\).</p>
+<ul>
+<li>If \(r\le b/2\), the first division already cuts the smaller number at least in half. If equality holds, the next remainder is 0.</li>
+<li>If \(r&gt;b/2\), then \(b&lt;2r\), so the next division has quotient 1 and remainder \(b-r&lt;b/2\).</li>
+</ul>
+<p>After at most two more divisions, the smaller number is below \(b/4\); after two more, below \(b/8\); and so on. There cannot be a positive integer remainder smaller than 1.</p>
+<p>Consequently, the number of divisions grows on the order of \(\log_2 b\), rather than on the order of \(b\). In terms of binary representation, it is proportional at most to the number of bits in the smaller input. For example, when \(b&lt;2^{20}=1{,}048{,}576\), at most 40 divisions suffice. This is a bound on the <em>number of divisions</em>; division itself takes more work for larger integers.</p>
+<details><summary>Optional: when does the algorithm take many steps?</summary>
+<p>Consecutive Fibonacci numbers make the remainders decrease relatively slowly: \(\gcd(34,21)\) produces remainders \(13,8,5,3,2,1,0\). Most quotients are 1, yet even this sequence satisfies the halving bound every two steps.</p>
+</details>
+<h3>Quick check</h3>
+<p>A remainder is more than half the previous divisor. Why does this not make the algorithm slow?</p>
+<details><summary>Answer</summary><p>The next quotient is 1, and the next remainder is the difference between those two numbers, which is less than half the previous divisor.</p></details>
+</section>
+
+<section id="ambiguous">
+<h2>10. Optional Counting Connection: Ambiguous Dates</h2>
+
+<p>Compare two common numeric date formats: month/day/year and day/month/year. Assume these are the only two possible interpretations. For example, February 24, 2022 is written <code>02.24.2022</code> in the US and <code>24.02.2022</code> in Europe.</p>
+
+<p><strong>Question:</strong> How many days in a year have a date that cannot be understood unambiguously without knowing which format was used?</p>
+
+<details>
+<summary>Click for a hint</summary>
+<p>A date like <code>03.04.2022</code> is ambiguous: it could be March 4 (US) or April 3 (Europe). A date like <code>13.04.2022</code> is unambiguous: there is no 13th month, so it must be European. A date like <code>04.25.2022</code> is unambiguous: there is no 25th month, so it must be American.</p>
+</details>
+
+<details>
+<summary>Click for answer</summary>
+<p>A date is ambiguous exactly when both the day and the month are ≤ 12, and they are <em>different</em> numbers (if they're the same, like 04.04, both formats agree).</p>
+<p>Count ordered pairs (d, m) with \(1 \le d, m \le 12\) and \(d \neq m\): that's \(12 \times 12 - 12 = 132\).</p>
+<p>Every month has at least 12 days, so all 132 ordered pairs are valid dates, in both common and leap years. This is a counting application, rather than a modular-arithmetic calculation.</p>
+<p><strong>Answer: 132 days per year are ambiguous.</strong></p>
+</details>
+</section>
+<section id="post-lecture-practice"><h2>Post-Lecture Practice</h2>
+<ol><li>Find \(-29\bmod7\) and its corresponding quotient.</li><li>Explain why \(1001+1003\equiv2\pmod7\).</li><li>A weekly meeting is on Thursday. What weekday is 100 days later?</li><li>Use Euclid’s algorithm to find \(\gcd(414,180)\), then reduce \(180/414\).</li><li>If the smaller input is less than \(2^{10}\), give an upper bound on the number of divisions using the halving argument.</li></ol>
+<details><summary>Answers</summary><ol><li>\(-29=(-5)7+6\): quotient −5, remainder 6.</li><li>\(1001\equiv0\) and \(1003\equiv2\pmod7\); add the congruences.</li><li>Saturday, because \(100\bmod7=2\).</li><li>\(414=2\cdot180+54\), \(180=3\cdot54+18\), \(54=3\cdot18+0\). Thus the gcd is 18 and \(180/414=10/23\).</li><li>At most 20 divisions: after every two divisions the smaller number is less than half its previous value, unless the algorithm has stopped.</li></ol></details></section>
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+    </article>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>
