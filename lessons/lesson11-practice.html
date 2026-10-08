@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lecture 11: Additional Practice</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Lecture 11: Additional Practice</h1>
+  </header>
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <article>
+<p>Seven additional problems for <a href="l11.html">Lecture 11</a>. Try each problem before opening its worked solution. Show your reasoning.</p>
+<section id="problem-1">
+<h2>1. Leap years and weekday shifts</h2>
+<p>Which of 2000, 2028, and 2100 are Gregorian leap years? If January 1 of a leap year is Saturday, what weekday is January 1 of the following year?</p>
+<details>
+<summary>Show worked solution</summary>
+<p>2000 is divisible by 400, so it is leap. 2028 is divisible by 4 but not by 100, so it is leap. 2100 is divisible by 100 but not by 400, so it is not leap. A leap year has 366 days, and \(366\equiv2\pmod7\); the next January 1 is Monday.</p>
+</details>
+</section>
+<section id="problem-2">
+<h2>2. Doomsday in January</h2>
+<p>Find the weekday of January 18, 2028 using Doomsday. Use Sunday = 0, Monday = 1, …, Saturday = 6. The anchor for the 2000s is 2. Show the year calculation and choose the correct January key date.</p>
+<details>
+<summary>Show worked solution</summary>
+<p>\(D=(2+28+\lfloor28/4\rfloor)\bmod7=37\bmod7=2\), Tuesday. Since 2028 is a leap year, January 4 is a key date. January 18 is 14 days later, so it is also Tuesday.</p>
+</details>
+</section>
+<section id="problem-3">
+<h2>3. Why a key date works</h2>
+<p>Show that September 5 and November 7 always share a weekday in a given year. Count elapsed days rather than counting both endpoints.</p>
+<details>
+<summary>Show worked solution</summary>
+<p>From September 5 to September 30 there are \(30-5=25\) days; October contributes 31 days; reaching November 7 adds 7 days. Thus the total is \(25+31+7=63=9\cdot7\). The dates are nine weeks apart, so their weekdays agree. February is not in this interval, so the argument is unchanged in leap years.</p>
+</details>
+</section>
+<section id="problem-4">
+<h2>4. The same number in different bases</h2>
+<p>Convert \(156_{10}\) to binary using repeated division, then to hexadecimal by grouping bits. Check your hexadecimal answer using place values. <strong>Optional:</strong> also convert to octal.</p>
+<details>
+<summary>Show worked solution</summary>
+<p>The successive divisions by 2 give quotient–remainder pairs \((78,0),(39,0),(19,1),(9,1),(4,1),(2,0),(1,0),(0,1)\). Reading the remainders backward gives \(10011100_2\). Grouping as \(1001\;1100\) gives \(9C_{16}\), and \(9\cdot16+12=156\). For octal, group as \(010\;011\;100\): \(234_8\). Check: \(2\cdot64+3\cdot8+4=156\).</p>
+</details>
+</section>
+<section id="problem-5">
+<h2>5. Binary addition and wraparound</h2>
+<p>Add \(11010110_2\) and \(00111101_2\). Give the full binary sum and the value stored by an unsigned 8-bit counter that keeps only the lowest 8 bits. Explain the difference.</p>
+<details>
+<summary>Show worked solution</summary>
+<p>The full sum is \(100010011_2\). In decimal, the operands are 214 and 61, whose sum is 275. Keeping the lowest 8 bits gives \(00010011_2=19\), since \(275\bmod256=19\). The leading carry represents 256 and is discarded by this wraparound rule.</p>
+</details>
+</section>
+<section id="problem-6">
+<h2>6. Labels and storage</h2>
+<p>A system needs distinct binary labels for 1000 students. What is the minimum fixed number of bits per label? If each label is stored in two whole bytes, how many bytes do 1000 labels require, excluding all other data? Express this in kB and KiB.</p>
+<details>
+<summary>Show worked solution</summary>
+<p>Since \(2^9=512&lt;1000\le1024=2^{10}\), 10 bits per label suffice and 9 do not. Two bytes per label require \(1000\cdot2=2000\) bytes. This is 2 kB and \(2000/1024=1.953125\) KiB. The two-byte allocation provides 16 bits per label, even though only 10 are needed.</p>
+</details>
+</section>
+<section id="problem-7">
+<h2>7. What day of the week were you born?</h2>
+<p>Use the Doomsday algorithm to find the day of the week you were born on. Calculate it first, then verify your answer using a reliable source.</p>
+<ol>
+<li>Write your birth date with the month spelled out to avoid ambiguity.</li>
+<li>Determine whether your birth year was a leap year. Show the century anchor, the year’s Doomsday calculation, the key date you used, and the signed offset to your birthday.</li>
+<li>Verify your result using a reliable calendar source, such as <a href="https://www.timeanddate.com/calendar/basic.html">timeanddate.com’s calendar creator</a>, or a published calendar for your birth year. Select the correct year and month, and read the weekday heading above your date.</li>
+<li>Cite the source you used: include a link to the calendar you consulted, or the title, publisher, year, and page of a printed source. State whether it agrees with your calculation. If it does not, find and explain the error.</li>
+</ol>
+<details>
+<summary>Show solution guide</summary>
+<p>Answers depend on your birth date. Use Sunday = 0 through Saturday = 6. With century anchor \(C\) and last two digits \(Y\), compute</p>
+<p>\[D=(C+Y+\lfloor Y/4\rfloor)\bmod7.\]</p>
+<p>Choose a key date in your birth year. Remember that January uses January 3 in common years and January 4 in leap years; February uses its last day. If your birthday is \(t\) days after the key date (negative if before), its weekday number is \((D+t)\bmod7\).</p>
+<p>A complete solution includes your calculation and a source confirming the resulting weekday. If the results differ, check the year, leap-year rule, January or February key date, offset, and weekday numbering. Calendar pages may start their weeks on Monday, so read the weekday labels rather than assuming the first column is Sunday.</p>
+</details>
+</section>
+</article>
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>

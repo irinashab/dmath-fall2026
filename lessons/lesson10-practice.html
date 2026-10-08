@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lecture 10: Additional Practice</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Lecture 10: Additional Practice</h1>
+  </header>
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <article>
+<p>Six additional problems for <a href="l10.html">Lecture 10</a>. Try each problem before opening its worked solution. Show your reasoning.</p>
+<section id="problem-1">
+<h2>1. Quotient and remainder</h2>
+<p>For each pair, find integers \(q,r\) such that \(a=dq+r\) and \(0\le r&lt;d\): (a) \(a=83,d=9\); (b) \(a=-83,d=9\); (c) \(a=-4,d=11\).</p>
+<details>
+<summary>Show worked solution</summary>
+<p>\(83=9\cdot9+2\), so \(q=9,r=2\). Next, \(-83=9(-10)+7\), so \(q=-10,r=7\). Finally, \(-4=11(-1)+7\), so \(q=-1,r=7\). For negative dividends, choose the quotient so that the remainder is nonnegative.</p>
+</details>
+</section>
+<section id="problem-2">
+<h2>2. Congruence classes</h2>
+<p>Describe \([-2]_5\) using a formula involving an arbitrary integer. Give its least nonnegative representative and three positive and three negative members. Is \(\{-2,3,8\}\) the whole class? Explain.</p>
+<details>
+<summary>Show worked solution</summary>
+<p>\([-2]_5=\{-2+5k:k\in\mathbb Z\}=[3]_5\). Its least nonnegative representative is 3. Positive members include 3, 8, 13; negative members include −2, −7, −12. The finite set \(\{-2,3,8\}\) is not the whole class: every congruence class modulo 5 is infinite.</p>
+</details>
+</section>
+<section id="problem-3">
+<h2>3. Calculate with smaller numbers</h2>
+<p>Find the least nonnegative remainder of \(203\cdot48-75\) modulo 7 without first computing the product. Show the congruences you use.</p>
+<details>
+<summary>Show worked solution</summary>
+<p>\(203\equiv0\), \(48\equiv6\), and \(75\equiv5\pmod7\). Therefore \(203\cdot48-75\equiv0\cdot6-5\equiv-5\equiv2\pmod7\). The remainder is 2.</p>
+</details>
+</section>
+<section id="problem-4">
+<h2>4. A repeating schedule</h2>
+<p>A maintenance check happens every 9 days. A check takes place on Monday. What weekday is the fifth check <em>after</em> that Monday? How many checks after the starting check are needed to land on Monday again for the first time?</p>
+<details>
+<summary>Show worked solution</summary>
+<p>The fifth later check is \(5\cdot9=45\) days later. Since \(45\equiv3\pmod7\), it is Thursday. To return to Monday, we need \(9k\equiv0\pmod7\), equivalently \(2k\equiv0\pmod7\). For \(k=1,\ldots,7\), the remainders are 2, 4, 6, 1, 3, 5, 0. Thus the first return is the seventh later check, 63 days later.</p>
+</details>
+</section>
+<section id="problem-5">
+<h2>5. Euclid’s algorithm</h2>
+<p>Use Euclid’s algorithm to compute \(\gcd(1071,462)\). Then reduce \(462/1071\) to lowest terms.</p>
+<details>
+<summary>Show worked solution</summary>
+<p>\(1071=2\cdot462+147\), \(462=3\cdot147+21\), and \(147=7\cdot21+0\). The last nonzero remainder is 21, so the gcd is 21. Dividing numerator and denominator by 21 gives \(462/1071=22/51\).</p>
+</details>
+</section>
+<section id="problem-6">
+<h2>6. Why Euclid stays fast</h2>
+<p>In one step of Euclid’s algorithm, the divisor is 100 and the remainder is 73. What is the next remainder, and how does it illustrate the halving argument? If the smaller starting input is less than \(2^{12}\), give an upper bound on the number of divisions.</p>
+<details>
+<summary>Show worked solution</summary>
+<p>The next division is \(100=1\cdot73+27\), so the next remainder is 27. Although 73 is more than half of 100, 27 is less than half. Within at most two divisions the smaller value drops below half, or the algorithm stops. Starting below \(2^{12}\), at most \(2\cdot12=24\) divisions suffice. This bounds the number of divisions, not the time required to perform each division.</p>
+</details>
+</section>
+</article>
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>
