@@ -88,19 +88,26 @@
 
 <p>We track the hour only, not AM/PM or the date. Remainder 0 is displayed as 12 on a clock.</p>
 <h3>Calendars</h3>
-<p>Suppose today is Tuesday, October 21. What day of the week is November 15?</p>
+<p>Suppose is Friday, October 9, 2026. What day of the week is November 15?</p>
 <ul>
-  <li>There are \(31 - 21 = 10\) days from Oct 21 to Oct 31, so Nov 1 is 11 days away.</li>
-  <li>\(11 \bmod 7 = 4\), so Nov 1 is Tuesday + 4 days = <strong>Saturday</strong>.</li>
-  <li>Nov 8, 15 are also Saturdays. So Nov 15 is a <strong>Saturday</strong>.</li>
-</ul>
+    <li>Oct 9 to Oct 31 = 22 days</li>
+    <li>Plus 15 days in November = 37 days total</li>
+    <li>37 ÷ 7 = 5 weeks + 2 extra days</li>
+    <li>Friday + 2 days = <b>Sunday</b></li>
+  </ul>
+  <p><b>November 15, 2026 is a Sunday.</b></p>
 
-<p>What day of the week is January 1?</p>
+
+<p>What day of the week is January 1 2027?</p>
 <ul>
-  <li>Days until Jan 1: \(11 + 30 + 31 = 72\).</li>
-  <li>\(72 \bmod 7 = 2\) (since \(70 = 10 \times 7\)).</li>
-  <li>Tuesday + 2 days = <strong>Thursday</strong>.</li>
-</ul>
+    <li>Oct 9 to Oct 31 = 22 days</li>
+    <li>November = 30 days (total 52)</li>
+    <li>December = 31 days (total 83)</li>
+    <li>Plus 1 day (Jan 1) = 84 days total</li>
+    <li>84 ÷ 7 = 12 weeks exactly (0 extra days)</li>
+    <li>Friday + 0 days = <b>Friday</b></li>
+  </ul>
+  <p><b>January 1, 2027 is a Friday.</b></p
 
 
 <p><strong>Observation:</strong> In both examples, we only needed the <em>remainder</em> after dividing by the cycle length (12 or 7). Adding whole cycles changes nothing.</p>
