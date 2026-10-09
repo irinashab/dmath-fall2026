@@ -182,29 +182,62 @@
 </ul>
 <p>where \(q\) and \(r\) are the unique integers from the division algorithm.</p>
 
-<p><strong>Mathematics versus Java:</strong> With a nonnegative dividend and a positive divisor, integer <code>/</code> and <code>%</code> match these operations. For negative dividends, Java truncates the quotient toward zero: <code>-7 / 4</code> is −1 and <code>-7 % 4</code> is −3. Our mathematical quotient and remainder are −2 and 1.</p>
-<p>For a positive divisor, use <code>Math.floorDiv(-7, 4)</code> and <code>Math.floorMod(-7, 4)</code> to obtain −2 and 1. In either convention, dividend = divisor × quotient + remainder. See the <a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Math.html">Java Math documentation</a>.</p>
+<h2>Java Negative Remainders</h2>
+
+<p>Java's <code>%</code> is a <b>remainder</b> operator, not a true modulo. The result has the <b>same sign as the dividend</b>.</p>
 
 <h3>Examples</h3>
 <ul>
-  <li>\(n = 20,\ d = 7\): \(20 = 7 \times 2 + 6\), so \(20 \ \mathbf{div} \ 7 = 2\), \(20 \ \mathbf{mod} \ 7 = 6\).</li>
-  <li>\(n = -1,\ d = 3\): \(-1 = 3 \times (-1) + 2\), so \(-1 \ \mathbf{div} \ 3 = -1\), \(-1 \ \mathbf{mod} \ 3 = 2\).</li>
+  <li><code>5 % 3</code> → <code>2</code></li>
+  <li><code>-5 % 3</code> → <code>-2</code></li>
+  <li><code>5 % -3</code> → <code>2</code></li>
+  <li><code>-5 % -3</code> → <code>-2</code></li>
 </ul>
 
-<h3>Exercise</h3>
-<ol>
-  <li>\(n = 28,\ d = 6\)</li>
-  <li>\(n = -7,\ d = 4\)</li>
-  <li>\(n = -1,\ d = 5\)</li>
-</ol>
-<details>
-<summary>Click for answer</summary>
-<ol>
-  <li>\(28 = 6 \times 4 + 4\), so \(28 \ \mathbf{div} \ 6 = 4\), \(28 \ \mathbf{mod} \ 6 = 4\).</li>
-  <li>\(-7 = 4 \times (-2) + 1\), so \(-7 \ \mathbf{div} \ 4 = -2\), \(-7 \ \mathbf{mod} \ 4 = 1\).</li>
-  <li>\(-1 = 5 \times (-1) + 4\), so \(-1 \ \mathbf{div} \ 5 = -1\), \(-1 \ \mathbf{mod} \ 5 = 4\).</li>
-</ol>
-</details>
+<h3>Why</h3>
+<p>Java integer division truncates toward zero. The identity that must always hold is:</p>
+<pre>(a / b) * b + (a % b) == a</pre>
+<p>To satisfy this with truncating division, the remainder carries the sign of the dividend.</p>
+
+<h2>Java Negative Remainders</h2>
+
+<p>Java's <code>%</code> is a <b>remainder</b> operator, not a true modulo. The result has the <b>same sign as the dividend</b>.</p>
+
+<h3>Examples</h3>
+<ul>
+  <li><code>5 % 3</code> → <code>2</code></li>
+  <li><code>-5 % 3</code> → <code>-2</code></li>
+  <li><code>5 % -3</code> → <code>2</code></li>
+  <li><code>-5 % -3</code> → <code>-2</code></li>
+</ul>
+
+<h3>Why</h3>
+<p>Java integer division truncates toward zero. The identity that must always hold is:</p>
+<pre>(a / b) * b + (a % b) == a</pre>
+<p>To satisfy this with truncating division, the remainder carries the sign of the dividend.</p>
+
+<h3>Number Theory vs. Java</h3>
+<ul>
+  <li>Number theory: <code>-5 mod 3 = 1</code> (range <code>[0, b-1]</code>)</li>
+  <li>Java: <code>-5 % 3 = -2</code></li>
+</ul>
+<p>Both are congruent mod 3, but Java's result is not normalized to be non-negative.</p>
+
+<h3>Getting a Positive Modulus in Java</h3>
+<pre>
+int mod = a % b;
+if (mod &lt; 0) {
+    mod += b;
+}
+</pre>
+<p>Or in one line:</p>
+<pre>
+int mod = ((a % b) + b) % b;
+</pre>
+<p>Common pattern for array indices or hash buckets:</p>
+<pre>
+int index = (key % size + size) % size;
+</pre>
 </section>
 
 <section id="congruence">
@@ -390,8 +423,161 @@
 <h3>Quick check</h3>
 <p>A remainder is more than half the previous divisor. Why does this not make the algorithm slow?</p>
 <details><summary>Answer</summary><p>The next quotient is 1, and the next remainder is the difference between those two numbers, which is less than half the previous divisor.</p></details>
-</section>
 
+<h2>Euclid's Algorithm — The Greek Geometric View</h2>
+
+<p>The Greeks didn't think in terms of numbers being divided into each other. They thought in terms of <b>magnitudes</b> and <b>lines</b>. Euclid's algorithm, as it appears in <i>Elements</i> Book VII (for numbers) and Book X (for magnitudes), is fundamentally about <b>fitting one length into another</b> — over and over — until nothing is left over.</p>
+
+<h3>The Setup: Two Line Segments</h3>
+
+<p>Take two segments of lengths <code>a</code> and <code>b</code>, with <code>a &gt; b</code>. Think of them as two sticks.</p>
+
+<pre>
+a: |--------------------------|
+b: |-------------|
+</pre>
+
+<p>The question Euclid asks is: <b>what is the largest common measure of both?</b> That is, what is the longest segment that fits a whole number of times into both <code>a</code> and <code>b</code>? That is the GCD.</p>
+
+<h3>Step 1: Fit <code>b</code> into <code>a</code> as Many Times as It Goes</h3>
+
+<p>Lay copies of <code>b</code> along <code>a</code> until you can't fit another full copy.</p>
+
+<pre>
+a: |--------------------------|
+b: |-------------|             b fits once...
+                    |-------------|   ...twice? no, overshoots
+</pre>
+
+<p>Say <code>b</code> fits <code>q</code> times into <code>a</code>, with a leftover piece <code>r</code>.</p>
+
+<pre>
+a: |-------------|-------------|----|
+        b              b          r
+</pre>
+
+<p>Algebraically: <code>a = q·b + r</code>, where <code>0 ≤ r &lt; b</code>.</p>
+
+<p>Geometrically: <b><code>r</code> is what's left when you cover <code>a</code> with as many copies of <code>b</code> as possible.</b></p>
+
+<h3>Step 2: Now Fit <code>r</code> into <code>b</code></h3>
+
+<p>Forget <code>a</code> for a moment. The leftover <code>r</code> is the new smaller stick. Fit it into <code>b</code> as many times as possible, leaving a new remainder <code>r₂</code>.</p>
+
+<pre>
+b: |-------------|
+r: |----|----|--|
+      r    r   r₂
+</pre>
+
+<p>So <code>b = q₂·r + r₂</code>, with <code>0 ≤ r₂ &lt; r</code>.</p>
+
+<h3>Step 3: Repeat</h3>
+
+<p>Now fit <code>r₂</code> into <code>r</code>. Get <code>r₃</code>. Then fit <code>r₃</code> into <code>r₂</code>. Keep going.</p>
+
+<p>Each step, the remainder gets <b>strictly shorter</b>:</p>
+
+<pre>
+a &gt; b &gt; r &gt; r₂ &gt; r₃ &gt; ...
+</pre>
+
+<h3>Step 4: When Does It Stop?</h3>
+
+<p>Eventually the remainder becomes <b>zero</b>. Geometrically: some small segment fits <i>exactly</i> into the previous one with no leftover.</p>
+
+<p>Say at some step <code>rₙ₋₁ = q·rₙ + 0</code>. That means <code>rₙ</code> fits perfectly into <code>rₙ₋₁</code>.</p>
+
+<pre>
+rₙ₋₂: |----------|
+rₙ₋₁: |-----|-----|
+rₙ:   |--|--|--|--|   ← fits exactly, no remainder
+</pre>
+
+<p>At that moment, <b><code>rₙ</code> is the common measure</b> — it divides the previous remainder exactly, and by working backwards, it divides every earlier remainder, and therefore divides both <code>a</code> and <code>b</code>.</p>
+
+<h3>The Geometric Picture in One Sentence</h3>
+
+<blockquote>
+<b>Repeatedly lay the smaller segment into the larger, replace the larger with the smaller and the smaller with the leftover, and stop when nothing is left over. The last non-zero leftover is the common measure.</b>
+</blockquote>
+
+<h3>Why the Greeks Loved This</h3>
+
+<p>The Greeks were suspicious of irrationals and of infinite processes. Euclid's algorithm was beautiful to them because:</p>
+
+<ol>
+  <li><b>It always terminates</b> for commensurable magnitudes (rational ratios). The remainders strictly decrease in length, so you can't go forever.</li>
+  <li><b>It's purely constructive</b> — no numbers, no fractions, just laying sticks end to end.</li>
+  <li><b>It reveals the hidden unit</b> — the GCD is literally the largest segment that measures both original segments exactly.</li>
+  <li><b>When it doesn't terminate</b>, you've discovered incommensurability. This is exactly how the Greeks proved √2 is irrational: apply the algorithm to the side and diagonal of a square, and you get an infinite regress — no common measure exists.</li>
+</ol>
+
+<h3>Example: <code>a = 28</code>, <code>b = 6</code> (as lengths)</h3>
+
+<pre>
+28: |--------|--------|--------|--------|----|
+             6        6        6        6    4
+     → remainder 4
+
+6:  |----|----|
+        4    2
+     → remainder 2
+
+4:  |--|--|
+       2  2
+     → remainder 0
+
+GCD = 2
+</pre>
+
+<p>Geometrically: the largest segment that fits a whole number of times into both 28 and 6 is a segment of length 2.</p>
+
+<h3>The Anthyphairesis Connection</h3>
+
+<p>The Greeks called this process <b>anthyphairesis</b> (ἀνθυφαίρεσις) — "mutual subtraction" or "reciprocal taking away." It's the same idea as the Euclidean algorithm, but framed as repeated subtraction rather than division. Instead of asking "how many times does <code>b</code> go into <code>a</code>?", you just keep <b>subtracting the smaller from the larger</b> until you get equality or a leftover smaller than both.</p>
+
+<p>That's the purest geometric form: <b>subtract until you can't, then swap roles.</b> Division is just a shortcut for many subtractions.</p>
+
+<h3>Summary Table</h3>
+
+<table border="1" cellpadding="6">
+  <tr>
+    <th>Greek geometric idea</th>
+    <th>Modern arithmetic</th>
+  </tr>
+  <tr>
+    <td>Two segments <code>a</code>, <code>b</code></td>
+    <td>Two integers <code>a</code>, <code>b</code></td>
+  </tr>
+  <tr>
+    <td>Lay <code>b</code> into <code>a</code> as many times as possible</td>
+    <td><code>a = q·b + r</code></td>
+  </tr>
+  <tr>
+    <td>Leftover segment <code>r</code></td>
+    <td>Remainder <code>r</code></td>
+  </tr>
+  <tr>
+    <td>Swap: fit <code>r</code> into <code>b</code></td>
+    <td><code>b = q₂·r + r₂</code></td>
+  </tr>
+  <tr>
+    <td>Stop when nothing is left over</td>
+    <td><code>rₙ₊₁ = 0</code></td>
+  </tr>
+  <tr>
+    <td>Last non-zero leftover</td>
+    <td><code>gcd(a, b) = rₙ</code></td>
+  </tr>
+  <tr>
+    <td>Infinite regress</td>
+    <td>Irrational ratio (incommensurable)</td>
+  </tr>
+</table>
+
+<p>The algorithm is the same; only the vocabulary changes. The Greeks saw it as <b>fitting lengths</b>; we see it as <b>reducing integers</b>.</p>
+</section>
 <section id="ambiguous">
 <h2>10. Optional Counting Connection: Ambiguous Dates</h2>
 
