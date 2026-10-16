@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math — Counting Principles I">
+  <title>Discrete Math – Lesson 12: Counting Principles I</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <p class="eyebrow">MAT 3120 · Discrete Mathematics</p>
+    <h1>Lesson 12: Counting Principles I</h1>
+    <p class="subtitle">Choices, arrangements, and selections</p>
+  </header>
+
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <nav class="toc" aria-label="Table of contents">
+      <h2>On this page</h2>
+      <ul>
+        <li><a href="#why-count">Why counting is not always easy</a></li>
+        <li><a href="#sum-product">The sum and product principles</a></li>
+        <li><a href="#functions">Counting functions</a></li>
+        <li><a href="#permutations">Permutations and factorials</a></li>
+        <li><a href="#combinations">Combinations</a></li>
+        <li><a href="#repetition">Arrangements with repeated objects</a></li>
+        <li><a href="#binomial">The binomial theorem</a></li>
+        <li><a href="#practice">Practice and afterthoughts</a></li>
+      </ul>
+    </nav>
+
+    <section id="why-count">
+      <h2>Why counting is not always easy</h2>
+      <p>Most counting problems begin with two questions:</p>
+      <ol>
+        <li>What choices are being made?</li>
+        <li>Does the order of those choices matter?</li>
+      </ol>
+
+      <div class="question-box">
+        <h3>Opening problems</h3>
+        <ol>
+          <li>A sandwich shop offers 3 kinds of bread and 5 fillings. How many bread-and-filling sandwiches are possible?</li>
+          <li>A triple-scoop cone is made from 12 flavors. Flavors may be repeated, and the order of the scoops matters. How many cones are possible?</li>
+          <li>How many triple-scoop cones use three different flavors?</li>
+          <li>How many ways can we buy 3 different pints from the same 12 flavors if the order in which we choose them does not matter?</li>
+        </ol>
+      </div>
+
+      <details class="answer">
+        <summary>Answers</summary>
+        <ol>
+          <li>\(3\cdot 5=15\).</li>
+          <li>\(12^3=1728\).</li>
+          <li>\(12\cdot 11\cdot 10=1320\).</li>
+          <li>Each group of three flavors was counted \(3!\) times in the previous answer, so the answer is
+            \[
+              \frac{12\cdot 11\cdot 10}{3!}=\binom{12}{3}=220.
+            \]
+          </li>
+        </ol>
+      </details>
+    </section>
+
+    <section id="sum-product">
+      <h2>The sum and product principles</h2>
+
+      <div class="theorem">
+        <h3>The sum principle</h3>
+        <p>If one task can be completed in \(m\) ways and a second, mutually exclusive task can be completed in \(n\) ways, then choosing one task or the other can be done in \(m+n\) ways.</p>
+      </div>
+
+      <p>The words <em>mutually exclusive</em> matter. If the two collections overlap, adding their sizes counts the overlap twice. We will return to that problem in Lesson 13.</p>
+
+      <div class="example">
+        <h3>Example</h3>
+        <p>A café offers 6 pastries and 4 sandwiches. If you choose one pastry <em>or</em> one sandwich, there are \(6+4=10\) choices.</p>
+      </div>
+
+      <div class="theorem">
+        <h3>The product principle</h3>
+        <p>Suppose a process consists of successive stages. If the first stage has \(n_1\) possibilities, and for every first choice the second has \(n_2\) possibilities, and so on, then the entire process has</p>
+        \[
+          n_1n_2\cdots n_k
+        \]
+        <p>possible outcomes.</p>
+      </div>
+
+      <p>The sandwich problem uses the product principle: choose a bread, then choose a filling. The choices form ordered pairs in the Cartesian product \(B\times F\), so</p>
+      \[
+        |B\times F|=|B|\,|F|.
+      \]
+
+      <div class="question-box">
+        <h3>Quick check</h3>
+        <p>A password consists of two letters followed by three digits. Repetition is allowed. How many passwords are possible?</p>
+      </div>
+
+      <details class="answer">
+        <summary>Answer</summary>
+        <p>There are \(26\) choices for each letter and \(10\) for each digit:</p>
+        \[
+          26^2\cdot 10^3=676{,}000.
+        \]
+      </details>
+    </section>
+
+    <section id="functions">
+      <h2>Counting functions</h2>
+      <p>Suppose \(|A|=n\) and \(|B|=m\). To define a function \(f:A\to B\), we choose one of the \(m\) elements of \(B\) as the value of \(f(a)\) for each of the \(n\) elements \(a\in A\). Therefore:</p>
+
+      <div class="theorem">
+        \[
+          \#\{f:A\to B\}=m^n.
+        \]
+      </div>
+
+      <p>This is the same structure as choosing flavors for ordered scoops or filling positions in a string. It also explains why a truth table for \(n\) variables has \(2^n\) rows: each row is a function from the set of variables to \(\{T,F\}\).</p>
+
+      <div class="example">
+        <h3>Example</h3>
+        <p>There are \(12^3=1728\) functions from a 3-element set to a 12-element set. If the function must be injective, the three outputs must be different, giving</p>
+        \[
+          12\cdot11\cdot10=1320.
+        \]
+      </div>
+    </section>
+
+    <section id="permutations">
+      <h2>Permutations and factorials</h2>
+      <p>A <strong>permutation</strong> of \(n\) distinct objects is an arrangement of all of them in order. We have \(n\) choices for the first position, \(n-1\) for the second, and so on:</p>
+      \[
+        n!=n(n-1)(n-2)\cdots2\cdot1.
+      \]
+
+      <p>There is exactly one arrangement of no objects—the empty arrangement—so \(0!=1\). This convention also makes the factorial formulas work at their endpoints.</p>
+
+      <p>A <strong>\(k\)-permutation</strong> of \(n\) objects is an ordered selection of \(k\) distinct objects. For \(0\le k\le n\),</p>
+      \[
+        P(n,k)=n(n-1)\cdots(n-k+1)=\frac{n!}{(n-k)!}.
+      \]
+
+      <p>Equivalently, \(P(n,k)\) counts injective functions from a \(k\)-element set to an \(n\)-element set.</p>
+
+      <div class="question-box">
+        <h3>Example</h3>
+        <p>Ten runners compete in a race. In how many ways can gold, silver, and bronze medals be awarded?</p>
+      </div>
+
+      <details class="answer">
+        <summary>Answer</summary>
+        \[
+          P(10,3)=10\cdot9\cdot8=720.
+        \]
+      </details>
+    </section>
+
+    <section id="combinations">
+      <h2>Combinations</h2>
+      <p>Suppose we select \(k\) objects from \(n\), but order does not matter. Counting ordered selections gives \(P(n,k)\), but every group of \(k\) objects appears in all \(k!\) possible orders. Dividing out this overcount gives:</p>
+
+      <div class="theorem">
+        <h3>Binomial coefficients</h3>
+        \[
+          \binom{n}{k}=\frac{n!}{k!(n-k)!},
+          \qquad 0\le k\le n.
+        \]
+      </div>
+
+      <p>The notation \(\binom nk\), read “\(n\) choose \(k\),” counts the \(k\)-element subsets of an \(n\)-element set.</p>
+
+      <div class="example">
+        <h3>Order matters—or does it?</h3>
+        <ul>
+          <li>A president, vice president, and secretary chosen from 12 students: \(P(12,3)\).</li>
+          <li>A three-person committee chosen from 12 students: \(\binom{12}{3}\).</li>
+        </ul>
+      </div>
+
+      <div class="theorem">
+        <h3>Symmetry</h3>
+        \[
+          \binom nk=\binom n{n-k}.
+        \]
+        <p>Choosing the \(k\) elements that belong to a group is equivalent to choosing the \(n-k\) elements that do not belong to it.</p>
+      </div>
+    </section>
+
+    <section id="repetition">
+      <h2>Arrangements with repeated objects</h2>
+      <p>First consider <strong>ALGORITHM</strong>. Its 9 letters are all different, so they have \(9!=362{,}880\) arrangements.</p>
+
+      <p>Now consider <strong>MATHEMATICA</strong>. It contains 11 letters: three A’s, two M’s, two T’s, and four other letters. If all letters were distinguishable, there would be \(11!\) arrangements. But permuting the identical A’s, M’s, or T’s does not produce a new word. Therefore the number of distinct arrangements is</p>
+      \[
+        \frac{11!}{3!\,2!\,2!}=1{,}663{,}200.
+      \]
+
+      <div class="theorem">
+        <h3>Multiset permutations</h3>
+        <p>If \(n\) objects consist of \(n_1\) identical objects of one type, \(n_2\) of a second type, and so on, where \(n_1+\cdots+n_r=n\), then the number of distinct arrangements is</p>
+        \[
+          \frac{n!}{n_1!n_2!\cdots n_r!}.
+        \]
+      </div>
+    </section>
+
+    <section id="binomial">
+      <h2>The binomial theorem</h2>
+      <p>Expand \((a+b)^n\) as a product of \(n\) factors. Every resulting term comes from choosing either \(a\) or \(b\) from each factor:</p>
+      \[
+        (a+b)^n=(a+b)(a+b)\cdots(a+b).
+      \]
+
+      <p>To obtain \(a^k b^{n-k}\), we must choose \(a\) from exactly \(k\) of the \(n\) factors. There are \(\binom nk\) ways to choose those factors. Grouping equal terms gives the theorem.</p>
+
+      <div class="theorem">
+        <h3>Binomial theorem</h3>
+        \[
+          (a+b)^n=\sum_{k=0}^{n}\binom nk a^k b^{n-k}.
+        \]
+      </div>
+
+      <p>This argument is a complete combinatorial proof: the coefficient records how many products collapse to the same monomial.</p>
+
+      <div class="example">
+        <h3>A useful consequence</h3>
+        <p>Setting \(a=b=1\) gives</p>
+        \[
+          \sum_{k=0}^{n}\binom nk=2^n.
+        \]
+        <p>Set-theoretically, the left side counts subsets by their size, while the right side counts them by making an include/exclude choice for each element.</p>
+      </div>
+    </section>
+
+    <section id="practice">
+      <h2>Practice and afterthoughts</h2>
+      <ol>
+        <li>How many 6-character strings can be formed from the 26 letters if repetition is allowed? What if repetition is forbidden?</li>
+        <li>How many distinct arrangements are there of the letters in MISSISSIPPI?</li>
+        <li>A class of 18 students chooses a four-person committee. How many committees are possible? How does the answer change if the committee must also choose a chair?</li>
+        <li>Give a combinatorial explanation of \(\binom n2=\frac{n(n-1)}2\).</li>
+        <li>Prove the binomial theorem by induction on \(n\). In the inductive step, multiply the assumed formula for \((a+b)^n\) by \(a+b\), align equal powers, and use Pascal’s identity
+          \[
+            \binom nk+\binom n{k-1}=\binom{n+1}{k}.
+          \]
+        </li>
+      </ol>
+
+      <p class="reference"><strong>For additional problems:</strong> Kenneth P. Bogart, <a href="https://bogart.openmathbooks.org/ctgd/s1-2-basics.html" target="_blank" rel="noopener">Combinatorics Through Guided Discovery</a>.</p>
+    </section>
+
+    <p class="back-to-top"><a href="#top">↑ Back to top</a></p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+    const siteRoot = window.location.hostname.endsWith("github.io")
+      ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+      : "/";
+
+    fetch(`${siteRoot}assets/includes/navigation.html`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Navigation request failed: ${response.status}`);
+        return response.text();
+      })
+      .then(html => {
+        const placeholder = document.getElementById("navigation-placeholder");
+        placeholder.innerHTML = html;
+        placeholder.querySelectorAll("a[data-path]").forEach(link => {
+          link.href = `${siteRoot}${link.dataset.path}`;
+        });
+      })
+      .catch(error => console.error("Navigation load failed:", error));
+
+    fetch(`${siteRoot}assets/includes/footer.html`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Footer request failed: ${response.status}`);
+        return response.text();
+      })
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(error => console.error("Footer load failed:", error));
+  </script>
+</body>
+</html>

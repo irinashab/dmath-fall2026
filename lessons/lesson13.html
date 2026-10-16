@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math — Counting Principles II">
+  <title>Discrete Math – Lesson 13: Counting Principles II</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <p class="eyebrow">MAT 3120 · Discrete Mathematics</p>
+    <h1>Lesson 13: Counting Principles II</h1>
+    <p class="subtitle">Strategic counting: complements, overlap, distributions, and guarantees</p>
+  </header>
+
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <nav class="toc" aria-label="Table of contents">
+      <h2>On this page</h2>
+      <ul>
+        <li><a href="#strategy">Choosing a strategy</a></li>
+        <li><a href="#complement">Counting by complement</a></li>
+        <li><a href="#inclusion-exclusion">Inclusion–exclusion</a></li>
+        <li><a href="#paths">Lattice paths and Pascal’s triangle</a></li>
+        <li><a href="#stars-bars">Stars and bars</a></li>
+        <li><a href="#pigeonhole">The pigeonhole principle</a></li>
+        <li><a href="#double-counting">Double counting</a></li>
+        <li><a href="#practice">Practice and afterthoughts</a></li>
+      </ul>
+    </nav>
+
+    <section id="strategy">
+      <h2>Choosing a strategy</h2>
+      <p>A formula should be the end of the reasoning, not its beginning. Before calculating, ask:</p>
+      <ul>
+        <li>Can I describe the outcome as a sequence of choices?</li>
+        <li>Are the cases disjoint, or do they overlap?</li>
+        <li>Does order matter?</li>
+        <li>Is repetition allowed?</li>
+        <li>Would it be easier to count what I do <em>not</em> want?</li>
+        <li>Can I count the same collection in two different ways?</li>
+      </ul>
+    </section>
+
+    <section id="complement">
+      <h2>Counting by complement</h2>
+      <p>Sometimes the desired outcomes are complicated, while the unwanted outcomes are simple.</p>
+
+      <div class="theorem">
+        <h3>Complement principle</h3>
+        \[
+          |A|=|U|-|A^c|,
+        \]
+        <p>where \(U\) is the universe of possible outcomes.</p>
+      </div>
+
+      <div class="example">
+        <h3>Binary strings containing at least one 1</h3>
+        <p>There are \(2^8\) binary strings of length 8. Exactly one contains no 1 at all: \(00000000\). Therefore</p>
+        \[
+          2^8-1=255
+        \]
+        <p>strings contain at least one 1.</p>
+      </div>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>How many 5-card hands contain at least one ace?</p>
+      </div>
+
+      <details class="answer">
+        <summary>Answer</summary>
+        <p>Subtract the hands with no aces from all 5-card hands:</p>
+        \[
+          \binom{52}{5}-\binom{48}{5}.
+        \]
+      </details>
+    </section>
+
+    <section id="inclusion-exclusion">
+      <h2>Inclusion–exclusion</h2>
+      <p>The sum principle applies directly to disjoint cases. If two sets overlap, adding their sizes counts every element of the intersection twice. We correct that overcount by subtracting the intersection once.</p>
+
+      <div class="theorem">
+        <h3>Two-set inclusion–exclusion</h3>
+        \[
+          |A\cup B|=|A|+|B|-|A\cap B|.
+        \]
+      </div>
+
+      <div class="example">
+        <h3>Example</h3>
+        <p>In a group of students, 18 study mathematics, 15 study computer science, and 7 study both. The number studying at least one of the two subjects is</p>
+        \[
+          18+15-7=26.
+        \]
+      </div>
+
+      <p>For three sets, the signs alternate:</p>
+      \[
+      \begin{aligned}
+        |A\cup B\cup C|
+          ={}&|A|+|B|+|C|\\
+             &-|A\cap B|-|A\cap C|-|B\cap C|\\
+             &+|A\cap B\cap C|.
+      \end{aligned}
+      \]
+
+      <p>The three-set formula is included so that the pattern is visible; our main emphasis here is the two-set principle and the reasoning behind it.</p>
+    </section>
+
+    <section id="paths">
+      <h2>Lattice paths and Pascal’s triangle</h2>
+      <p>A spider starts at the upper-left corner of a rectangular array with 4 rows and 5 columns of cells. It may move only one cell right or one cell down. To reach the lower-right corner, it must make 4 right moves and 3 down moves.</p>
+
+      <p>Each path is therefore an arrangement of the letters</p>
+      \[
+        R,R,R,R,D,D,D.
+      \]
+      <p>The number of paths is</p>
+      \[
+        \frac{7!}{4!3!}=\binom74=35.
+      \]
+
+      <p>More generally, a path requiring \(r\) right moves and \(d\) down moves can be chosen in</p>
+      \[
+        \binom{r+d}{r}=\binom{r+d}{d}
+      \]
+      <p>ways.</p>
+
+      <p>If each grid point is labeled with the number of paths leading to it, every interior number is the sum of the number above it and the number to its left. This is Pascal’s triangle in a different orientation.</p>
+
+      <div class="theorem">
+        <h3>Pascal’s identity</h3>
+        \[
+          \binom{n+1}{k+1}=\binom nk+\binom n{k+1}.
+        \]
+      </div>
+
+      <p>To choose \(k+1\) people from \(n+1\), fix one particular person. A committee either includes that person—then choose \(k\) of the remaining \(n\)—or excludes that person—then choose all \(k+1\) from the remaining \(n\). These cases are disjoint, so their counts add.</p>
+    </section>
+
+    <section id="stars-bars">
+      <h2>Stars and bars</h2>
+      <p>Suppose 8 identical cookies are distributed among 3 distinct students, and a student may receive none. If \(x_i\) is the number received by student \(i\), we are counting the nonnegative integer solutions of</p>
+      \[
+        x_1+x_2+x_3=8.
+      \]
+
+      <p>Represent the cookies by stars and separate the students’ shares with two bars. For example,</p>
+      \[
+        ***\mid **\mid ***
+      \]
+      <p>represents the distribution \((3,2,3)\). Every distribution corresponds to an arrangement of 8 stars and 2 bars, so there are</p>
+      \[
+        \binom{10}{2}=45
+      \]
+      <p>distributions.</p>
+
+      <div class="theorem">
+        <h3>Nonnegative solutions</h3>
+        <p>The number of nonnegative integer solutions of</p>
+        \[
+          x_1+x_2+\cdots+x_k=n
+        \]
+        <p>is</p>
+        \[
+          \binom{n+k-1}{k-1}.
+        \]
+      </div>
+
+      <div class="theorem">
+        <h3>Positive solutions</h3>
+        <p>If every \(x_i\ge1\), first give one object to each recipient. The number of positive integer solutions is</p>
+        \[
+          \binom{n-1}{k-1}.
+        \]
+      </div>
+
+      <div class="question-box">
+        <h3>Important limitation</h3>
+        <p>Stars and bars handles lower bounds easily, but an upper bound such as \(x_i\le4\) requires additional reasoning—usually complements or inclusion–exclusion.</p>
+      </div>
+    </section>
+
+    <section id="pigeonhole">
+      <h2>The pigeonhole principle</h2>
+      <p>The pigeonhole principle does not tell us exactly where something occurs. It guarantees that it must occur somewhere.</p>
+
+      <div class="theorem">
+        <h3>Pigeonhole principle</h3>
+        <p>If more than \(n\) objects are placed into \(n\) boxes, then at least one box contains at least two objects.</p>
+      </div>
+
+      <div class="example">
+        <h3>Example</h3>
+        <p>Among 13 people, at least two were born in the same month. The people are the objects, and the 12 months are the boxes.</p>
+      </div>
+
+      <div class="theorem">
+        <h3>Generalized pigeonhole principle</h3>
+        <p>If \(N\) objects are placed into \(k\) boxes, then some box contains at least</p>
+        \[
+          \left\lceil\frac Nk\right\rceil
+        \]
+        <p>objects.</p>
+      </div>
+
+      <div class="example">
+        <h3>Example</h3>
+        <p>If 73 students are assigned to 12 birth months, some month contains at least</p>
+        \[
+          \left\lceil\frac{73}{12}\right\rceil=7
+        \]
+        <p>students.</p>
+      </div>
+
+      <div class="question-box">
+        <h3>The real work</h3>
+        <p>In difficult pigeonhole problems, the arithmetic is easy. The creative step is deciding what the objects and boxes should be.</p>
+      </div>
+    </section>
+
+    <section id="double-counting">
+      <h2>Double counting</h2>
+      <p>Sometimes we count the same collection in two different ways. Since both expressions count the same objects, they must be equal.</p>
+
+      <div class="example">
+        <h3>A committee with a chair</h3>
+        <p>Choose a \(k\)-person committee from \(n\) people and designate one committee member as chair.</p>
+        <ul>
+          <li>Choose the committee, then its chair: \(\binom nk k\).</li>
+          <li>Choose the chair, then the other \(k-1\) members: \(n\binom{n-1}{k-1}\).</li>
+        </ul>
+        <p>Therefore,</p>
+        \[
+          k\binom nk=n\binom{n-1}{k-1}.
+        \]
+      </div>
+
+      <p>Double counting is less a formula than a proof strategy. Pascal’s identity and the identity above are both examples of combinatorial identities: we prove an equation by explaining why both sides count the same thing.</p>
+    </section>
+
+    <section id="practice">
+      <h2>Practice and afterthoughts</h2>
+      <ol>
+        <li>How many 10-bit strings contain at least one 0 and at least one 1?</li>
+        <li>In a class, 21 students have taken Python, 16 have taken Java, and 9 have taken both. How many have taken at least one of the two languages?</li>
+        <li>How many shortest paths are there from \((0,0)\) to \((6,4)\) if every step moves one unit right or one unit up?</li>
+        <li>How many nonnegative integer solutions are there to \(x_1+x_2+x_3+x_4=12\)? How many positive solutions?</li>
+        <li>Show that among any 6 integers, two have the same remainder when divided by 5.</li>
+        <li>Use double counting to explain why
+          \[
+            \binom n0+\binom n1+\cdots+\binom nn=2^n.
+          \]
+        </li>
+      </ol>
+    </section>
+
+    <p class="back-to-top"><a href="#top">↑ Back to top</a></p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+    const siteRoot = window.location.hostname.endsWith("github.io")
+      ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+      : "/";
+
+    fetch(`${siteRoot}assets/includes/navigation.html`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Navigation request failed: ${response.status}`);
+        return response.text();
+      })
+      .then(html => {
+        const placeholder = document.getElementById("navigation-placeholder");
+        placeholder.innerHTML = html;
+        placeholder.querySelectorAll("a[data-path]").forEach(link => {
+          link.href = `${siteRoot}${link.dataset.path}`;
+        });
+      })
+      .catch(error => console.error("Navigation load failed:", error));
+
+    fetch(`${siteRoot}assets/includes/footer.html`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Footer request failed: ${response.status}`);
+        return response.text();
+      })
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(error => console.error("Footer load failed:", error));
+  </script>
+</body>
+</html>
