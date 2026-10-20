@@ -19,7 +19,8 @@
 </head>
 <body id="top">
   <header>
-    <p class="eyebrow">MAT 3120 · Discrete Mathematics</p>
+
+    
     <h1>Lesson 12: Counting Principles I</h1>
     <p class="subtitle">Choices, arrangements, and selections</p>
   </header>
@@ -35,8 +36,9 @@
         <li><a href="#functions">Counting functions</a></li>
         <li><a href="#permutations">Permutations and factorials</a></li>
         <li><a href="#combinations">Combinations</a></li>
-        <li><a href="#repetition">Arrangements with repeated objects</a></li>
-        <li><a href="#binomial">The binomial theorem</a></li>
+        <li><a href="#repetition">Playing with words and repeated objects</a></li>
+        <li><a href="#binomial">The binomial theorem as a word game</a></li>
+        <li><a href="#paths">The spider problem and Pascal’s triangle</a></li>
         <li><a href="#practice">Practice and afterthoughts</a></li>
       </ul>
     </nav>
@@ -59,7 +61,7 @@
         </ol>
       </div>
 
-      <details class="answer">
+      <details>
         <summary>Answers</summary>
         <ol>
           <li>\(3\cdot 5=15\).</li>
@@ -108,7 +110,7 @@
         <p>A password consists of two letters followed by three digits. Repetition is allowed. How many passwords are possible?</p>
       </div>
 
-      <details class="answer">
+      <details>
         <summary>Answer</summary>
         <p>There are \(26\) choices for each letter and \(10\) for each digit:</p>
         \[
@@ -147,6 +149,19 @@
 
       <p>There is exactly one arrangement of no objects—the empty arrangement—so \(0!=1\). This convention also makes the factorial formulas work at their endpoints.</p>
 
+      <p>Factorial can also be defined recursively:</p>
+      <div class="theorem">
+        <h3>Recursive definition of factorial</h3>
+        \[
+          n!=
+          \begin{cases}
+            1, & n=0,\\
+            n(n-1)!, & n>0.
+          \end{cases}
+        \]
+      </div>
+      <p>The recursive definition and the product \(n(n-1)\cdots2\cdot1\) describe the same number: arrange one object first, and then arrange the remaining \(n-1\) objects.</p>
+
       <p>A <strong>\(k\)-permutation</strong> of \(n\) objects is an ordered selection of \(k\) distinct objects. For \(0\le k\le n\),</p>
       \[
         P(n,k)=n(n-1)\cdots(n-k+1)=\frac{n!}{(n-k)!}.
@@ -159,7 +174,7 @@
         <p>Ten runners compete in a race. In how many ways can gold, silver, and bronze medals be awarded?</p>
       </div>
 
-      <details class="answer">
+      <details>
         <summary>Answer</summary>
         \[
           P(10,3)=10\cdot9\cdot8=720.
@@ -199,7 +214,7 @@
     </section>
 
     <section id="repetition">
-      <h2>Arrangements with repeated objects</h2>
+      <h2>Playing with words and repeated objects</h2>
       <p>First consider <strong>ALGORITHM</strong>. Its 9 letters are all different, so they have \(9!=362{,}880\) arrangements.</p>
 
       <p>Now consider <strong>MATHEMATICA</strong>. It contains 11 letters: three A’s, two M’s, two T’s, and four other letters. If all letters were distinguishable, there would be \(11!\) arrangements. But permuting the identical A’s, M’s, or T’s does not produce a new word. Therefore the number of distinct arrangements is</p>
@@ -217,7 +232,26 @@
     </section>
 
     <section id="binomial">
-      <h2>The binomial theorem</h2>
+      <h2>The binomial theorem as a word game</h2>
+      <p>Begin with a small case:</p>
+      \[
+        (a+b)^3=(a+b)(a+b)(a+b).
+      \]
+      <p>Expanding the product means choosing one letter from each pair of parentheses. Before like terms are collected, the choices form eight three-letter words:</p>
+      \[
+        aaa,\ aab,\ aba,\ abb,\ baa,\ bab,\ bba,\ bbb.
+      \]
+      <ul>
+        <li>There is one word with three \(a\)'s: \(aaa\).</li>
+        <li>There are three words with two \(a\)'s and one \(b\): \(aab,aba,baa\).</li>
+        <li>There are three words with one \(a\) and two \(b\)'s: \(abb,bab,bba\).</li>
+        <li>There is one word with three \(b\)'s: \(bbb\).</li>
+      </ul>
+      <p>Thus the familiar coefficients \(1,3,3,1\) are counts:</p>
+      \[
+        (a+b)^3=a^3+3a^2b+3ab^2+b^3.
+      \]
+
       <p>Expand \((a+b)^n\) as a product of \(n\) factors. Every resulting term comes from choosing either \(a\) or \(b\) from each factor:</p>
       \[
         (a+b)^n=(a+b)(a+b)\cdots(a+b).
@@ -244,6 +278,59 @@
       </div>
     </section>
 
+    <section id="paths">
+      <h2>The spider problem and Pascal’s triangle</h2>
+      <p>A spider starts at the upper-left corner of a rectangular array with 4 rows and 5 columns of cells. It may move only one cell right or one cell down. To reach the lower-right corner, it must make 4 right moves and 3 down moves.</p>
+
+      <p>Every path is another word game: it is an arrangement of</p>
+      \[
+        R,R,R,R,D,D,D.
+      \]
+      <p>Consequently, the number of paths is</p>
+      \[
+        \frac{7!}{4!3!}=\binom74=35.
+      \]
+
+      <p>More generally, a shortest path requiring \(r\) right moves and \(d\) down moves is an arrangement of \(r\) identical R’s and \(d\) identical D’s, so the number of such paths is</p>
+      \[
+        \binom{r+d}{r}=\binom{r+d}{d}.
+      \]
+
+      <p>If we write at every position the number of paths that reach it, each interior number is the sum of the number above it and the number to its left:</p>
+      <table>
+        <tbody>
+          <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+          <tr><td>1</td><td>3</td><td>6</td><td>10</td><td>15</td></tr>
+          <tr><td>1</td><td>4</td><td>10</td><td>20</td><td><strong>35</strong></td></tr>
+        </tbody>
+      </table>
+
+      <p>Rotating this pattern reveals Pascal’s triangle. Algebraically, the same rule is</p>
+      <div class="theorem">
+        <h3>Pascal’s identity</h3>
+        \[
+          \binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}.
+        \]
+      </div>
+
+      <p>To choose \(k\) objects from \(n\), fix one particular object. Either it is selected, leaving \(k-1\) objects to choose from the remaining \(n-1\), or it is not selected, leaving all \(k\) to choose from the remaining \(n-1\).</p>
+
+      <p>Together with the boundary values, Pascal’s identity gives a recursive definition of the binomial coefficients:</p>
+      <div class="theorem">
+        <h3>Recursive definition of \(\binom nk\)</h3>
+        \[
+          \binom nk=
+          \begin{cases}
+            1, & k=0\text{ or }k=n,\\
+            \binom{n-1}{k-1}+\binom{n-1}{k}, & 1\le k\le n-1.
+          \end{cases}
+        \]
+      </div>
+
+      <p>We will study recurrence relations systematically later. Here the recursive formula records the two mutually exclusive ways a selection can treat one distinguished object.</p>
+    </section>
+
     <section id="practice">
       <h2>Practice and afterthoughts</h2>
       <ol>
@@ -260,6 +347,10 @@
 
       <p class="reference"><strong>For additional problems:</strong> Kenneth P. Bogart, <a href="https://bogart.openmathbooks.org/ctgd/s1-2-basics.html" target="_blank" rel="noopener">Combinatorics Through Guided Discovery</a>.</p>
     </section>
+<article id="problem-set-1">
+<h2>Problem Set 2</h2>
+      <p><a href="https://classroom50.org/dmath-fall2026/discrete-mathematics/assignments/problem-set-2/accept?k=ntl88as7" target="_blank" >Download the LaTeX starter for Problem Set 2</a>.</p>
+    </article>
 
     <p class="back-to-top"><a href="#top">↑ Back to top</a></p>
   </main>
