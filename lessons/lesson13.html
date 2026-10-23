@@ -19,7 +19,7 @@
 </head>
 <body id="top">
   <header>
-    <p class="eyebrow">MAT 3120 · Discrete Mathematics</p>
+    
     <h1>Lesson 13: Counting Principles II</h1>
     <p class="subtitle">Strategic counting: complements, overlap, distributions, and guarantees</p>
   </header>
@@ -33,7 +33,7 @@
         <li><a href="#strategy">Choosing a strategy</a></li>
         <li><a href="#complement">Counting by complement</a></li>
         <li><a href="#inclusion-exclusion">Inclusion–exclusion</a></li>
-        <li><a href="#paths">Lattice paths and Pascal’s triangle</a></li>
+        <li><a href="#paths">Lattice paths with obstacles</a></li>
         <li><a href="#stars-bars">Stars and bars</a></li>
         <li><a href="#pigeonhole">The pigeonhole principle</a></li>
         <li><a href="#double-counting">Double counting</a></li>
@@ -52,6 +52,7 @@
         <li>Would it be easier to count what I do <em>not</em> want?</li>
         <li>Can I count the same collection in two different ways?</li>
       </ul>
+      <p>This lesson supplies tools for several of these questions in particular: complement for the fifth, inclusion–exclusion for the second, and double counting for the sixth.</p>
     </section>
 
     <section id="complement">
@@ -80,11 +81,37 @@
         <p>How many 5-card hands contain at least one ace?</p>
       </div>
 
-      <details class="answer">
+      <details>
         <summary>Answer</summary>
         <p>Subtract the hands with no aces from all 5-card hands:</p>
         \[
           \binom{52}{5}-\binom{48}{5}.
+        \]
+      </details>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>How many 4-letter strings from the 26 letters contain at least one repeated letter?</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>Count all 4-letter strings and subtract the strings with all letters distinct:</p>
+        \[
+          26^4-P(26,4)=26^4-26\cdot25\cdot24\cdot23.
+        \]
+      </details>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>How many functions \(f:\{1,2,3,4,5\}\to\{1,2,3,4,5\}\) are <em>not</em> bijections?</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>There are \(5^5\) functions total and \(5!\) bijections, so the number that are not bijections is</p>
+        \[
+          5^5-5!=3125-120=3005.
         \]
       </details>
     </section>
@@ -100,6 +127,8 @@
         \]
       </div>
 
+      <p>Why subtract the intersection? When we add \(|A|+|B|\), every element of \(A\cap B\) is counted twice—once as a member of \(A\) and once as a member of \(B\). Subtracting \(|A\cap B|\) once restores the correct count.</p>
+
       <div class="example">
         <h3>Example</h3>
         <p>In a group of students, 18 study mathematics, 15 study computer science, and 7 study both. The number studying at least one of the two subjects is</p>
@@ -107,6 +136,41 @@
           18+15-7=26.
         \]
       </div>
+
+      <div class="example">
+        <h3>Complement meets inclusion–exclusion</h3>
+        <p>How many integers from 1 to 100 are divisible by 2 or by 3?</p>
+        <p>Let \(A\) be the multiples of 2 and \(B\) the multiples of 3. Then \(|A|=50\), \(|B|=33\), and \(|A\cap B|=16\) (the multiples of 6). So</p>
+        \[
+          |A\cup B|=50+33-16=67.
+        \]
+      </div>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>How many integers from 1 to 200 are divisible by 3 or by 5?</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>Multiples of 3: \(\lfloor 200/3\rfloor=66\). Multiples of 5: \(\lfloor 200/5\rfloor=40\). Multiples of 15: \(\lfloor 200/15\rfloor=13\). Therefore</p>
+        \[
+          66+40-13=93.
+        \]
+      </details>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>How many 10-bit strings contain at least one 0 and at least one 1?</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>There are \(2^{10}\) strings total. Exactly one is all 0s and exactly one is all 1s, so by complement:</p>
+        \[
+          2^{10}-2=1022.
+        \]
+      </details>
 
       <p>For three sets, the signs alternate:</p>
       \[
@@ -118,38 +182,71 @@
       \end{aligned}
       \]
 
-      <p>The three-set formula is included so that the pattern is visible; our main emphasis here is the two-set principle and the reasoning behind it.</p>
+      <div class="example">
+        <h3>Three languages</h3>
+        <p>In a cohort, 25 students know Python, 20 know Java, 18 know C++, 8 know Python and Java, 6 know Python and C++, 5 know Java and C++, and 3 know all three. How many know at least one?</p>
+        \[
+          |A\cup B\cup C| = 25+20+18-8-6-5+3 = 47.
+        \]
+      </div>
     </section>
 
     <section id="paths">
-      <h2>Lattice paths and Pascal’s triangle</h2>
-      <p>A spider starts at the upper-left corner of a rectangular array with 4 rows and 5 columns of cells. It may move only one cell right or one cell down. To reach the lower-right corner, it must make 4 right moves and 3 down moves.</p>
-
-      <p>Each path is therefore an arrangement of the letters</p>
+      <h2>Lattice paths with obstacles</h2>
+      <p>Lesson 12 counted shortest paths in a grid as multiset permutations: \(r\) right moves and \(d\) down moves give</p>
       \[
-        R,R,R,R,D,D,D.
+        \binom{r+d}{r}
       \]
-      <p>The number of paths is</p>
-      \[
-        \frac{7!}{4!3!}=\binom74=35.
-      \]
+      <p>paths. Here we use that count as a building block for harder problems.</p>
 
-      <p>More generally, a path requiring \(r\) right moves and \(d\) down moves can be chosen in</p>
-      \[
-        \binom{r+d}{r}=\binom{r+d}{d}
-      \]
-      <p>ways.</p>
-
-      <p>If each grid point is labeled with the number of paths leading to it, every interior number is the sum of the number above it and the number to its left. This is Pascal’s triangle in a different orientation.</p>
-
-      <div class="theorem">
-        <h3>Pascal’s identity</h3>
+      <div class="example">
+        <h3>Avoiding a forbidden point</h3>
+        <p>How many shortest lattice paths from \((0,0)\) to \((5,5)\) avoid the point \((2,3)\)?</p>
+        <p>Count all paths and subtract those through \((2,3)\). The bad paths split at \((2,3)\): there are \(\binom{5}{2}\) ways to reach it and \(\binom{5}{2}\) ways to finish. Therefore</p>
         \[
-          \binom{n+1}{k+1}=\binom nk+\binom n{k+1}.
+          \binom{10}{5}-\binom{5}{2}\binom{5}{2}=252-100=152.
         \]
       </div>
 
-      <p>To choose \(k+1\) people from \(n+1\), fix one particular person. A committee either includes that person—then choose \(k\) of the remaining \(n\)—or excludes that person—then choose all \(k+1\) from the remaining \(n\). These cases are disjoint, so their counts add.</p>
+      <div class="example">
+        <h3>Two forbidden points</h3>
+        <p>How many shortest lattice paths from \((0,0)\) to \((6,6)\) avoid both \((2,2)\) and \((4,4)\)?</p>
+        <p>By inclusion–exclusion, subtract the paths through each forbidden point and add back the paths through both:</p>
+        \[
+          \binom{12}{6}
+          -\binom{4}{2}\binom{8}{4}
+          -\binom{8}{4}\binom{4}{2}
+          +\binom{4}{2}\binom{4}{2}\binom{4}{2}
+          =924-420-420+216=300.
+        \]
+        <p>The last term splits a path at both intermediates, since \((2,2)\) and \((4,4)\) are comparable.</p>
+      </div>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>How many shortest lattice paths are there from \((0,0)\) to \((6,4)\) if every step moves one unit right or one unit up?</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>Six right moves and four up moves give</p>
+        \[
+          \binom{10}{6}=\binom{10}{4}=210.
+        \]
+      </details>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>How many shortest lattice paths from \((0,0)\) to \((5,5)\) avoid the point \((2,4)\)?</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>Subtract the paths through \((2,4)\):</p>
+        \[
+          \binom{10}{5}-\binom{6}{2}\binom{4}{2}=252-15\cdot 6=252-90=162.
+        \]
+      </details>
     </section>
 
     <section id="stars-bars">
@@ -189,10 +286,54 @@
         \]
       </div>
 
+      <div class="example">
+        <h3>Positive solutions, worked out</h3>
+        <p>How many positive integer solutions does \(x_1+x_2+x_3=8\) have? Give each variable 1 first, leaving 5 to distribute freely:</p>
+        \[
+          \binom{5+3-1}{3-1}=\binom{7}{2}=21.
+        \]
+      </div>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>How many nonnegative integer solutions are there to \(x_1+x_2+x_3+x_4=12\)? How many positive solutions?</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>Nonnegative: \(\binom{12+4-1}{4-1}=\binom{15}{3}=455\). Positive: \(\binom{12-1}{4-1}=\binom{11}{3}=165\).</p>
+      </details>
+
       <div class="question-box">
         <h3>Important limitation</h3>
         <p>Stars and bars handles lower bounds easily, but an upper bound such as \(x_i\le4\) requires additional reasoning—usually complements or inclusion–exclusion.</p>
       </div>
+
+      <div class="example">
+        <h3>An upper bound, handled by complement</h3>
+        <p>How many nonnegative integer solutions does \(x_1+x_2+x_3=8\) have with \(x_1\le 3\)?</p>
+        <p>Start with all solutions: \(\binom{10}{2}=45\). Now count the bad ones, where \(x_1\ge 4\). Substitute \(y_1=x_1-4\ge 0\). Then</p>
+        \[
+          y_1+x_2+x_3=4,
+        \]
+        <p>which has \(\binom{6}{2}=15\) nonnegative solutions. Therefore the answer is</p>
+        \[
+          45-15=30.
+        \]
+      </div>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>How many nonnegative integer solutions are there to \(x_1+x_2+x_3=10\) with \(x_1\le 4\)?</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>All solutions: \(\binom{12}{2}=66\). Bad solutions with \(x_1\ge5\): set \(y_1=x_1-5\), giving \(y_1+x_2+x_3=5\), which has \(\binom{7}{2}=21\) solutions. Therefore</p>
+        \[
+          66-21=45.
+        \]
+      </details>
     </section>
 
     <section id="pigeonhole">
@@ -208,6 +349,16 @@
         <h3>Example</h3>
         <p>Among 13 people, at least two were born in the same month. The people are the objects, and the 12 months are the boxes.</p>
       </div>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>Show that among any 6 integers, two have the same remainder when divided by 5.</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>The possible remainders modulo 5 are \(0,1,2,3,4\)—five boxes. With six integers as objects, two must share a box.</p>
+      </details>
 
       <div class="theorem">
         <h3>Generalized pigeonhole principle</h3>
@@ -226,6 +377,30 @@
         \]
         <p>students.</p>
       </div>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>A drawer contains 8 red, 8 blue, and 8 green socks. How many socks must you pull out (without looking) to guarantee a matching pair? To guarantee three of the same color?</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>For a pair: 4 socks. With three colors as boxes, three socks could be one of each color; the fourth must repeat a color.</p>
+        <p>For three of the same color: 7 socks. With three colors, 6 socks could be two of each color; the seventh forces a third sock of some color.</p>
+      </details>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>Show that among any 5 points placed in a unit square, two are at distance at most \(\sqrt2/2\).</p>
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>Divide the unit square into four \(\tfrac12\times\tfrac12\) subsquares. By pigeonhole, two of the five points lie in the same subsquare. The farthest two points in such a subsquare are opposite corners, at distance</p>
+        \[
+          \sqrt{(1/2)^2+(1/2)^2}=\frac{\sqrt2}{2}.
+        \]
+      </details>
 
       <div class="question-box">
         <h3>The real work</h3>
@@ -250,23 +425,69 @@
         \]
       </div>
 
-      <p>Double counting is less a formula than a proof strategy. Pascal’s identity and the identity above are both examples of combinatorial identities: we prove an equation by explaining why both sides count the same thing.</p>
+      <div class="example">
+        <h3>A committee and its subcommittee</h3>
+        <p>Choose a \(k\)-person committee from \(n\) people, then choose a \(j\)-person subcommittee from the committee (\(0\le j\le k\le n\)).</p>
+        <ul>
+          <li>Choose the committee, then the subcommittee: \(\binom nk\binom kj\).</li>
+          <li>Choose the subcommittee directly, then fill out the rest of the committee from the remaining \(n-j\) people: \(\binom nj\binom{n-j}{k-j}\).</li>
+        </ul>
+        <p>Therefore,</p>
+        \[
+          \binom nk\binom kj=\binom nj\binom{n-j}{k-j}.
+        \]
+      </div>
+
+      <div class="question-box">
+        <h3>Try it</h3>
+        <p>Use double counting to explain why</p>
+        \[
+          \binom n0+\binom n1+\cdots+\binom nn=2^n.
+        \]
+      </div>
+
+      <details>
+        <summary>Answer</summary>
+        <p>The left side counts subsets of an \(n\)-element set by size. The right side counts them by making an include/exclude choice for each element. Both count the same collection—all subsets—so they are equal.</p>
+      </details>
+
+      <p>Double counting is less a formula than a proof strategy. The identities above are examples of combinatorial identities: we prove an equation by explaining why both sides count the same thing.</p>
     </section>
 
     <section id="practice">
       <h2>Practice and afterthoughts</h2>
+
+      <div class="example">
+        <h3>Summary: which tool for which question?</h3>
+        <table>
+          <thead>
+            <tr><th>Question</th><th>Tool</th><th>Formula</th><th>Lesson</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Ordered, repetition allowed</td><td>Product principle</td><td>\(n^k\)</td><td>12</td></tr>
+            <tr><td>Ordered, no repetition</td><td>\(k\)-permutations</td><td>\(P(n,k)=\frac{n!}{(n-k)!}\)</td><td>12</td></tr>
+            <tr><td>Unordered, no repetition</td><td>Combinations</td><td>\(\binom nk\)</td><td>12</td></tr>
+            <tr><td>Unordered, repetition allowed</td><td>Stars and bars</td><td>\(\binom{n+k-1}{k-1}\)</td><td>13</td></tr>
+            <tr><td>Unwanted cases are simple</td><td>Complement</td><td>\(|U|-|A^c|\)</td><td>13</td></tr>
+            <tr><td>Cases overlap</td><td>Inclusion–exclusion</td><td>\(|A|+|B|-|A\cap B|\)</td><td>13</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>These problems combine several tools from this lesson and the previous one.</p>
       <ol>
-        <li>How many 10-bit strings contain at least one 0 and at least one 1?</li>
-        <li>In a class, 21 students have taken Python, 16 have taken Java, and 9 have taken both. How many have taken at least one of the two languages?</li>
-        <li>How many shortest paths are there from \((0,0)\) to \((6,4)\) if every step moves one unit right or one unit up?</li>
-        <li>How many nonnegative integer solutions are there to \(x_1+x_2+x_3+x_4=12\)? How many positive solutions?</li>
-        <li>Show that among any 6 integers, two have the same remainder when divided by 5.</li>
-        <li>Use double counting to explain why
-          \[
-            \binom n0+\binom n1+\cdots+\binom nn=2^n.
-          \]
+        <li>An 8-character password uses only letters and digits.
+          <ol type="a">
+            <li>If repetition is allowed, how many passwords contain at least one digit?</li>
+            <li>If repetition is forbidden, how many passwords contain at least one digit?</li>
+          </ol>
         </li>
+        <li>How many integers from 1 to 1000 are divisible by 2, 3, or 5?</li>
+        <li>How many shortest lattice paths from \((0,0)\) to \((5,5)\) avoid both \((1,1)\) and \((4,4)\)?</li>
+        <li>How many nonnegative integer solutions are there to \(x_1+x_2+x_3+x_4=10\) with each \(x_i\le 3\)?</li>
       </ol>
+
+      <p class="reference"><strong>For additional problems:</strong> Kenneth P. Bogart, <a href="https://bogart.openmathbooks.org/ctgd/s1-2-basics.html" target="_blank" rel="noopener">Combinatorics Through Guided Discovery</a>.</p>
     </section>
 
     <p class="back-to-top"><a href="#top">↑ Back to top</a></p>

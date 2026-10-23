@@ -88,7 +88,7 @@
 
       <div class="example">
         <h3>Example</h3>
-        <p>A café offers 6 pastries and 4 sandwiches. If you choose one pastry <em>or</em> one sandwich, there are \(6+4=10\) choices.</p>
+        <p>The <strong>Binomial Café</strong> — so called because you should “buy no meal” there — offers 6 pastries and 4 sandwiches. If you choose one pastry <em>or</em> one sandwich, there are \(6+4=10\) choices. Notice how this differs from the sandwich-shop problem above: there we chose a bread <em>and then</em> a filling, which is a product of choices; here we choose one item <em>or</em> another, which is a sum of choices.</p>
       </div>
 
       <div class="theorem">
@@ -160,7 +160,7 @@
           \end{cases}
         \]
       </div>
-      <p>The recursive definition and the product \(n(n-1)\cdots2\cdot1\) describe the same number: arrange one object first, and then arrange the remaining \(n-1\) objects.</p>
+      <p>The recursive definition and the product \(n(n-1)\cdots2\cdot1\) describe the same number: by the product principle, arrange one object first, and then arrange the remaining \(n-1\) objects.</p>
 
       <p>A <strong>\(k\)-permutation</strong> of \(n\) objects is an ordered selection of \(k\) distinct objects. For \(0\le k\le n\),</p>
       \[
@@ -316,7 +316,7 @@
 
       <p>To choose \(k\) objects from \(n\), fix one particular object. Either it is selected, leaving \(k-1\) objects to choose from the remaining \(n-1\), or it is not selected, leaving all \(k\) to choose from the remaining \(n-1\).</p>
 
-      <p>Together with the boundary values, Pascal’s identity gives a recursive definition of the binomial coefficients:</p>
+      <p>Together with the boundary values \(\binom n0=\binom nn=1\), Pascal’s identity gives a recursive definition of the binomial coefficients:</p>
       <div class="theorem">
         <h3>Recursive definition of \(\binom nk\)</h3>
         \[
@@ -338,7 +338,7 @@
         <li>How many distinct arrangements are there of the letters in MISSISSIPPI?</li>
         <li>A class of 18 students chooses a four-person committee. How many committees are possible? How does the answer change if the committee must also choose a chair?</li>
         <li>Give a combinatorial explanation of \(\binom n2=\frac{n(n-1)}2\).</li>
-        <li>Prove the binomial theorem by induction on \(n\). In the inductive step, multiply the assumed formula for \((a+b)^n\) by \(a+b\), align equal powers, and use Pascal’s identity
+        <li><strong>Challenge.</strong> Prove the binomial theorem by induction on \(n\). In the inductive step, multiply the assumed formula for \((a+b)^n\) by \(a+b\), align equal powers, and use Pascal’s identity
           \[
             \binom nk+\binom n{k-1}=\binom{n+1}{k}.
           \]
