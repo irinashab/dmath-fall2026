@@ -193,18 +193,18 @@
 
     <section id="paths">
       <h2>Lattice paths with obstacles</h2>
-      <p>Lesson 12 counted shortest paths in a grid as multiset permutations: \(r\) right moves and \(d\) down moves give</p>
+      <p>Lesson 12 counted shortest paths in a grid as multiset permutations: \(r\) right moves and \(u\) up moves give</p>
       \[
-        \binom{r+d}{r}
+        \binom{r+u}{r}
       \]
       <p>paths. Here we use that count as a building block for harder problems.</p>
 
       <div class="example">
         <h3>Avoiding a forbidden point</h3>
         <p>How many shortest lattice paths from \((0,0)\) to \((5,5)\) avoid the point \((2,3)\)?</p>
-        <p>Count all paths and subtract those through \((2,3)\). The bad paths split at \((2,3)\): there are \(\binom{5}{2}\) ways to reach it and \(\binom{5}{2}\) ways to finish. Therefore</p>
+        <p>Count all paths and subtract those through \((2,3)\). The bad paths split at \((2,3)\): there are \(\binom{5}{2}\) ways to reach it and \(\binom{5}{3}\) ways to finish. Therefore</p>
         \[
-          \binom{10}{5}-\binom{5}{2}\binom{5}{2}=252-100=152.
+          \binom{10}{5}-\binom{5}{2}\binom{5}{3}=252-100=152.
         \]
       </div>
 
