@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Relations</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Relations</h1>
+  </header>
+
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <nav class="toc">
+      <ol>
+        <li><a href="#definition">Definition of Relations</a></li>
+        <li><a href="#examples">Examples of Relations</a></li>
+        <li><a href="#properties">Properties of Relations</a></li>
+        <li><a href="#equivalence">Equivalence Relations</a></li>
+        <li><a href="#function-induced">Function-Induced Equivalence Relations</a></li>
+        <li><a href="#classes">Equivalence Classes</a></li>
+        <li><a href="#partitions">Partitions</a></li>
+      </ol>
+    </nav>
+
+    <section id="definition">
+      <h2>Definition of Relations</h2>
+
+      <p><strong>Definition:</strong> Let \(X\) and \(Y\) be sets. A <strong>binary relation</strong> \(R\) from \(X\) to \(Y\) is a subset of \(X \times Y\), that is, a set of ordered pairs \((x, y)\) where \(x \in X\) and \(y \in Y\).</p>
+
+      <ul>
+        <li>\(X\) is the <strong>domain</strong> of \(R\), \(Y\) is the <strong>codomain</strong>.</li>
+        <li>If \(X = Y\), we say \(R\) is a "relation on \(X\)".</li>
+        <li>We can think of it as a formula \(R(x, y)\).</li>
+        <li>We write \(x \, R \, y\) for \((x, y) \in R\) or \(R(x, y)\).</li>
+      </ul>
+    </section>
+
+    <section id="examples">
+      <h2>Examples of Relations</h2>
+
+      <div class="example">
+        <h3>Order Relations</h3>
+        <p>Classical example: \(x, y \in \mathbb{Z}\), \(R\) is \(<\).</p>
+        <ul>
+          <li>\(0 < 1\) means "0 is less than 1".</li>
+          <li>This adds structure to \(\mathbb{Z}\).</li>
+          <li>Sets have no structure: just elements.</li>
+          <li>Relations add structure: how elements relate to each other.</li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <h3>Rock, Paper, Scissors</h3>
+        <p>Let \(X = \{\text{rock, paper, scissors}\}\). Let \(x \, R \, y\) mean "\(x\) beats \(y\) in a game of rock/paper/scissors".</p>
+        <p>\(R\) is completely described by:</p>
+        <ul>
+          <li>rock beats scissors</li>
+          <li>scissors beats paper</li>
+          <li>paper beats rock</li>
+        </ul>
+        <p>So \(R = \{(\text{rock, scissors}), (\text{scissors, paper}), (\text{paper, rock})\}\).</p>
+      </div>
+    </section>
+
+    <section id="properties">
+      <h2>Properties of Relations</h2>
+
+      <p>Let \(R\) be a relation on a set \(X\). Then:</p>
+      <ul>
+        <li><strong>Reflexive:</strong> \(\forall x \in X,\; x \, R \, x\).</li>
+        <li><strong>Symmetric:</strong> \(\forall x, y \in X,\; x \, R \, y \rightarrow y \, R \, x\).</li>
+        <li><strong>Transitive:</strong> \(\forall x, y, z \in X,\; x \, R \, y \land y \, R \, z \rightarrow x \, R \, z\).</li>
+        <li><strong>Antisymmetric:</strong> \(\forall x, y \in X,\; x \, R \, y \land y \, R \, x \rightarrow x = y\).</li>
+        <li><strong>Asymmetric:</strong> \(\forall x, y \in X,\; x \, R \, y \rightarrow \neg(y \, R \, x)\).</li>
+      </ul>
+
+      <div class="example">
+        <h3>Antisymmetric vs. asymmetric</h3>
+        <p>On \(\mathbb{Z}\), the relation \(\le\) is <em>antisymmetric</em> (if \(x \le y\) and \(y \le x\), then \(x = y\)) but <em>not</em> asymmetric (since \(x \le x\) is true, so \(x \le y \to \neg(y \le x)\) fails when \(x = y\)).</p>
+        <p>The relation \(<\) is both antisymmetric and asymmetric.</p>
+      </div>
+
+      <div class="exercise">
+        <h3>Reflexivity Examples</h3>
+        <p>Let \(X\) be the set of all people. Are these relations reflexive?</p>
+        <details>
+          <summary>Click for answers</summary>
+          <ul>
+            <li>\(x\) and \(y\) are siblings: <strong>Not reflexive</strong> (a person is not their own sibling).</li>
+            <li>\(x\) and \(y\) share a parent: <strong>Reflexive</strong> (everyone shares parents with themselves).</li>
+            <li>\(x\) and \(y\) are the same age: <strong>Reflexive</strong>.</li>
+            <li>\(x\) is older than \(y\): <strong>Not reflexive</strong> (no one is older than themselves).</li>
+            <li>\(x\) is no younger than \(y\): <strong>Reflexive</strong> (everyone is the same age as themselves).</li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="exercise">
+        <h3>Transitivity Examples</h3>
+        <p>Are these relations transitive?</p>
+        <details>
+          <summary>Click for answers</summary>
+          <ul>
+            <li>\(X = \mathbb{Z}\), \(R\) is \(x \le y\): <strong>Transitive</strong>.</li>
+            <li>\(X = \mathbb{Z}\), \(R\) is \(x \mid y\) (divides): <strong>Transitive</strong>. (If \(x \mid y\) and \(y \mid z\), write \(y = xa\) and \(z = yb\); then \(z = x(ab)\), so \(x \mid z\).)</li>
+            <li>\(X = \{\text{rock, paper, scissors}\}\), \(R\) is "\(x\) beats \(y\)": <strong>Not transitive</strong> (rock beats scissors, scissors beats paper, but rock does not beat paper).</li>
+            <li>\(X\) is all finite subsets of \(\mathbb{N}\), \(R\) is \(|x| = |y|\): <strong>Transitive</strong> (if \(|A| = |B|\) and \(|B| = |C|\), then \(|A| = |C|\)).</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section id="equivalence">
+      <h2>Equivalence Relations</h2>
+
+      <p><strong>Definition:</strong> A relation \(\sim\) on \(X\) is an <strong>equivalence relation</strong> if it is:</p>
+      <ol>
+        <li><strong>Reflexive:</strong> \(\forall x \in X,\; x \sim x\).</li>
+        <li><strong>Symmetric:</strong> \(\forall x, y \in X,\; x \sim y \rightarrow y \sim x\).</li>
+        <li><strong>Transitive:</strong> \(\forall x, y, z \in X,\; x \sim y \land y \sim z \rightarrow x \sim z\).</li>
+      </ol>
+
+      <p>Equivalence relations generalize notions of "sameness":</p>
+      <ul>
+        <li>\(x = y\)</li>
+        <li>\(x \equiv y \pmod{n}\)</li>
+        <li>Cardinality: \(|A| = |B|\)</li>
+        <li>Congruent shapes, similar triangles, etc.</li>
+      </ul>
+
+      <p><strong>Example:</strong> Congruence modulo 3 is an equivalence relation on \(\mathbb{Z}\).</p>
+    </section>
+
+    <section id="function-induced">
+      <h2>Function-Induced Equivalence Relations</h2>
+
+      <p>Many of the examples we have seen are instances of a single general fact:</p>
+
+      <p><strong>Theorem.</strong> Let \(f : X \to Y\) be any function. Define a relation \(\sim\) on \(X\) by
+      \[
+        x \sim y \iff f(x) = f(y).
+      \]
+      Then \(\sim\) is an equivalence relation on \(X\).</p>
+
+      <p><em>Proof sketch.</em> Reflexivity: \(f(x) = f(x)\). Symmetry: if \(f(x) = f(y)\), then \(f(y) = f(x)\). Transitivity: if \(f(x) = f(y)\) and \(f(y) = f(z)\), then \(f(x) = f(z)\). \(\square\)</p>
+
+      <p><strong>Instances.</strong></p>
+      <ul>
+        <li>\(f(x) = x^2\) on \(\mathbb{Z}\) gives \(x \sim y \iff x^2 = y^2\).</li>
+        <li>\(f(x) = \sin x\) on \(\mathbb{R}\) gives \(x \sim y \iff \sin x = \sin y\).</li>
+        <li>\(f(x) = x \bmod n\) on \(\mathbb{Z}\) gives congruence modulo \(n\).</li>
+        <li>\(f(x) = \operatorname{sign}(x)\) on \(\mathbb{R}\) gives classes \(\{x < 0\}\), \(\{0\}\), \(\{x > 0\}\).</li>
+        <li>\(f(n) = \lfloor n/2 \rfloor\) on \(\mathbb{N}\) gives classes of size 2 (e.g. \(\{0,1\}, \{2,3\}, \ldots\)).</li>
+      </ul>
+    </section>
+
+    <section id="classes">
+      <h2>Equivalence Classes</h2>
+
+      <p><strong>Definition:</strong> Let \(\sim\) be an equivalence relation on \(X\).</p>
+      <ul>
+        <li>The <strong>equivalence class</strong> of \(x\) is \([x]_{\sim} = \{y \in X : x \sim y\}\).</li>
+        <li>The <strong>quotient</strong> of \(X\) by \(\sim\) is \(X/{\sim} = \{[x]_{\sim} : x \in X\}\).</li>
+        <li>\(x\) is called a <strong>representative</strong> of its equivalence class \([x]_{\sim}\).</li>
+      </ul>
+
+      <div class="example">
+        <h3>Modular Arithmetic Examples</h3>
+        <ul>
+          <li>\(X = \mathbb{Z}\), \(\sim\) is \(\equiv \pmod{2}\):
+            <ul>
+              <li>Equivalence classes: evens and odds.</li>
+              <li>\(X/{\sim} = \{[0]_{\sim}, [1]_{\sim}\}\).</li>
+            </ul>
+          </li>
+          <li>\(X = \mathbb{Z}\), \(\sim\) is \(\equiv \pmod{10}\):
+            <ul>
+              <li>Equivalence classes: numbers with the same last digit.</li>
+              <li>\(X/{\sim} = \{[0]_{\sim}, [1]_{\sim}, \ldots, [9]_{\sim}\}\).</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <h3>Squares Example</h3>
+        <p>Let \(X = \mathbb{Z}\), and \(x \sim y\) if \(x^2 = y^2\).</p>
+        <p><strong>Claim:</strong> \(\sim\) is an equivalence relation.</p>
+        <p><strong>Proof:</strong> This is the function-induced relation with \(f(x) = x^2\), so the theorem above applies.</p>
+        <ul>
+          <li>\([0]_{\sim} = \{0\}\).</li>
+          <li>\([1]_{\sim} = \{1, -1\}\).</li>
+          <li>\([2]_{\sim} = \{2, -2\}\).</li>
+          <li>There is one equivalence class for each non-negative integer.</li>
+          <li>Good set of representatives: \(\mathbb{N} \cup \{0\}\).</li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <h3>Sine Example</h3>
+        <p>Let \(X = \mathbb{R}\) and \(x \sim y\) if \(\sin(x) = \sin(y)\).</p>
+        <p><strong>Claim:</strong> \(\sim\) is an equivalence relation.</p>
+        <p><strong>Proof:</strong> This is the function-induced relation with \(f(x) = \sin x\).</p>
+        <ul>
+          <li>\([0]_{\sim} = \{k\pi : k \in \mathbb{Z}\}\).</li>
+          <li>\([\pi/2]_{\sim} = \{\pi/2 + 2\pi k : k \in \mathbb{Z}\}\).</li>
+          <li>There is one equivalence class for each value in the range \([-1, 1]\) of sine.</li>
+          <li>Good set of representatives: \([-\pi/2, \pi/2]\) (each \(y\)-value appears exactly once).</li>
+        </ul>
+      </div>
+
+      <div class="exercise">
+        <h3>Exercise: \(f(n) = \lfloor n/2 \rfloor\)</h3>
+        <p>Let \(f : \mathbb{N} \to \mathbb{N}\) be \(f(n) = \lfloor n/2 \rfloor\) (integer division by 2). Define \(n \sim m\) iff \(f(n) = f(m)\). Compute:</p>
+        <ol>
+          <li>\([0]\)</li>
+          <li>\([3]\)</li>
+          <li>\([4]\)</li>
+          <li>\([2k]\)</li>
+          <li>\([2k+1]\)</li>
+        </ol>
+        <p>How many equivalence classes are there? How large is each?</p>
+        <details>
+          <summary>Click for answer</summary>
+          <ul>
+            <li>\([0] = \{0, 1\}\)</li>
+            <li>\([3] = \{6, 7\}\)</li>
+            <li>\([4] = \{8, 9\}\)</li>
+            <li>\([2k] = \{2k, 2k+1\}\)</li>
+            <li>\([2k+1] = \{2k+2, 2k+3\}\)</li>
+          </ul>
+          <p>There are infinitely many classes, each of size 2 (except that the classes \(\{2k, 2k+1\}\) partition \(\mathbb{N}\) into consecutive pairs).</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="partitions">
+      <h2>Partitions</h2>
+
+      <p><strong>Definition.</strong> A <strong>partition</strong> of a set \(X\) is a collection of nonempty subsets \(\{U_i\}\) of \(X\) such that:</p>
+      <ul>
+        <li>if \(i \neq j\), then \(U_i \cap U_j = \emptyset\) (the parts are pairwise disjoint), and</li>
+        <li>for every \(x \in X\), there is some \(i\) with \(x \in U_i\) (the parts cover \(X\)).</li>
+      </ul>
+      <p>So every element of \(X\) lies in exactly one part.</p>
+
+      <div class="example">
+        <h3>Equivalence classes form a partition</h3>
+        <p>Let \(\sim\) be an equivalence relation on \(X\). The equivalence classes \(\{[x]_{\sim} : x \in X\}\) form a partition of \(X\):</p>
+        <ul>
+          <li><em>Cover:</em> every \(x\) lies in \([x]_{\sim}\) (reflexivity).</li>
+          <li><em>Disjoint:</em> if \([x] \cap [y] \neq \emptyset\), say \(z \in [x] \cap [y]\), then \(x \sim z\) and \(y \sim z\), so by symmetry and transitivity \(x \sim y\), hence \([x] = [y]\).</li>
+        </ul>
+      </div>
+
+      <div class="example">
+        <h3>Recovering a relation from a partition</h3>
+        <p>Conversely, given a partition of \(X\), define \(x \sim y\) iff \(x\) and \(y\) lie in the same part. This is an equivalence relation, and its equivalence classes are exactly the parts of the partition.</p>
+        <p>Example: on \(X = \{a, b, c, d\}\), the partition \(\{\{a\}, \{b, d\}, \{c\}\

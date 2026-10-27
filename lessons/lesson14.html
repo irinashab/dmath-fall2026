@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Recurrence Relations</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body id="top">
+  <header>
+    <h1>Recurrence Relations</h1>
+  </header>
+
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    <nav class="toc">
+      <ol>
+        <li><a href="#introduction">Introduction to Sequences</a></li>
+        <li><a href="#definitions">Key Definitions</a></li>
+        <li><a href="#telescoping">Telescoping Method</a></li>
+        <li><a href="#characteristic">Characteristic Root Method</a></li>
+        <li><a href="#applicability">When to Use Each Method</a></li>
+      </ol>
+    </nav>
+
+    <section id="introduction">
+      <h2>Introduction to Sequences</h2>
+
+      <p>A sequence is an ordered list, usually of numbers. A sequence can be finite or infinite, though often we focus on infinite sequences. Technically, a sequence is a function with domain \(\mathbb{N}\) or \(\{0, 1, 2, \ldots, n\}\) for some \(n \in \mathbb{N}\).</p>
+
+      <p>We follow textbook notation: \(a_0\), \(a_1\), \(a_2\), \(\ldots\) denote the first few terms of a sequence, while \((a_n)_{n \in \mathbb{N}}\) denotes the entire sequence. The subscripts are called indices.</p>
+    </section>
+
+    <section id="definitions">
+      <h2>Key Definitions</h2>
+
+      <p><strong>Definition:</strong> A <strong>closed formula</strong> for a sequence \((a_n)_{n \in \mathbb{N}}\) is a formula that expresses \(a_n\) directly as a function of \(n\) only (without referring to previous terms).</p>
+
+      <p><strong>Definition:</strong> A <strong>recurrence relation</strong> is an equation relating a term in a sequence to previous terms. A <strong>recursive definition</strong> consists of a recurrence relation and <strong>initial conditions</strong>.</p>
+
+      <p>In computer science, running times of recursive algorithms are often expressed using recurrence relations with initial conditions.</p>
+
+      <p><strong>First step:</strong> When confronted with a recurrence relation, plug in and determine the first few elements to spot patterns.</p>
+
+      <div class="example">
+        <h3>Example:</h3>
+        <p>Let \(a_0 = 2\) and \(a_n = 2a_{n-1} - 1\). The first few terms:</p>
+        <ul>
+          <li>\(a_0 = 2\)</li>
+          <li>\(a_1 = 3\)</li>
+          <li>\(a_2 = 5\)</li>
+          <li>\(a_3 = 9\)</li>
+          <li>\(a_4 = 17\)</li>
+        </ul>
+        <p>This appears to be one more than powers of 2: \(1, 2, 4, 8, 16, \ldots\), suggesting \(a_n = 2^n + 1\).</p>
+
+        <p><strong>Proof (by induction).</strong> Base case: \(a_0 = 2^0 + 1 = 2\). ✓</p>
+        <p>Inductive hypothesis: assume \(a_n = 2^n + 1\) for some \(n \ge 0\). Then
+        \[
+          a_{n+1} = 2a_n - 1 = 2(2^n + 1) - 1 = 2^{n+1} + 2 - 1 = 2^{n+1} + 1. \quad \checkmark
+        \]
+        So the formula holds for all \(n\).</p>
+      </div>
+    </section>
+
+    <section id="telescoping">
+      <h2>Telescoping Method</h2>
+
+      <p>The sum of the terms of a sequence is called a <strong>series</strong>. A <strong>telescoping series</strong> is one where most terms cancel out.</p>
+
+      <div class="example">
+        <h3>Example:</h3>
+        <p>Given \(a_n = a_{n-1} + 1\) with \(a_0 = 10\), rearrange to \(a_n - a_{n-1} = 1\). Then:</p>
+        <ul>
+          <li>\(a_1 - a_0 = 1\)</li>
+          <li>\(a_2 - a_1 = 1\)</li>
+          <li>\(a_3 - a_2 = 1\)</li>
+          <li>\(\ldots\)</li>
+          <li>\(a_n - a_{n-1} = 1\)</li>
+        </ul>
+        <p>Adding all equations (telescoping): \(a_n - a_0 = n \Rightarrow a_n = 10 + n\).</p>
+      </div>
+
+      <div class="example">
+        <h3>Example:</h3>
+        <p>Solve \(a_n = a_{n-1} + 2^n\) with \(a_0 = 5\).</p>
+        <p>Consecutive differences:</p>
+        <ul>
+          <li>\(a_1 - a_0 = 2^1\)</li>
+          <li>\(a_2 - a_1 = 2^2\)</li>
+          <li>\(a_3 - a_2 = 2^3\)</li>
+          <li>\(\ldots\)</li>
+          <li>\(a_n - a_{n-1} = 2^n\)</li>
+        </ul>
+        <p>Adding:
+        \[
+          a_n - a_0 = 2^1 + 2^2 + \cdots + 2^n = (1 + 2 + \cdots + 2^n) - 1 = (2^{n+1} - 1) - 1 = 2^{n+1} - 2.
+        \]
+        Since \(a_0 = 5\):
+        \[
+          a_n = 2^{n+1} - 2 + 5 = 2^{n+1} + 3.
+        \]</p>
+      </div>
+
+      <div class="exercise">
+        <h3>Exercise:</h3>
+        <p>Solve \(a_n = a_{n-1} + (2n - 1)\) with \(a_0 = 1\).</p>
+        <details>
+          <summary>Click for answer</summary>
+          <p>First terms: \(a_0 = 1\), \(a_1 = 2\), \(a_2 = 5\), \(a_3 = 10\).</p>
+          <p>Differences: \(a_1 - a_0 = 1\), \(a_2 - a_1 = 3\), \(a_3 - a_2 = 5\), \(\ldots\), \(a_n - a_{n-1} = 2n - 1\).</p>
+          <p>The sum of the first \(n\) odd numbers is \(n^2\). (Equivalently: \(1 + 3 + \cdots + (2n+1) = (n+1)^2\), so dropping the last term gives \((n+1)^2 - (2n+1) = n^2\).)</p>
+          <p>So \(a_n - a_0 = n^2\). Since \(a_0 = 1\):
+          \[
+            a_n = n^2 + 1.
+          \]</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="characteristic">
+      <h2>Characteristic Root Method</h2>
+
+      <p>This method solves <strong>linear homogeneous recurrence relations with constant coefficients</strong>.</p>
+
+      <p><strong>Definition:</strong> A <strong>linear homogeneous recurrence relation with constant coefficients</strong> has the form
+      \[
+        a_n = c_1 a_{n-1} + c_2 a_{n-2} + \cdots + c_k a_{n-k}
+      \]
+      where \(k \ge 1\), \(c_1, \ldots, c_k \in \mathbb{R}\) are constants, and \(c_k \neq 0\). \(k\) is called the <strong>degree</strong>.</p>
+
+      <p>For uniqueness, initial conditions must specify \(a_0, a_1, \ldots, a_{k-1}\).</p>
+
+      <p><strong>Technique for degree 2:</strong> Guess solutions of the form \(a_n = r^n\).</p>
+
+      <div class="example">
+        <h3>Fibonacci Example:</h3>
+        <p>\(a_n = a_{n-1} + a_{n-2}\), with \(a_0 = 0\), \(a_1 = 1\).</p>
+        <p>Assume \(a_n = r^n \Rightarrow r^n = r^{n-1} + r^{n-2}\).</p>
+        <p>Divide by \(r^{n-2}\): \(r^2 = r + 1 \Rightarrow r^2 - r - 1 = 0\) (the <strong>characteristic equation</strong>).</p>
+        <p>Roots:
+        \[
+          r = \frac{1 \pm \sqrt{5}}{2}.
+        \]</p>
+      </div>
+
+      <p><strong>Theorem (degree 2, distinct roots).</strong> If \(a_n = c_1 a_{n-1} + c_2 a_{n-2}\) has characteristic equation \(r^2 - c_1 r - c_2 = 0\) with distinct roots \(r_1 \neq r_2\), then the general solution is
+      \[
+        a_n = \alpha r_1^n + \beta r_2^n
+      \]
+      where \(\alpha, \beta\) are determined by the initial conditions.</p>
+
+      <p><em>Repeated-root case:</em> if \(r_1 = r_2 = r\), the general solution is
+      \[
+        a_n = (\alpha + \beta n)\, r^n.
+      \]
+      (We will not use this case in this course, but it is worth knowing it exists.)</p>
+
+      <div class="example">
+        <h3>Fibonacci Solution:</h3>
+        <p>\(r_1 = \dfrac{1 - \sqrt{5}}{2}\), \(r_2 = \dfrac{1 + \sqrt{5}}{2}\).</p>
+        <p>\(a_n = \alpha r_1^n + \beta r_2^n\).</p>
+        <p>Using \(a_0 = 0\): \(\alpha + \beta = 0 \Rightarrow \beta = -\alpha\).</p>
+        <p>Using \(a_1 = 1\): \(\alpha r_1 + \beta r_2 = 1 \Rightarrow \alpha(r_1 - r_2) = 1\).</p>
+        <p>Since \(r_1 - r_2 = -\sqrt{5}\), we get \(\alpha = -\dfrac{1}{\sqrt{5}}\), \(\beta = \dfrac{1}{\sqrt{5}}\).</p>
+        <p>Final solution:
+        \[
+          a_n = \frac{1}{\sqrt{5}}\left[\left(\frac{1 + \sqrt{5}}{2}\right)^n - \left(\frac{1 - \sqrt{5}}{2}\right)^n\right].
+        \]</p>
+      </div>
+
+      <div class="exercise">
+        <h3>Exercise:</h3>
+        <p>Use characteristic roots to solve \(a_n = a_{n-1} + 2a_{n-2}\) with \(a_0 = 0\), \(a_1 = 2\).</p>
+        <details>
+          <summary>Click for answer</summary>
+          <p>Characteristic equation: \(r^2 - r - 2 = 0 \Rightarrow (r - 2)(r + 1) = 0 \Rightarrow r = 2, -1\).</p>
+          <p>General solution: \(a_n = \alpha \cdot 2^n + \beta \cdot (-1)^n\).</p>
+          <p>Using \(a_0 = 0\): \(\alpha + \beta = 0\).</p>
+          <p>Using \(a_1 = 2\): \(2\alpha - \beta = 2\).</p>
+          <p>Substituting \(\beta = -\alpha\): \(2\alpha + \alpha = 2 \Rightarrow 3\alpha = 2 \Rightarrow \alpha = \tfrac{2}{3}\), \(\beta = -\tfrac{2}{3}\).</p>
+          <p>Solution:
+          \[
+            a_n = \tfrac{2}{3} \cdot 2^n - \tfrac{2}{3} \cdot (-1)^n = \tfrac{2}{3}\left(2^n - (-1)^n\right).
+          \]</p>
+          <p><em>Note:</em> this is always an integer. Can you prove \(2^n - (-1)^n\) is divisible by 3? (Hint: consider \(n\) even and \(n\) odd separately, or work modulo 3.)</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="applicability">
+      <h2>When to Use Each Method</h2>
+
+      <div class="method-card">
+        <h3>Telescoping Method</h3>
+        <p><strong>Best for:</strong> Recurrence relations where consecutive differences have a recognizable pattern.</p>
+        <p><strong>Form:</strong> \(a_n = a_{n-1} + f(n)\), or rearrangements with a clear pattern in \(a_n - a_{n-1}\).</p>
+        <p><strong>Examples:</strong> Arithmetic sequences, geometric-like patterns, sums of simple functions.</p>
+      </div>
+
+      <div class="method-card">
+        <h3>Characteristic Root Method</h3>
+        <p><strong>Best for:</strong> Linear homogeneous recurrence relations with constant coefficients.</p>
+        <p><strong>Form:</strong> \(a_n = c_1 a_{n-1} + c_2 a_{n-2} + \cdots + c_k a_{n-k}\).</p>
+        <p><strong>Examples:</strong> Fibonacci-type sequences, population models, systems with exponential growth.</p>
+        <p><strong>Requires:</strong> distinct characteristic roots (otherwise use the repeated-root adjustment \((\alpha + \beta n) r^n\)).</p>
+      </div>
+
+      <div class="method-card">
+        <h3>Direct Substitution / Pattern Recognition</h3>
+        <p><strong>Best for:</strong> Simple recurrences where a pattern is easily detectable.</p>
+        <p><strong>Form:</strong> Any recurrence where computing the first few terms reveals an obvious pattern.</p>
+        <p><strong>Examples:</strong> \(a_n = 2a_{n-1} - 1\), \(a_n = a_{n-1} + n\), etc.</p>
+      </div>
+    </section>
+
+    <p class="back-to-top"><a href="#top">↑ Back to top</a></p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+    const siteRoot = window.location.hostname.endsWith("github.io")
+      ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+      : "/";
+
+    fetch(`${siteRoot}assets/includes/navigation.html`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Navigation request failed: ${response.status}`);
+        return response.text();
+      })
+      .then(html => {
+        const placeholder = document.getElementById("navigation-placeholder");
+        placeholder.innerHTML = html;
+        placeholder.querySelectorAll("a[data-path]").forEach(link => {
+          link.href = `${siteRoot}${link.dataset.path}`;
+        });
+      })
+      .catch(error => console.error("Navigation load failed:", error));
+
+    fetch(`${siteRoot}assets/includes/footer.html`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Footer request failed: ${response.status}`);
+        return response.text();
+      })
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(error => console.error("Footer load failed:", error));
+  </script>
+</body>
+</html>
