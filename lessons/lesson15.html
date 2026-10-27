@@ -271,4 +271,45 @@
       <div class="example">
         <h3>Recovering a relation from a partition</h3>
         <p>Conversely, given a partition of \(X\), define \(x \sim y\) iff \(x\) and \(y\) lie in the same part. This is an equivalence relation, and its equivalence classes are exactly the parts of the partition.</p>
-        <p>Example: on \(X = \{a, b, c, d\}\), the partition \(\{\{a\}, \{b, d\}, \{c\}\
+        <p>Example: on \(X = \{a, b, c, d\}\), the partition \(\{\{a\}, \{b, d\}, \{c\}\}\) corresponds to the equivalence relation with classes \([a] = \{a\}\), \([b] = \{b, d\}\), \([c] = \{c\}\).</p>
+      </div>
+
+      <p><strong>Summary.</strong> Equivalence relations on \(X\) and partitions of \(X\) are "the same data": each equivalence relation produces a partition (its equivalence classes), and each partition produces an equivalence relation ("same part").</p>
+    </section>
+
+    <p class="back-to-top"><a href="#top">↑ Back to top</a></p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+    const siteRoot = window.location.hostname.endsWith("github.io")
+      ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+      : "/";
+
+    fetch(`${siteRoot}assets/includes/navigation.html`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Navigation request failed: ${response.status}`);
+        return response.text();
+      })
+      .then(html => {
+        const placeholder = document.getElementById("navigation-placeholder");
+        placeholder.innerHTML = html;
+        placeholder.querySelectorAll("a[data-path]").forEach(link => {
+          link.href = `${siteRoot}${link.dataset.path}`;
+        });
+      })
+      .catch(error => console.error("Navigation load failed:", error));
+
+    fetch(`${siteRoot}assets/includes/footer.html`)
+      .then(response => {
+        if (!response.ok) throw new Error(`Footer request failed: ${response.status}`);
+        return response.text();
+      })
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(error => console.error("Footer load failed:", error));
+  </script>
+</body>
+</html>
