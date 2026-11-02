@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lesson 16: Introduction to Graph Theory</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    /* Keep lecture content plain, without colored panels or callouts. */
+    main th { background: transparent; }
+    main details { margin: 1rem 0; }
+    main summary { cursor: pointer; font-weight: bold; }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 16: Introduction to Graph Theory</h1>
+  </header>
+  <div id="navigation-placeholder"></div>
+
+  <main>
+
+<article>
+<nav class="lesson-nav" aria-label="Lesson sections"><ol>
+<li><a href="#bridges">The bridge puzzle</a></li><li><a href="#graphs">Graphs and degrees</a></li><li><a href="#handshaking">Counting endpoints</a></li><li><a href="#euler">Eulerian routes</a></li><li><a href="#hamilton">Hamiltonian routes</a></li><li><a href="#families">Graph families</a></li><li><a href="#practice">Exit questions</a></li>
+</ol></nav>
+<section id="bridges">
+<h2>1. Seven bridges: what information matters?</h2>
+<figure><img src="../assets/images/Konigsberg_bridges.png" alt="Map of four land regions joined by the seven bridges of Königsberg." style="width: min(100%, 480px);"><figcaption>The seven bridges of Königsberg.</figcaption></figure>
+<p>The classic Königsberg problem asks whether a person can cross every bridge exactly once in a single continuous walk. The walk may start and end in different places. Travel within each land region is unrestricted; crossing the river requires a bridge.</p>
+<div><h3>Discuss before calculating</h3><p>Does the length of a bridge matter? Does the shape of an island matter? What information must a mathematical model preserve?</p></div>
+<p>Replace each land region by a <strong>vertex</strong> and each bridge by an <strong>edge</strong>. The essential information is which regions each bridge connects. Two different bridges may connect the same pair of regions, so we must keep them as different edges.</p>
+<figure><img src="../assets/images/kg.png" alt="Multigraph model of the bridges, with four vertices and seven edges, including parallel edges." style="width: min(100%, 440px);"><figcaption>The bridge puzzle becomes a question about traversing edges.</figcaption></figure>
+<p>Euler showed in 1736 that the walk is impossible. We will discover the obstruction and return to this graph after developing the needed language.</p>
+</section>
+<section id="graphs">
+<h2>2. Graphs, edges, and degrees</h2>
+<p>Throughout the main lesson, graphs are <strong>finite and undirected</strong>.</p>
+<div><h3>Two graph models</h3><p>A <strong>simple graph</strong> is a pair \(G=(V,E)\), where \(V\) is the vertex set and \(E\) is a set of two-element subsets of \(V\). An edge \(\{u,v\}\) joins distinct vertices. There are no loops or parallel edges.</p><p>In an <strong>undirected multigraph</strong>, edges are distinct objects with assigned endpoints. Several edges may have the same endpoints. We also allow a <strong>loop</strong>, whose two endpoints coincide.</p></div>
+<p>Vertices are <strong>adjacent</strong> if an edge joins them. An edge is <strong>incident</strong> to each of its endpoints. The placement of the vertices and the shapes of the drawn edges do not change the graph. Crossing lines do not create a vertex unless a vertex is explicitly marked.</p>
+<p>The <strong>degree</strong> \(\deg(v)\) counts edge endpoints at \(v\). Each ordinary incident edge contributes 1; each loop contributes 2. A loop is still just one edge. Parallel edges each contribute separately. A vertex of degree 0 is <strong>isolated</strong>.</p>
+<figure><img src="../assets/images/g5.png" alt="Graph on A, B, C, D, E with edges AB, BC, AC, AE, CE, CD, and DE." style="width: min(100%, 420px);"><figcaption>A graph we will use for both degree counting and route finding.</figcaption></figure>
+<div><h3>Your turn</h3><p>Find the degree of each labeled vertex and the number of edges. Check each edge at both endpoints.</p><details><summary>Check your count</summary><p>In vertex order \(A,B,C,D,E\), the degrees are \((3,2,4,2,3)\). There are 7 edges. The sum is \(14\).</p></details></div>
+<p>We list a <strong>degree sequence</strong> in nondecreasing order. For this graph it is \((2,2,3,3,4)\). A list in a specified vertex order is useful too, but need not be sorted.</p>
+<div><h3>Which degree sequences are possible?</h3><p>For each list, draw a <em>simple undirected graph</em> with exactly those vertex degrees, or explain why none exists.</p><ol><li>\((1,1,2,2)\)</li><li>\((1,1,1,2)\)</li><li>\((2,2,2,2)\)</li><li>\((0,1,2,3)\)</li></ol>
+<details><summary>Solutions</summary><ol><li>A path on four vertices works: \(a-b-c-d\).</li><li>Impossible: the degree sum is 5, but each edge contributes 2 to that sum.</li><li>A four-vertex cycle works: \(a-b-c-d-a\).</li><li>Impossible: in a simple graph on four vertices, a degree-3 vertex must be adjacent to every other vertex, including the supposedly isolated one. Both the absence of loops and the absence of parallel edges matter.</li></ol><p><strong>Lesson:</strong> an even degree sum is necessary, but it is not sufficient for a list to be the degree sequence of a simple graph.</p></details></div>
+</section>
+<section id="handshaking">
+<h2>3. Count endpoints in two ways</h2>
+<div><h3>Handshaking Lemma</h3><p>For every finite undirected graph, including our multigraphs with loops,</p>\[\sum_{v\in V}\deg(v)=2|E|.\]</div>
+<p><strong>Proof.</strong> Count all edge endpoints. Summing vertex degrees counts them vertex by vertex. Counting edge by edge gives two endpoints per edge, including two at the same vertex for a loop. Both counts describe the same collection, so they are equal.</p>
+<div><h3>Parity consequence</h3><p>Every finite undirected graph has an even number of odd-degree vertices.</p></div>
+<p><strong>Proof.</strong> The degree sum is even. Even-degree vertices contribute 0 modulo 2, and each odd-degree vertex contributes 1. Thus the number of odd-degree vertices is 0 modulo 2.</p>
+<div><h3>Quick check</h3><p>Could a graph have exactly three odd-degree vertices? Could it have five vertices of degree 3?</p><details><summary>Answer</summary><p>Exactly three odd-degree vertices is impossible. A graph on exactly five vertices, all of degree 3, is also impossible: its degree sum would be 15. If five degree-3 vertices are only part of a larger graph, additional odd-degree vertices could make the total even.</p></details></div>
+</section>
+<section id="euler">
+<h2>4. Eulerian routes: use every edge</h2>
+<h3>A small vocabulary for routes</h3>
+<ul><li>A <strong>walk</strong> is an alternating sequence \(v_0,e_1,v_1,\ldots,e_k,v_k\), where each edge joins the vertices immediately before and after it. Vertices and edges may repeat. Specifying edges is essential when parallel edges exist.</li><li>A <strong>trail</strong> is a walk with no repeated edges.</li><li>A <strong>path</strong> is a walk with no repeated vertices.</li><li>A walk is <strong>closed</strong> if its starting and ending vertices coincide. A <strong>cycle</strong> is a nonempty closed trail with no repeated vertices except the first and last. In a simple graph, a cycle has at least three edges.</li></ul>
+<p>A graph is <strong>connected</strong> if a path joins every pair of vertices.</p>
+<div><p>An <strong>Eulerian trail</strong> uses every edge exactly once. It may repeat vertices. It is <strong>open</strong> when its endpoints differ. An <strong>Eulerian circuit</strong> is a closed Eulerian trail. Some books call an Eulerian trail an “Eulerian path”; we use “trail” to distinguish it from a path with no repeated vertices.</p></div>
+<h3>Why odd degrees control the endpoints</h3>
+<p>At every intermediate visit to a vertex, arrival uses one edge endpoint and departure uses another. These endpoints pair up. An open trail leaves one unpaired departure at the start and one unpaired arrival at the end. Therefore its endpoints have odd degree, while every other vertex has even degree. In a closed trail, all endpoints pair up.</p>
+<div><h3>Eulerian theorem</h3><p>Let \(G\) be a finite undirected graph with at least one edge, and suppose all vertices incident to edges lie in a single connected component.</p><ul><li>\(G\) has an Eulerian circuit <strong>if and only if</strong> every vertex has even degree.</li><li>\(G\) has an open Eulerian trail <strong>if and only if</strong> exactly two vertices have odd degree. Those two vertices are its endpoints.</li><li>Consequently, \(G\) has an Eulerian trail, allowing a closed one, <strong>if and only if</strong> it has zero or two odd-degree vertices.</li></ul><p>Isolated vertices do not affect an edge-covering route. For a graph with no edges and at least one vertex, the length-zero walk at that vertex uses all edges.</p></div>
+<p><strong>Why connectivity is needed.</strong> A cycle \(C_6\) and two disjoint triangles both have degree sequence \((2,2,2,2,2,2)\). Only the first has an Eulerian circuit: no walk can jump between the triangles.</p>
+<h3>Why the conditions are sufficient</h3>
+<p>First suppose every degree is even. Start at a vertex incident to an edge and keep following unused edges until none is available. You cannot get stuck at a different vertex: each arrival there leaves an unused departure, because its original degree is even. The resulting trail therefore closes at its starting vertex.</p>
+<p>If unused edges remain, connectivity guarantees that some vertex on the closed trail is incident to an unused edge. Removing the used edges leaves every degree even, so build another closed trail from that vertex using unused edges. Splice this new trail into the first one. Repeat. Each step uses additional edges, and there are only finitely many, so eventually the closed trail uses every edge.</p>
+<p>Now suppose exactly two vertices, \(s\) and \(t\), have odd degree. Add one extra edge joining them, permitting a parallel edge if necessary. All degrees become even, so the augmented graph has an Eulerian circuit. Delete the added edge and read the remaining circuit starting just after it: this gives an open Eulerian trail from one odd vertex to the other.</p>
+<div><h3>Return to Königsberg</h3><p>The bridge multigraph has degrees \(3,3,3,5\). All four vertices have odd degree. An Eulerian trail can have at most two odd-degree vertices, so crossing each of the seven bridges exactly once is impossible, even if the walk ends somewhere different from where it starts.</p></div>
+<div><h3>Find a route</h3><p>Return to the graph on \(A,B,C,D,E\). Does it have an Eulerian trail? A circuit? Find a route if possible.</p><details><summary>Worked solution</summary><p>The degrees in vertex order are \((3,2,4,2,3)\), with only \(A\) and \(E\) odd. The graph is connected, so it has an open Eulerian trail from \(A\) to \(E\), but no Eulerian circuit.</p>\[A\to B\to C\to A\to E\to C\to D\to E.\]<p>The seven edges used are \(AB,BC,CA,AE,EC,CD,DE\), each exactly once. Repeated vertices are allowed.</p><figure><img src="../assets/images/g6.png" alt="The same seven-edge graph, with edges labeled 1 through 7 to identify them." style="width: min(100%, 420px);"><figcaption>Edge labels identify edges; the route uses labels 1, 2, 6, 5, 7, 3, 4.</figcaption></figure></details></div>
+</section>
+<section id="hamilton">
+<h2>5. Hamiltonian routes: visit every vertex</h2>
+<p>A <strong>Hamiltonian path</strong> is a path that visits every vertex of the graph. A <strong>Hamiltonian cycle</strong> is a cycle that visits every vertex, returning to its start only at the end.</p>
+<table><caption>Two different route requirements</caption><thead><tr><th scope="col">Requirement</th><th scope="col">Eulerian trail</th><th scope="col">Hamiltonian path</th></tr></thead><tbody><tr><th scope="row">Must use</th><td>Every edge exactly once</td><td>Every vertex exactly once</td></tr><tr><th scope="row">May repeat vertices?</th><td>Yes</td><td>No</td></tr><tr><th scope="row">Must use every edge?</th><td>Yes</td><td>No</td></tr></tbody></table>
+<p>For example, \(A-B-C-D-E\) is a Hamiltonian path in our seven-edge graph, and \(A-B-C-D-E-A\) is a Hamiltonian cycle. The earlier Eulerian trail repeats \(A\) and \(C\), so it is not a Hamiltonian path.</p>
+<div><h3>Neither condition implies the other</h3><p>Explain why \(K_4\) has a Hamiltonian cycle but no Eulerian trail. Then consider two triangles sharing exactly one vertex: explain why this graph has an Eulerian circuit but no Hamiltonian cycle.</p><details><summary>Explanation</summary><p>In \(K_4\), all four degrees are 3, so there is no Eulerian trail, but visiting the four vertices in order and returning to the first gives a Hamiltonian cycle.</p><p>For the two triangles, the shared vertex has degree 4 and the others have degree 2. The graph is connected, so it has an Eulerian circuit. A cycle visiting both triangles would have to pass through the shared vertex more than once before closing, which is forbidden for a Hamiltonian cycle.</p></details></div>
+<details><summary>Optional enrichment: why the distinction matters in computing</summary><p>Eulerian routes have an efficient construction based on unused edges and splicing closed trails. Deciding whether a general finite simple graph has a Hamiltonian path or cycle is NP-complete. No polynomial-time algorithm is known for either decision problem. This does not mean that particular graphs are always difficult, or that the two problems have been proved to require superpolynomial time.</p></details>
+</section>
+<section id="families">
+<h2>6. Familiar families of graphs</h2>
+<h3>Complete graphs</h3>
+<p>The <strong>complete graph</strong> \(K_n\) is the simple graph on \(n\) vertices with an edge between every pair of distinct vertices.</p>
+<figure><img src="../assets/images/g10.png" alt="Drawings of the complete graphs K3, K4, and K5." style="width: min(100%, 560px);"><figcaption>Every pair of vertices is adjacent in a complete graph.</figcaption></figure>
+<div><h3>Count in two ways</h3><p>How many edges does \(K_n\) have? Give one argument using pairs and another using degrees.</p><details><summary>Two proofs</summary><p>Every edge is a two-element subset of the vertices, so \(|E|=\binom n2=n(n-1)/2\). Alternatively, every vertex has degree \(n-1\), so the Handshaking Lemma gives \(2|E|=n(n-1)\). This is the maximum number of edges in any simple graph on \(n\) vertices.</p></details></div>
+<h3>Cycle graphs</h3>
+<p>For \(n\ge3\), the <strong>cycle graph</strong> \(C_n\) has vertices \(v_0,\ldots,v_{n-1}\) and edges joining consecutive vertices, including \(v_{n-1}\) to \(v_0\). Every vertex has degree 2, and there are \(n\) edges.</p>
+<figure><img src="../assets/images/g11.png" alt="Cycle graph C6: six vertices joined in a single closed ring." style="width: min(100%, 400px);"><figcaption>The cycle graph \(C_6\). It is not a complete graph.</figcaption></figure>
+<h3>Bipartite graphs</h3>
+<p>A graph is <strong>bipartite</strong> if its vertex set can be partitioned as \(V=V_1\cup V_2\), with \(V_1\cap V_2=\varnothing\), so that every edge has one endpoint in each part. Think of coloring vertices with two colors so that adjacent vertices always have different colors.</p>
+<p>The <strong>complete bipartite graph</strong> \(K_{n,m}\) has parts of sizes \(|V_1|=n\) and \(|V_2|=m\), with every possible edge between the parts and no edges within either part. It has \(nm\) edges.</p>
+<figure><img src="../assets/images/g12.png" alt="Complete bipartite graph K3,5, with three vertices in one part and five in the other, and all fifteen edges between parts." style="width: min(100%, 480px);"><figcaption>\(K_{3,5}\): count the edges as \(3\cdot5=15\).</figcaption></figure>
+<div><h3>When is a cycle bipartite?</h3><p>Try \(C_3,C_4,C_5,C_6\). Make a conjecture about \(C_n\), and explain why it is true.</p><details><summary>Proof</summary><p>\(C_n\) is bipartite exactly when \(n\) is even. Along the cycle the colors must alternate. When \(n\) is even, put the even-indexed vertices in one part and the odd-indexed vertices in the other; every edge crosses between parts. When \(n\) is odd, the last vertex has the same color as the first, yet they are adjacent, a contradiction.</p><p>A bipartite graph need not be complete bipartite: \(C_6\) has 6 edges, whereas \(K_{3,3}\) has 9.</p></details></div>
+</section>
+<section id="practice">
+<h2>7. Exit questions</h2>
+<ol><li>A connected graph has degree sequence \((2,2,2,3,3)\). How many edges does it have? What kind of Eulerian route does it have?</li><li>A connected graph has degree sequence \((2,2,4,4)\). Can an Eulerian trail start and end at different vertices?</li><li>For which \(n\ge3\) does \(K_n\) have an Eulerian circuit?</li><li>Is \(K_{3,5}\) Eulerian? Does it have a Hamiltonian cycle?</li><li>Explain in one sentence why an even degree sum does not guarantee an Eulerian circuit.</li></ol>
+<details><summary>Solutions and explanations</summary><ol><li>The sum is 12, so there are 6 edges. Exactly two vertices have odd degree, so there is an open Eulerian trail, but no Eulerian circuit.</li><li>No. All degrees are even, so it has an Eulerian circuit; any trail using all edges must close.</li><li>Exactly when \(n\) is odd: every degree is \(n-1\), and \(K_n\) is connected.</li><li>It has 15 edges. The three vertices in one part have degree 5, and the five in the other have degree 3: all eight are odd, so there is no Eulerian trail. There is no Hamiltonian cycle either, because any cycle in a bipartite graph alternates between parts and uses equally many vertices from each; these parts have unequal sizes.</li><li>For example, two disjoint triangles have an even degree sum and all degrees even, but no single walk can cover both components. Also, an even degree sum alone does not require each degree to be even.</li></ol></details>
+</section>
+<details><summary>Looking ahead: directed and weighted graphs</summary><p>In a directed graph, edges have a specified direction, from a start vertex to an end vertex. The <strong>in-degree</strong> counts incoming edges and the <strong>out-degree</strong> counts outgoing edges; a directed loop contributes 1 to each. Weighted graphs attach quantities, such as distance or travel time, to edges. These models are useful for route-finding, but the undirected Eulerian theorem above must not be applied to them without checking the relevant assumptions.</p></details>
+<p class="back-to-top"><a href="#top">↑ Back to top</a></p>
+</article>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = new URL("../", window.location.href).href;
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>
