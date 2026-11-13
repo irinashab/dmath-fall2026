@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discrete Math – Relations: Trick Questions (Printable)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    @media print {
+      body { font-size: 11pt; }
+      .no-print { display: none; }
+      .page-break { page-break-before: always; }
+      a { color: black; text-decoration: none; }
+    }
+
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      line-height: 1.55;
+      color: #1a1a1a;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      border-bottom: 2px solid #333;
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      margin-top: 2rem;
+      border-bottom: 1px solid #999;
+      padding-bottom: 0.25rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      margin-top: 1.4rem;
+    }
+
+    .subtitle {
+      color: #555;
+      font-style: italic;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    ol, ul {
+      margin-top: 0.4rem;
+    }
+
+    li {
+      margin-bottom: 0.6rem;
+    }
+
+    .answer {
+      margin-left: 1.2rem;
+      padding-left: 0.9rem;
+      border-left: 3px solid #bbb;
+      color: #222;
+    }
+
+    .elaboration {
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+    }
+
+    .elaboration h3 {
+      margin-top: 0;
+    }
+
+    .summary-box {
+      border: 2px solid #333;
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      margin: 1.5rem 0;
+      background: #fafafa;
+    }
+
+    .print-note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      border: 1px solid #999;
+      padding: 0.45rem 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eee;
+    }
+
+    code {
+      font-family: "Courier New", monospace;
+      background: #f0f0f0;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Relations — Trick Questions for Students</h1>
+
+<!-- ============================================================ -->
+<h2>Part I — Trick Questions by Section</h2>
+
+<!-- ------------------------------------------------------------ -->
+<h3>Definition of Relations</h3>
+
+<ol>
+  <li>
+    <strong>Is every relation from \(X\) to \(Y\) a function?</strong>
+    <div class="answer">No. A relation is any subset of \(X \times Y\); a function requires each \(x\) to have exactly one \(y\). E.g., on \(\mathbb{Z}\), \(<\) is a relation but not a function.</div>
+  </li>
+  <li>
+    <strong>Can a relation be empty? Can it be all of \(X \times Y\)?</strong>
+    <div class="answer">Yes to both. The empty set is a valid subset of \(X \times Y\) (no elements relate), and \(X \times Y\) itself is the "universal relation." Both are perfectly legal relations.</div>
+  </li>
+  <li>
+    <strong>If \(R\) is a relation on \(X\), is \(X\) necessarily the set of all first coordinates that actually appear?</strong>
+    <div class="answer">No! The domain is the <em>declared</em> set \(X\), not the set of first coordinates present in \(R\). See the full elaboration in Part II below.</div>
+  </li>
+</ol>
+
+<!-- ------------------------------------------------------------ -->
+<h3>Properties of Relations</h3>
+
+<ol start="4">
+  <li>
+    <strong>Is the empty relation on a nonempty set reflexive? Symmetric? Transitive?</strong>
+    <div class="answer">Not reflexive (unless \(X = \emptyset\)); vacuously symmetric and vacuously transitive. This is a great one because students often say "symmetric" is false since "nothing relates," but the implication is vacuously true.</div>
+  </li>
+  <li>
+    <strong>Can a relation be both symmetric and antisymmetric? Give an example.</strong>
+    <div class="answer">Yes: equality \(=\) on any set. Also any relation where \(xRy\) only when \(x = y\). Trick: students often think these are opposites.</div>
+  </li>
+  <li>
+    <strong>Is \(<\) on \(\mathbb{Z}\) symmetric? Is \(\le\) asymmetric?</strong>
+    <div class="answer">\(<\) is not symmetric; \(\le\) is not asymmetric (because \(x \le x\)). The antisymmetric/asymmetric distinction is worth quizzing directly.</div>
+  </li>
+  <li>
+    <strong>If \(R\) is symmetric and transitive, must it be reflexive?</strong>
+    <div class="answer"><em>Almost</em> — but not quite. If every element relates to <em>something</em>, then symmetry + transitivity gives reflexivity on that element. But an element related to nothing breaks it. Example: on \(X = \{1,2,3\}\), \(R = \{(1,2),(2,1),(1,1),(2,2)\}\) is symmetric and transitive but not reflexive (3 is isolated). Great "gotcha."</div>
+  </li>
+  <li>
+    <strong>Is "\(x\) and \(y\) are siblings" reflexive if we allow a person to be their own sibling by some definition?</strong>
+    <div class="answer">The notes say no; but push students: the answer depends on the definition of "sibling." Usually "distinct people sharing a parent," so not reflexive. The point: relation properties depend on precise definitions.</div>
+  </li>
+  <li>
+    <strong>Rock-paper-scissors: is it antisymmetric? Asymmetric?</strong>
+    <div class="answer">It's asymmetric (if \(x\) beats \(y\), \(y\) doesn't beat \(x\)) and hence antisymmetric (vacuously — the antecedent \(xRy \land yRx\) is never true). Students often miss the vacuous antisymmetry.</div>
+  </li>
+  <li>
+    <strong>Is "divides" on \(\mathbb{Z}\) antisymmetric?</strong>
+    <div class="answer">Careful: on \(\mathbb{Z}\), \(2 \mid -2\) and \(-2 \mid 2\) but \(2 \neq -2\), so <strong>not</strong> antisymmetric on \(\mathbb{Z}\). It <em>is</em> antisymmetric on \(\mathbb{N}\). Excellent trap if students assume it's like \(\le\).</div>
+  </li>
+  <li>
+    <strong>Is "\(x\) is no younger than \(y\)" the same as "\(x\) is at least as old as \(y\)"?</strong>
+    <div class="answer">Yes, and it's reflexive. But watch: "no younger than" is \(\ge\) on age, which is reflexive, antisymmetric, transitive — a partial order, not an equivalence. Good segue to distinguish equivalence vs. order.</div>
+  </li>
+</ol>
+
+<!-- ------------------------------------------------------------ -->
+<h3>Equivalence Relations</h3>
+
+<ol start="12">
+  <li>
+    <strong>Is "\(x \le y\)" an equivalence relation? Which property fails?</strong>
+    <div class="answer">Reflexive and transitive, but not symmetric. Good sanity check.</div>
+  </li>
+  <li>
+    <strong>Can an equivalence relation have exactly one equivalence class? Exactly \(|X|\) classes?</strong>
+    <div class="answer">Yes: the universal relation \(X \times X\) gives one class; equality gives \(|X|\) singleton classes. These are the two extremes.</div>
+  </li>
+  <li>
+    <strong>If \(x \sim y\) and \(y \sim z\), do we need transitivity to conclude \(x \sim z\)? What if the relation isn't transitive — give a concrete failure.</strong>
+    <div class="answer">Rock-paper-scissors: rock ~ scissors, scissors ~ paper, but not rock ~ paper. Nice callback.</div>
+  </li>
+</ol>
+
+<!-- ------------------------------------------------------------ -->
+<h3>Function-Induced Equivalence Relations</h3>
+
+<ol start="15">
+  <li>
+    <strong>Is <em>every</em> equivalence relation induced by some function?</strong>
+    <div class="answer">Yes! Given \(\sim\), define \(f(x) = [x]_\sim\) (the equivalence class). Then \(f(x) = f(y) \iff x \sim y\). So the theorem's converse holds. This is a beautiful "trick" — students think the theorem only goes one way. (Caveat: the codomain is the quotient set, which is fine.)</div>
+  </li>
+  <li>
+    <strong>For \(f(x) = x^2\) on \(\mathbb{Z}\): is \(x \sim y \iff x^2 = y^2\) the same as \(x = \pm y\)? What are the classes?</strong>
+    <div class="answer">Yes; classes are \(\{n, -n\}\) for \(n > 0\), and \(\{0\}\). Ask: "How many classes?" — countably infinite, one per nonnegative integer.</div>
+  </li>
+  <li>
+    <strong>For \(f(x) = \sin x\): is \([\pi/2] = [5\pi/2]\)? Is \([\pi/2] = [-\pi/2]\)?</strong>
+    <div class="answer">First yes (\(\sin\) equal), second no (\(\sin(\pi/2)=1 \neq -1 = \sin(-\pi/2)\)). Students often conflate symmetry of sine with equality of values.</div>
+  </li>
+  <li>
+    <strong>For \(f(n) = \lfloor n/2 \rfloor\) on \(\mathbb{N}\): what is \([1]\)? Is it \(\{0,1\}\) or \(\{1,2\}\)?</strong>
+    <div class="answer">\([1] = \{0,1\}\) since \(\lfloor 1/2 \rfloor = 0 = \lfloor 0/2 \rfloor\). The clean way to see it is \([2k] = \{2k, 2k+1\}\). Trick: ask about \([3]\) — students may guess \(\{3,4\}\), but it's \(\{6,7\}\).</div>
+  </li>
+  <li>
+    <strong>Can two different functions induce the same equivalence relation?</strong>
+    <div class="answer">Yes: \(f(x) = x^2\) and \(g(x) = |x|\) on \(\mathbb{Z}\) induce the same \(\sim\). The relation only sees the <em>fibers</em> of the function, not the codomain values.</div>
+  </li>
+</ol>
+
+<!-- ------------------------------------------------------------ -->
+<h3>Equivalence Classes</h3>
+
+<ol start="20">
+  <li>
+    <strong>Is \([x]\) ever empty?</strong>
+    <div class="answer">No, because \(x \in [x]\) by reflexivity. Quick check that students internalize reflexivity's role.</div>
+  </li>
+  <li>
+    <strong>Can \([x] = [y]\) even when \(x \neq y\)? Can \([x] \cap [y] \neq \emptyset\) with \([x] \neq [y]\)?</strong>
+    <div class="answer">First yes (e.g., \([1]=[-1]\) for squares); second <strong>no</strong> — classes are either identical or disjoint. This is the key lemma for partitions.</div>
+  </li>
+  <li>
+    <strong>For congruence mod 10, is \([-3] = [7]\)? What's a "good" set of representatives?</strong>
+    <div class="answer">Yes, \(-3 \equiv 7 \pmod{10}\). Representatives: \(\{0,1,\ldots,9\}\), but also \(\{-5,\ldots,4\}\), etc. Ask: "Is \(\{0, 10, 20, \ldots\}\) a set of representatives?" — No, it misses classes.</div>
+  </li>
+  <li>
+    <strong>How many equivalence classes does \(\equiv \pmod{0}\) have?</strong>
+    <div class="answer">Trick! Mod 0 is undefined/usually means equality \(x = y\), giving infinitely many singleton classes. Or if defined as \(x - y\) divisible by 0, only \(x = y\) works. Good discussion of definitions.</div>
+  </li>
+</ol>
+
+<!-- ------------------------------------------------------------ -->
+<h3>Partitions</h3>
+
+<ol start="24">
+  <li>
+    <strong>Is \(\{\emptyset, \{1,2\}, \{3\}\}\) a partition of \(\{1,2,3\}\)?</strong>
+    <div class="answer">No: parts must be <strong>nonempty</strong>, and \(\emptyset\) is a part here. Also it doesn't cover anything extra but violates nonemptiness.</div>
+  </li>
+  <li>
+    <strong>Is \(\{\{1,2\}, \{2,3\}\}\) a partition of \(\{1,2,3\}\)?</strong>
+    <div class="answer">No: parts overlap at 2, and 2 lies in two parts. Fails disjointness.</div>
+  </li>
+  <li>
+    <strong>Can a partition have infinitely many parts? Can a part be infinite?</strong>
+    <div class="answer">Yes to both: \(\mathbb{Z}\) partitioned into \(\{\{n\}: n \in \mathbb{Z}\}\) (infinitely many finite parts); or into evens/odds (finitely many infinite parts); or \(\mathbb{R}\) into cosets of \(\mathbb{Z}\) (infinitely many infinite parts).</div>
+  </li>
+  <li>
+    <strong>Given the partition \(\{\{a\},\{b,d\},\{c\}\}\) of \(\{a,b,c,d\}\): is \(a \sim c\)? Is \(b \sim d\)? Is \(d \sim b\)?</strong>
+    <div class="answer">No, yes, yes. Checks that "same part" is symmetric and that different parts mean not related.</div>
+  </li>
+  <li>
+    <strong>The notes say equivalence relations and partitions are "the same data." Is the correspondence a bijection? What maps to what?</strong>
+    <div class="answer">Yes: relation \(\mapsto\) its set of classes; partition \(\mapsto\) "same part" relation. These are mutually inverse. A conceptual "trick" worth stating explicitly.</div>
+  </li>
+</ol>
+
+<!-- ------------------------------------------------------------ -->
+<h3>Cross-Cutting "Gotcha" Questions</h3>
+
+<ol start="29">
+  <li>
+    <strong>Give a relation that is reflexive and symmetric but not transitive.</strong>
+    <div class="answer">E.g., on \(\{1,2,3\}\): \(\{(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2)\}\) — 1~2 and 2~3 but not 1~3. Classic.</div>
+  </li>
+  <li>
+    <strong>Give a relation that is symmetric and transitive but not reflexive.</strong>
+    <div class="answer">The isolated-element example from #7. Students almost always forget this is possible.</div>
+  </li>
+  <li>
+    <strong>Give a relation that is reflexive and transitive but not symmetric.</strong>
+    <div class="answer">\(\le\) on \(\mathbb{Z}\). Easy, but good to have all three "two-out-of-three" examples side by side.</div>
+  </li>
+  <li>
+    <strong>True or false: if \(R\) is antisymmetric, then \(R\) is not symmetric.</strong>
+    <div class="answer">False: \(=\) is both. Antisymmetric and symmetric can coexist (only when \(xRy \Rightarrow x=y\)).</div>
+  </li>
+  <li>
+    <strong>True or false: a relation can be neither symmetric nor antisymmetric.</strong>
+    <div class="answer">True: e.g., on \(\{1,2,3\}\), \(R = \{(1,2),(2,1),(2,3)\}\): symmetric fails (2,3 but not 3,2); antisymmetric fails (1,2 and 2,1 but \(1 \neq 2\)).</div>
+  </li>
+</ol>
+
+<div class="summary-box">
+  <strong>Highest-value traps:</strong> #4, #7, #10, #15, #21, and #30 — they target the misconceptions students most reliably carry into exams.
+</div>
+
+<!-- ============================================================ -->
+<div class="page-break"></div>
+<h2>Part II — Elaboration on Question 3</h2>
+
+<blockquote>
+  <strong>"If \(R\) is a relation on \(X\), is \(X\) necessarily the set of all first coordinates that actually appear?"</strong>
+</blockquote>
+
+<p><strong>Short answer: No.</strong> This is a subtle but important point about what "a relation on \(X\)" actually means.</p>
+
+<!-- ------------------------------------------------------------ -->
+<h3>The precise definition</h3>
+
+<p>Recall the definition from the lecture:</p>
+<blockquote>
+  A <strong>binary relation</strong> \(R\) from \(X\) to \(Y\) is a <strong>subset of \(X \times Y\)</strong>.
+</blockquote>
+
+<p>So a relation on \(X\) is a subset of \(X \times X\). The set \(X\) is part of the <em>declaration</em> — it's the ambient set we're working in. It is <strong>not</strong> defined as "the set of things that actually appear as first coordinates."</p>
+
+<p>There are two different sets students often conflate:</p>
+<ul>
+  <li><strong>The declared set \(X\)</strong> — the universe the relation lives on. Fixed in advance.</li>
+  <li><strong>The actual domain of \(R\)</strong> — \(\operatorname{dom}(R) = \{x \in X : \exists y,\; xRy\}\), i.e., the elements that actually relate to something.</li>
+</ul>
+
+<p>These need not be equal. In general \(\operatorname{dom}(R) \subseteq X\), and the inclusion can be strict.</p>
+
+<!-- ------------------------------------------------------------ -->
+<h3>A concrete example</h3>
+
+<p>Let \(X = \{1, 2, 3\}\) and let</p>
+
+\[
+R = \{(1,1)\}.
+\]
+
+<p>Is \(R\) a relation on \(X\)? <strong>Yes</strong> — it's a subset of \(X \times X = \{(1,1),(1,2),\ldots,(3,3)\}\), so it qualifies.</p>
+
+<p>But:</p>
+<ul>
+  <li>The first coordinates that appear are just \(\{1\}\).</li>
+  <li>The element \(2\) never appears (as a first <em>or</em> second coordinate).</li>
+  <li>The element \(3\) never appears.</li>
+</ul>
+
+<p>Yet \(R\) is still perfectly valid as "a relation on \(X = \{1,2,3\}\)." The set \(X\) is the stage; \(R\) is just one pattern of arrows drawn on that stage — possibly leaving some actors idle.</p>
+
+<!-- ------------------------------------------------------------ -->
+<h3>Why students get this wrong</h3>
+
+<p>The confusion comes from three places:</p>
+
+<ol>
+  <li>
+    <strong>The word "domain."</strong> In the lecture, \(X\) is called the <em>domain</em> of \(R\). But in other contexts (and in the "actual domain" sense above), "domain" means "the set of first coordinates that occur." These are different notions:
+    <ul>
+      <li>The <strong>declared domain</strong> is \(X\) (fixed by the setup).</li>
+      <li>The <strong>active domain</strong> / <strong>field</strong> is the set of elements actually involved in some pair.</li>
+    </ul>
+    This is a genuine terminology collision, and it's worth flagging explicitly.
+  </li>
+  <li>
+    <strong>Functions set a bad precedent.</strong> For a function \(f : X \to Y\), every \(x \in X\) <em>must</em> be assigned a value — so the domain is exactly the set of inputs. Students carry this intuition over to relations, but relations are laxer: an element of \(X\) may relate to nothing at all.
+  </li>
+  <li>
+    <strong>Textbook pictures.</strong> Arrow diagrams usually draw an arrow from every element, so students assume every element participates. In fact, isolated vertices (elements related to nothing) are allowed and common.
+  </li>
+</ol>
+
+<!-- ------------------------------------------------------------ -->
+<h3>Why it matters (where the trap bites)</h3>
+
+<p>This distinction is not pedantry — it changes answers to real questions:</p>
+
+<h4>Reflexivity</h4>
+
+<p>Consider \(R = \{(1,1)\}\) on \(X = \{1,2,3\}\).</p>
+<ul>
+  <li><strong>If "on \(X\)" means the declared set \(\{1,2,3\}\):</strong> \(R\) is <strong>not reflexive</strong>, because \(2 \not\sim 2\) and \(3 \not\sim 3\).</li>
+  <li><strong>If you mistakenly took the "domain" to be \(\{1\}\):</strong> you'd wrongly conclude \(R\) <em>is</em> reflexive (since \(1 \sim 1\)).</li>
+</ul>
+
+<p>So the answer to "is \(R\) reflexive?" depends entirely on which set you're quantifying over. Reflexivity is \(\forall x \in X,\; xRx\) — and that \(\forall x \in X\) ranges over the <strong>whole declared set</strong>, including elements that never appear in any pair.</p>
+
+<h4>The "symmetric + transitive \(\Rightarrow\) reflexive" near-miss (Question 7)</h4>
+
+<p>This is exactly the same phenomenon. On \(X = \{1,2,3\}\),</p>
+
+\[
+R = \{(1,2),(2,1),(1,1),(2,2)\}
+\]
+
+<p>is symmetric and transitive, but <strong>not reflexive</strong> — because \(3\) is isolated. If you silently shrank the universe to \(\{1,2\}\), it <em>would</em> be reflexive. The element \(3\) "does nothing" in \(R\), but it still counts when we check reflexivity, because reflexivity is a statement about all of \(X\).</p>
+
+<h4>Empty relation</h4>
+
+<p>The empty relation \(\varnothing \subseteq X \times X\) is a relation on any \(X\). Its "active domain" is empty — but it's still a relation on \(X\), and it's not reflexive unless \(X = \varnothing\). Again: the declared set governs.</p>
+
+<!-- ------------------------------------------------------------ -->
+<h3>How to phrase the correction to students</h3>
+
+<p>A clean way to say it:</p>
+
+<blockquote>
+  "When we say \(R\) is a relation <strong>on \(X\)</strong>, the \(X\) is not derived from \(R\) — it's <em>given</em>. \(R\) is a subset of \(X \times X\), full stop. Some elements of \(X\) may relate to nothing; that's allowed. When you check reflexivity, symmetry, transitivity, you always quantify over <strong>all of \(X\)</strong>, not just the elements that happen to appear in \(R\)."
+</blockquote>
+
+<p>A useful diagnostic question to hand back to them:</p>
+
+<blockquote>
+  "I give you \(X = \{1,2,3,4\}\) and \(R = \{(1,1),(2,2)\}\). Is \(R\) reflexive? Is it symmetric? Is it transitive?"
+</blockquote>
+
+<p>— Not reflexive (3 and 4 fail), symmetric, transitive. If a student says "reflexive," they've collapsed the declared set into the active domain.</p>
+
+<!-- ------------------------------------------------------------ -->
+<div class="summary-box">
+  <strong>One-line summary.</strong> A relation on \(X\) is a subset of \(X \times X\); \(X\) is fixed in advance and may contain elements that the relation never touches. Reflexivity (and every other property) quantifies over all of \(X\), so "which set is \(X\)?" is always part of the question — never infer \(X\) from the pairs you see.
+</div>
+
+<!-- ============================================================ -->
+<div class="page-break"></div>
+<h2>Part III — Quick Reference: The "Two-out-of-Three" Relations</h2>
+
+<p>These are the standard examples students should be able to produce on demand. Having them side by side makes the independence of the properties vivid.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Relation</th>
+      <th>Reflexive?</th>
+      <th>Symmetric?</th>
+      <th>Transitive?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>\(=\) on any set</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>\(\le\) on \(\mathbb{Z}\)</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>\(<\) on \(\mathbb{Z}\)</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Reflexive + symmetric, not transitive (e.g., \(\{(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2)\}\))</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Symmetric + transitive, not reflexive (e.g., \(\{(1,2),(2,1),(1,1),(2,2)\}\) on \(\{1,2,3\}\))</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Reflexive + transitive, not symmetric (\(\le\))</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Rock-paper-scissors</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Empty relation on nonempty \(X\)</td>
+      <td>No</td>
+      <td>Yes (vacuous)</td>
+      <td>Yes (vacuous)</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<div class="page-break"></div>
+<h2>Part IV — Answer Key Summary</h2>
+
+<p>A compact list of the short answers, for quick grading or self-checking.</p>
+
+<ol>
+  <li>No — relations need not be functions.</li>
+  <li>Yes to both (empty relation; universal relation).</li>
+  <li>No — \(X\) is declared, not derived from \(R\). (Full elaboration in Part II.)</li>
+  <li>Not reflexive; vacuously symmetric; vacuously transitive.</li>
+  <li>Yes — equality is both.</li>
+  <li>\(<\) not symmetric; \(\le\) not asymmetric.</li>
+  <li>No — isolated elements break reflexivity.</li>
+  <li>Depends on the definition of "sibling"; usually not reflexive.</li>
+  <li>Asymmetric, hence (vacuously) antisymmetric.</li>
+  <li>Not antisymmetric on \(\mathbb{Z}\); antisymmetric on \(\mathbb{N}\).</li>
+  <li>Same as "at least as old as"; reflexive, antisymmetric, transitive (a partial order).</li>
+  <li>No — fails symmetry.</li>
+  <li>Yes to both extremes (universal relation; equality).</li>
+  <li>Yes, transitivity is needed; rock-paper-scissors is the counterexample.</li>
+  <li>Yes — every equivalence relation is induced by \(f(x) = [x]\).</li>
+  <li>Yes, \(x = \pm y\); classes \(\{n,-n\}\) for \(n>0\), and \(\{0\}\).</li>
+  <li>\([\pi/2]=[5\pi/2]\) yes; \([\pi/2]=[-\pi/2]\) no.</li>
+  <li>\([1]=\{0,1\}\); \([3]=\{6,7\}\).</li>
+  <li>Yes — e.g., \(x^2\) and \(|x|\) induce the same relation.</li>
+  <li>No — \(x \in [x]\) by reflexivity.</li>
+  <li>\([x]=[y]\) with \(x\neq y\): yes. Overlapping distinct classes: no.</li>
+  <li>\([-3]=[7]\): yes. \(\{0,10,20,\ldots\}\) is not a set of representatives.</li>
+  <li>Mod 0 is undefined / effectively equality; infinitely many singleton classes.</li>
+  <li>No — contains \(\emptyset\), violating nonemptiness.</li>
+  <li>No — parts overlap at 2.</li>
+  <li>Yes to both.</li>
+  <li>\(a\sim c\): no; \(b\sim d\): yes; \(d\sim b\): yes.</li>
+  <li>Yes — a bijection between equivalence relations and partitions.</li>
+  <li>Example: \(\{(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2)\}\).</li>
+  <li>Example: \(\{(1,2),(2,1),(1,1),(2,2)\}\) on \(\{1,2,3\}\).</li>
+  <li>Example: \(\le\) on \(\mathbb{Z}\).</li>
+  <li>False — equality is both symmetric and antisymmetric.</li>
+  <li>True — e.g., \(\{(1,2),(2,1),(2,3)\}\) on \(\{1,2,3\}\).</li>
+</ol>
+
+</body>
+</html>
