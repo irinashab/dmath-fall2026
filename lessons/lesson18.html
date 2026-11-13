@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lesson 18: Graph Structure, Symmetry, Connectivity, Trees</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    .table-scroll { overflow-x: auto; }
+    figure { margin: 1.5em auto; max-width: 560px; }
+    figcaption { text-align: center; font-size: .92em; line-height: 1.5; }
+    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .pair figure { min-width: 0; width: 100%; }
+    svg { display: block; width: 100%; height: auto; }
+    svg line { stroke: var(--text, #202b38); stroke-width: 2.3; }
+    svg circle { fill: var(--bg, #fff); stroke: var(--text, #202b38); stroke-width: 2; }
+    svg text { fill: var(--text, #202b38); font: 16px Arial, sans-serif; text-anchor: middle; }
+    svg .removed { stroke-dasharray: 7 6; opacity: .45; }
+    .symmetries { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .symmetries figure { width: 100%; min-width: 0; }
+    svg .axis { stroke-dasharray: 6 5; opacity: .55; stroke-width: 1.5; }
+    svg .motion { fill: none; stroke: var(--text, #202b38); stroke-width: 2; }
+    @media (max-width: 650px) { .symmetries { grid-template-columns: 1fr; } }
+    details { margin: 1em 0; }
+    summary { cursor: pointer; }
+    article { scroll-margin-top: 1em; }
+    @media (max-width: 650px) { .pair { grid-template-columns: 1fr; } }
+    @media print { details { break-inside: auto; } figure { break-inside: avoid; } }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 18: Graph Structure, Symmetry, Connectivity, Trees</h1>
+  </header>
+  <div id="navigation-placeholder"></div>
+
+  <main>
+    
+<article id="warm-up">
+<h2>1. Warm-up: how many isomorphisms?</h2>
+<p><strong>MAT 3120 · Discrete Mathematics · Fall 2026</strong></p>
+<p>Last lecture, we learned to recognize when two graphs have the same adjacency structure. Today we begin with a more precise question: once an isomorphism exists, how many choices can there be?</p>
+<p><strong>Conventions.</strong> Throughout this lecture, graphs are finite, simple, and undirected. Trees are nonempty. As in Lecture 16, a path is a walk with no repeated vertices; its length is its number of edges. A cycle is a nonempty closed trail with no repeated vertices except the first and last. Under our simple-graph convention, every cycle has at least three edges. Edge crossings without a marked vertex do not create vertices.</p>
+<div class="pair"><figure><svg viewBox="0 0 440 310" role="img" aria-label="Graph G: all pairs joined except ac, bd, ef."><title>Graph G: all pairs joined except ac, bd, ef.</title><line x1="220" y1="30" x2="365" y2="90" /><line x1="220" y1="30" x2="365" y2="230" /><line x1="220" y1="30" x2="75" y2="230" /><line x1="220" y1="30" x2="75" y2="90" /><line x1="365" y1="90" x2="365" y2="230" /><line x1="365" y1="90" x2="220" y2="285" /><line x1="365" y1="90" x2="75" y2="90" /><line x1="365" y1="230" x2="220" y2="285" /><line x1="365" y1="230" x2="75" y2="230" /><line x1="220" y1="285" x2="75" y2="230" /><line x1="220" y1="285" x2="75" y2="90" /><line x1="75" y1="230" x2="75" y2="90" /><circle cx="220" cy="30" r="17"/><text x="220" y="35">a</text><circle cx="365" cy="90" r="17"/><text x="365" y="95">b</text><circle cx="365" cy="230" r="17"/><text x="365" y="235">e</text><circle cx="220" cy="285" r="17"/><text x="220" y="290">c</text><circle cx="75" cy="230" r="17"/><text x="75" y="235">d</text><circle cx="75" cy="90" r="17"/><text x="75" y="95">f</text></svg><figcaption>Graph G: vertices a, b, c, d, e, f.</figcaption></figure><figure><svg viewBox="0 0 440 310" role="img" aria-label="Graph H: all pairs joined except 16, 24, 35."><title>Graph H: all pairs joined except 16, 24, 35.</title><line x1="220" y1="35" x2="65" y2="95" /><line x1="220" y1="35" x2="375" y2="95" /><line x1="220" y1="35" x2="350" y2="255" /><line x1="220" y1="35" x2="90" y2="255" /><line x1="65" y1="95" x2="375" y2="95" /><line x1="65" y1="95" x2="90" y2="255" /><line x1="65" y1="95" x2="220" y2="170" /><line x1="375" y1="95" x2="350" y2="255" /><line x1="375" y1="95" x2="220" y2="170" /><line x1="350" y1="255" x2="90" y2="255" /><line x1="350" y1="255" x2="220" y2="170" /><line x1="90" y1="255" x2="220" y2="170" /><circle cx="220" cy="35" r="17"/><text x="220" y="40">1</text><circle cx="65" cy="95" r="17"/><text x="65" y="100">2</text><circle cx="375" cy="95" r="17"/><text x="375" y="100">3</text><circle cx="350" cy="255" r="17"/><text x="350" y="260">4</text><circle cx="90" cy="255" r="17"/><text x="90" y="260">5</text><circle cx="220" cy="170" r="17"/><text x="220" y="175">6</text></svg><figcaption>Graph H: vertices 1, 2, 3, 4, 5, 6.</figcaption></figure></div>
+<p><strong>Work with a partner.</strong> The graphs above are isomorphic.</p>
+<ol><li>Give an explicit vertex bijection from G to H, and explain why it preserves adjacency in both directions.</li><li>Is your isomorphism unique? Find a second one.</li><li>How many isomorphisms are there? Try organizing your choices rather than listing maps individually.</li></ol>
+<details><summary>Reveal a map and the counting argument</summary>
+<p>In G the three pairs of distinct nonadjacent vertices are \(\{a,c\},\{b,d\},\{e,f\}\). In H they are \(\{1,6\},\{2,4\},\{3,5\}\). Every two vertices belonging to different pairs are adjacent. Thus both graphs are drawings of the complete tripartite graph \(K_{2,2,2}\).</p>
+<div class="table-scroll"><table class="property-table"><caption>One explicit isomorphism f</caption><thead><tr><th scope="col">v</th><th scope="col">a</th><th scope="col">b</th><th scope="col">c</th><th scope="col">d</th><th scope="col">e</th><th scope="col">f</th></tr></thead><tbody><tr><th scope="row">f(v)</th><td>1</td><td>2</td><td>6</td><td>4</td><td>3</td><td>5</td></tr></tbody></table></div>
+<p>This is a bijection, and two distinct vertices are nonadjacent exactly when they belong to the same displayed pair. The map sends these pairs precisely to the three nonadjacent pairs of H, so it preserves both nonadjacency and adjacency. Exchanging the images of a and c gives another isomorphism.</p>
+<p>Any isomorphism must send each nonadjacent pair to a nonadjacent pair. Choose a bijection between the three pairs in \(3!\) ways, and then choose a bijection within each pair in \(2\) ways independently. Conversely, every such choice gives an isomorphism. No two choices give the same vertex map. Therefore</p>
+\[|\operatorname{Iso}(G,H)|=3!\,2^3=48.\]
+<p>Each vertex has four neighbors, so each drawing has \(6\cdot4/2=12\) edges. The pair structure, rather than the positions of the vertices, explains all 48 maps.</p>
+</details></article>
+<article id="automorphisms"><h2>2. Automorphisms: symmetry of adjacency</h2>
+<p>What happens when the source and target are the same graph? An <strong>automorphism</strong> of G is an isomorphism \(\alpha:V(G)\to V(G)\). Thus \(\alpha\) is a bijection satisfying</p>
+\[\{u,v\}\in E(G)\quad\Longleftrightarrow\quad\{\alpha(u),\alpha(v)\}\in E(G).\]
+<p>The set of all automorphisms is denoted \(\operatorname{Aut}(G)\). The identity map fixes every vertex and is always an automorphism. A <strong>nontrivial</strong> automorphism moves at least one vertex. Here labels name the vertices so we can describe a permutation; they are not extra constraints requiring vertices to stay fixed.</p>
+<h3>Examples: stars and complete graphs</h3>
+<p>In the star \(K_{1,3}\), the unique vertex of degree 3 must remain fixed. Its three leaves may be permuted arbitrarily: each is adjacent only to the center. Every permutation of the leaves is allowed, so there are \(3!=6\) automorphisms.</p>
+<p>Draw the star with equal-length arms separated by 120°. Its six automorphisms can then all be realized geometrically: the identity, two nonidentity rotations, and three reflections. In the panels below, the identity panel gives the starting positions; the other panels show where each original vertex label moves. The center \(o\) is fixed in every panel. Dashed lines mark reflection axes.</p><div class="symmetries"><figure><svg viewBox="0 0 300 260" role="img" aria-label="Identity of the star; center o stays fixed."><title>Identity of K1,3</title><line x1="150" y1="150" x2="150" y2="40"/><line x1="150" y1="150" x2="245.263" y2="205"/><line x1="150" y1="150" x2="54.737" y2="205"/><circle cx="150" cy="150" r="16"/><text x="150" y="155">o</text><circle cx="150" cy="40" r="16"/><text x="150" y="45">a</text><circle cx="245.263" cy="205" r="16"/><text x="245.263" y="210">b</text><circle cx="54.737" cy="205" r="16"/><text x="54.737" y="210">c</text></svg><figcaption><strong>Identity</strong><br>\(a\mapsto a,\ b\mapsto b,\ c\mapsto c\)</figcaption></figure><figure><svg viewBox="0 0 300 260" role="img" aria-label="Clockwise rotation by 120° of the star; center o stays fixed."><title>Clockwise rotation by 120° of K1,3</title><line x1="150" y1="150" x2="150" y2="40"/><line x1="150" y1="150" x2="245.263" y2="205"/><line x1="150" y1="150" x2="54.737" y2="205"/><defs><marker id="arrow1" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="currentColor"/></marker></defs><path class="motion" d="M 184,65 A 90,90 0 0,1 237,135" marker-end="url(#arrow1)"/><circle cx="150" cy="150" r="16"/><text x="150" y="155">o</text><circle cx="150" cy="40" r="16"/><text x="150" y="45">c</text><circle cx="245.263" cy="205" r="16"/><text x="245.263" y="210">a</text><circle cx="54.737" cy="205" r="16"/><text x="54.737" y="210">b</text></svg><figcaption><strong>Clockwise rotation by 120°</strong><br>\(a\mapsto b,\ b\mapsto c,\ c\mapsto a\)</figcaption></figure><figure><svg viewBox="0 0 300 260" role="img" aria-label="Clockwise rotation by 240° of the star; center o stays fixed."><title>Clockwise rotation by 240° of K1,3</title><line x1="150" y1="150" x2="150" y2="40"/><line x1="150" y1="150" x2="245.263" y2="205"/><line x1="150" y1="150" x2="54.737" y2="205"/><defs><marker id="arrow2" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="currentColor"/></marker></defs><path class="motion" d="M 184,65 A 90,90 0 0,1 237,135" marker-end="url(#arrow2)"/><circle cx="150" cy="150" r="16"/><text x="150" y="155">o</text><circle cx="150" cy="40" r="16"/><text x="150" y="45">b</text><circle cx="245.263" cy="205" r="16"/><text x="245.263" y="210">c</text><circle cx="54.737" cy="205" r="16"/><text x="54.737" y="210">a</text></svg><figcaption><strong>Clockwise rotation by 240°</strong><br>\(a\mapsto c,\ b\mapsto a,\ c\mapsto b\)</figcaption></figure><figure><svg viewBox="0 0 300 260" role="img" aria-label="Reflection fixing a of the star; center o stays fixed."><title>Reflection fixing a of K1,3</title><line class="axis" x1="150.0" y1="243.5" x2="150.0" y2="12.5"/><line x1="150" y1="150" x2="150" y2="40"/><line x1="150" y1="150" x2="245.263" y2="205"/><line x1="150" y1="150" x2="54.737" y2="205"/><circle cx="150" cy="150" r="16"/><text x="150" y="155">o</text><circle cx="150" cy="40" r="16"/><text x="150" y="45">a</text><circle cx="245.263" cy="205" r="16"/><text x="245.263" y="210">c</text><circle cx="54.737" cy="205" r="16"/><text x="54.737" y="210">b</text></svg><figcaption><strong>Reflection fixing a</strong><br>\(a\mapsto a,\ b\leftrightarrow c\)</figcaption></figure><figure><svg viewBox="0 0 300 260" role="img" aria-label="Reflection fixing b of the star; center o stays fixed."><title>Reflection fixing b of K1,3</title><line class="axis" x1="69.02645" y1="103.25" x2="269.07875" y2="218.75"/><line x1="150" y1="150" x2="150" y2="40"/><line x1="150" y1="150" x2="245.263" y2="205"/><line x1="150" y1="150" x2="54.737" y2="205"/><circle cx="150" cy="150" r="16"/><text x="150" y="155">o</text><circle cx="150" cy="40" r="16"/><text x="150" y="45">c</text><circle cx="245.263" cy="205" r="16"/><text x="245.263" y="210">b</text><circle cx="54.737" cy="205" r="16"/><text x="54.737" y="210">a</text></svg><figcaption><strong>Reflection fixing b</strong><br>\(b\mapsto b,\ a\leftrightarrow c\)</figcaption></figure><figure><svg viewBox="0 0 300 260" role="img" aria-label="Reflection fixing c of the star; center o stays fixed."><title>Reflection fixing c of K1,3</title><line class="axis" x1="230.97355" y1="103.25" x2="30.921249999999986" y2="218.75"/><line x1="150" y1="150" x2="150" y2="40"/><line x1="150" y1="150" x2="245.263" y2="205"/><line x1="150" y1="150" x2="54.737" y2="205"/><circle cx="150" cy="150" r="16"/><text x="150" y="155">o</text><circle cx="150" cy="40" r="16"/><text x="150" y="45">b</text><circle cx="245.263" cy="205" r="16"/><text x="245.263" y="210">a</text><circle cx="54.737" cy="205" r="16"/><text x="54.737" y="210">c</text></svg><figcaption><strong>Reflection fixing c</strong><br>\(c\mapsto c,\ a\leftrightarrow b\)</figcaption></figure></div>
+<p>In \(K_n\), every pair of distinct vertices is adjacent. Every vertex permutation therefore preserves adjacency, and \(|\operatorname{Aut}(K_n)|=n!\), for \(n\ge1\). In our warm-up graph, the same pair argument gives \(|\operatorname{Aut}(K_{2,2,2})|=48\).</p>
+<h3>Geometric symmetry versus graph symmetry</h3>
+<p>A rotation or reflection that carries a drawing, including its edges, onto itself induces an automorphism. But an automorphism need not be realized by a rigid motion of a particular drawing. Draw the three leaves of \(K_{1,3}\) at three different distances from its center: all six graph automorphisms remain, even though the drawing can have no nonidentity Euclidean symmetry. Edge lengths, angles, and crossing positions are not part of an ordinary graph's adjacency structure.</p>
+<h3>Rigid graphs</h3>
+<p>A graph is <strong>rigid</strong> (or asymmetric) if its only automorphism is the identity. A drawing that looks irregular does not by itself establish rigidity; we must show that every adjacency-preserving permutation fixes every vertex.</p>
+<figure><svg viewBox="0 0 440 310" role="img" aria-label="A rigid tree with three arms of lengths one, two, and three at r."><title>A rigid tree with three arms of lengths one, two, and three at r.</title><line x1="215" y1="140" x2="215" y2="45" /><line x1="215" y1="140" x2="130" y2="190" /><line x1="130" y1="190" x2="50" y2="240" /><line x1="215" y1="140" x2="285" y2="175" /><line x1="285" y1="175" x2="340" y2="220" /><line x1="340" y1="220" x2="395" y2="265" /><circle cx="215" cy="140" r="17"/><text x="215" y="145">r</text><circle cx="215" cy="45" r="17"/><text x="215" y="50">a</text><circle cx="130" cy="190" r="17"/><text x="130" y="195">b</text><circle cx="50" cy="240" r="17"/><text x="50" y="245">c</text><circle cx="285" cy="175" r="17"/><text x="285" y="180">d</text><circle cx="340" cy="220" r="17"/><text x="340" y="225">e</text><circle cx="395" cy="265" r="17"/><text x="395" y="270">f</text></svg><figcaption>Three arms of different lengths force every vertex to stay fixed.</figcaption></figure>
+<p>In this example, r is the unique degree-3 vertex, so it is fixed. Removing r leaves three connected pieces with 1, 2, and 3 vertices. Any automorphism fixing r must preserve each of these pieces, since their sizes differ. Within each arm, the vertices occur at distinct distances from r, and these distances are preserved by automorphisms. Thus every vertex is fixed, proving that the graph is rigid. We will formalize connected pieces and distance below.</p>
+<h3>Why automorphisms count isomorphisms</h3>
+<p><strong>Proposition.</strong> If \(G\cong H\), then \(|\operatorname{Iso}(G,H)|=|\operatorname{Aut}(G)|\).</p>
+<p><strong>Proof.</strong> Fix one isomorphism \(f:G\to H\). Define</p>
+\[\Phi:\operatorname{Aut}(G)\longrightarrow\operatorname{Iso}(G,H),\qquad\Phi(\alpha)=f\circ\alpha.\]
+<p>A composition of isomorphisms is an isomorphism, so this map is well defined. Its inverse sends \(g:G\to H\) to \(f^{-1}\circ g\), an automorphism of G. Indeed,</p>
+\[f^{-1}\circ(f\circ\alpha)=\alpha,\qquad f\circ(f^{-1}\circ g)=g.\]
+<p>These constructions are inverse bijections, proving the claim. Applying the same argument with G and H exchanged also gives \(|\operatorname{Aut}(G)|=|\operatorname{Aut}(H)|\). ∎</p>
+<p><strong>Check.</strong> If G is rigid and \(G\cong H\), how many isomorphisms G → H are there? <em>Exactly one.</em> If the graphs are not isomorphic, there are zero; the proposition assumes an initial isomorphism exists.</p>
+</article>
+<article id="connectivity"><h2>3. Connectivity and components</h2>
+<p>Recall the terminology from Lecture 16:</p>
+<ul>
+<li>A <strong>walk</strong> is an alternating sequence \(v_0,e_1,v_1,\ldots,e_k,v_k\), where each edge \(e_i\) joins \(v_{i-1}\) and \(v_i\). Vertices and edges may repeat. Specifying edges is essential when parallel edges exist; in this lecture's simple graphs, consecutive vertices determine the edge uniquely.</li>
+<li>A <strong>trail</strong> is a walk with no repeated edges.</li>
+<li>A <strong>path</strong> is a walk with no repeated vertices.</li>
+<li>A walk is <strong>closed</strong> if its starting and ending vertices coincide. A <strong>cycle</strong> is a nonempty closed trail with no repeated vertices except the first and last.</li>
+</ul>
+<p>For example, in the warm-up graph G, a–b–e–a–b is a walk but not a trail, because it repeats edge ab. The sequence a–b–e–a is a cycle and a trail, but not a path, because it repeats a. The sequence a–b–e is a path.</p>
+<p>Whenever a walk repeats a vertex, delete the portion between two occurrences. Repeating this deletion produces a path with the same endpoints (possibly the length-zero path). Thus a walk between two vertices exists if and only if a path does.</p>
+<p>A nonempty graph is <strong>connected</strong> if every pair of distinct vertices is joined by a path. A single vertex is connected: the condition has no distinct pair to check. We also allow the length-zero path from a vertex to itself.</p>
+<p>Define \(u\sim v\) when a path joins u to v. This relation is reflexive (the length-zero path), symmetric (reverse a path), and transitive (concatenate paths to obtain a walk, then remove repetitions). It is therefore an equivalence relation.</p>
+<p>A <strong>connected component</strong> is the subgraph induced by one equivalence class. Equivalently, it is a maximal connected subgraph: it cannot be enlarged within G while remaining connected. Components partition the vertex set, and no edge joins two different components.</p>
+<figure><svg viewBox="0 0 440 310" role="img" aria-label="Three components: triangle abc, edge de, isolated vertex f."><title>Three components: triangle abc, edge de, isolated vertex f.</title><line x1="65" y1="65" x2="30" y2="180" /><line x1="30" y1="180" x2="135" y2="180" /><line x1="135" y1="180" x2="65" y2="65" /><line x1="235" y1="80" x2="290" y2="200" /><circle cx="65" cy="65" r="17"/><text x="65" y="70">a</text><circle cx="30" cy="180" r="17"/><text x="30" y="185">b</text><circle cx="135" cy="180" r="17"/><text x="135" y="185">c</text><circle cx="235" cy="80" r="17"/><text x="235" y="85">d</text><circle cx="290" cy="200" r="17"/><text x="290" y="205">e</text><circle cx="390" cy="140" r="17"/><text x="390" y="145">f</text></svg><figcaption>Three components: a triangle, a single edge, and an isolated vertex.</figcaption></figure>
+<p>Here the component vertex sets are \(\{a,b,c\}\), \(\{d,e\}\), and \(\{f\}\). The isolated vertex f is a whole component, even though it has no incident edges.</p>
+<p>For vertices in the same component, their <strong>distance</strong> \(d(u,v)\) is the length of a shortest path joining them. In different components there is no such finite distance. Isomorphisms carry paths to paths, and their inverses do the same; consequently they preserve distances and map whole components to whole components.</p>
+<p>Why can adding an edge between two components reduce the number of components by exactly one? Why can adding an edge within a component leave the number unchanged?</p>
+</article>
+<article id="trees"><h2>4. Trees, forests, and unique paths</h2>
+<p>A <strong>tree</strong> is a nonempty connected graph with no cycles. A <strong>forest</strong> is a graph with no cycles; each of its connected components is a tree. A single vertex is a tree. A forest may have isolated vertices and need not be connected. We also allow the empty graph as a forest (with no components).</p>
+<p><strong>Unique-path theorem.</strong> A nonempty graph is a tree if and only if exactly one path joins every pair of distinct vertices.</p>
+<p><strong>Proof, forward direction.</strong> Let T be a tree. Connectivity gives a path between any two distinct vertices u and v. Suppose P and Q were two different u–v paths. Follow them from u through their common initial segment to the vertex x where they first diverge. Follow P beyond x until its first vertex y that also lies on the part of Q after x; such a vertex exists because v is on both paths. By the choice of y, the two x–y segments of P and Q are internally disjoint: their only common vertices are x and y. They also have different first edges. Together they form a cycle, contradicting acyclicity. The path is therefore unique.</p>
+<p><strong>Reverse direction.</strong> Suppose exactly one path joins every pair of distinct vertices. The graph is connected. If it contained a cycle, choose an edge uv of that cycle. The edge itself and the rest of the cycle would be two different u–v paths, a contradiction. Thus the graph is acyclic and hence a tree. ∎</p>
+<p><strong>Two useful consequences.</strong></p>
+<ul><li>Removing any edge uv of a tree disconnects it: otherwise the remaining graph would contain another u–v path, contradicting uniqueness. Such an edge is called a <strong>bridge</strong>.</li><li>Adding one new edge uv between nonadjacent vertices of a tree creates exactly one cycle: the new edge together with the unique old u–v path. Every new cycle must use the new edge, and deleting that edge from a cycle must leave that unique path.</li></ul>
+<h3>The leaf lemma</h3>
+<p>A tree with no distinguished vertex is called an <strong>unrooted tree</strong>. A <strong>rooted tree</strong> is a tree together with a chosen vertex called its <strong>root</strong>. So far our tree statements concern unrooted trees: no root is needed. We will develop rooted-tree terminology in Section 5.</p>
+<p>A <strong>leaf</strong> of an unrooted tree is a vertex of degree 1. The single vertex of a one-vertex tree has degree 0, so it is not a leaf under this convention.</p>
+<p><strong>Lemma.</strong> Every finite tree with at least two vertices has at least two leaves.</p>
+<p><strong>Proof.</strong> Choose a path of maximum length, possible because the tree is finite. Its endpoints are distinct. Let x be one endpoint, and let y be its neighbor along the path. If x had another neighbor z outside the path, we could extend the path, contradicting maximal length. If z were elsewhere on the path, the edge xz and the intervening path segment would form a cycle. Both possibilities are impossible. Thus x has only neighbor y and is a leaf. The same argument applies to the other endpoint. ∎</p>
+<p><strong>Why leaf removal preserves a tree.</strong> Delete a leaf x and its one incident edge from a tree with at least two vertices. No new cycle can appear. A path between any two remaining vertices cannot use x internally, because an internal vertex of a path has two distinct incident path edges. Hence the remaining vertices are still connected. The smaller graph is a tree.</p>
+<h3>A tree on n vertices has n − 1 edges</h3>
+<p><strong>Theorem.</strong> If T is a finite tree with \(n\ge1\) vertices, then \(|E(T)|=n-1\).</p>
+<p><strong>Proof by induction on n.</strong> For \(n=1\), simplicity gives no edges, so \(|E(T)|=0=n-1\). For the inductive step, let \(n\ge2\) and assume every tree with \(n-1\) vertices has \(n-2\) edges. By the leaf lemma, T has a leaf. Remove it and its incident edge. The remaining graph is a tree on \(n-1\) vertices, so it has \(n-2\) edges by the induction hypothesis. Restoring the one removed edge gives \((n-2)+1=n-1\) edges. ∎</p>
+<p><strong>Forest formula.</strong> If a forest has n vertices and k components, with component sizes \(n_1,\ldots,n_k\), then</p>
+\[|E|=\sum_{i=1}^k(n_i-1)=n-k.\]
+<p>For the empty forest, n = k = 0 and the same formula holds. An edge count alone does not establish that a graph is a tree: a triangle together with an isolated vertex has four vertices and three edges, but it is disconnected and contains a cycle.</p>
+</article>
+<article id="rooted"><h2>5. Choosing a root</h2>
+<p>Recall that a <strong>rooted tree</strong> is a tree with one distinguished vertex \(r\), called its root. Choosing a root adds a reference point; it does not change the underlying edges. Unique paths make the following terminology well defined.</p>
+<figure><svg viewBox="0 0 440 310" role="img" aria-label="Rooted tree: r has children a,b; a has children c,d; b has child e; d has child f."><title>Rooted tree: r has children a,b; a has children c,d; b has child e; d has child f.</title><line x1="220" y1="35" x2="100" y2="115" /><line x1="220" y1="35" x2="335" y2="115" /><line x1="100" y1="115" x2="45" y2="205" /><line x1="100" y1="115" x2="160" y2="205" /><line x1="335" y1="115" x2="335" y2="205" /><line x1="160" y1="205" x2="160" y2="280" /><circle cx="220" cy="35" r="17"/><text x="220" y="40">r</text><circle cx="100" cy="115" r="17"/><text x="100" y="120">a</text><circle cx="335" cy="115" r="17"/><text x="335" y="120">b</text><circle cx="45" cy="205" r="17"/><text x="45" y="210">c</text><circle cx="160" cy="205" r="17"/><text x="160" y="210">d</text><circle cx="335" cy="205" r="17"/><text x="335" y="210">e</text><circle cx="160" cy="280" r="17"/><text x="160" y="285">f</text></svg><figcaption>The same undirected tree, with \(r\) chosen as its root; depth increases downward.</figcaption></figure>
+<ul><li>The <strong>parent</strong> of a vertex other than \(r\) is its neighbor immediately preceding it on the path from \(r\). The root has no parent.</li><li>The <strong>children</strong> of a vertex are the vertices for which it is the parent. Vertices with the same parent are <strong>siblings</strong>.</li><li>The <strong>ancestors</strong> of \(v\) are the other vertices on the root-to-\(v\) path. A vertex \(w\) is a <strong>descendant</strong> of \(v\) when \(v\) is an ancestor of \(w\).</li><li>The <strong>depth</strong> of \(v\) is \(d(r,v)\), counted in edges. The <strong>height</strong> of the rooted tree is the largest depth.</li><li>A <strong>rooted leaf</strong> has no children; an <strong>internal vertex</strong> has at least one child. The <strong>subtree rooted at \(v\)</strong> consists of \(v\) and all its descendants, with the edges between them.</li></ul>
+<p>In the diagram, \(d\) has parent \(a\) and child \(f\). Vertices \(c\) and \(d\) are siblings. The depth of \(f\) is 3, and the height is 3. The ancestors of \(f\) are \(r\), \(a\), and \(d\). The subtree rooted at \(a\) has vertices \(\{a,c,d,f\}\). The rooted leaves are \(c\), \(e\), and \(f\).</p>
+<p><strong>How the leaf definitions fit together.</strong> In an unrooted tree, a leaf has degree 1. In a rooted tree, a leaf has no children. For any vertex other than the root, these conditions are equivalent: it has exactly one parent, so its degree is 1 plus its number of children. The root is the exception because it has no parent. A root of degree 1 has one child, so it is not a rooted leaf, even though it is a leaf of the underlying unrooted tree. In the one-vertex rooted tree, the root has no children and is a rooted leaf, although its degree is 0.</p>
+<p><strong>Check.</strong> Choose \(a\) as the new root. Which vertices become its children? What is the new height?</p>
+<details><summary>Show answer</summary><p>The children of \(a\) are \(r\), \(c\), and \(d\). The longest path from \(a\) ends at \(e\) and is \(a\)–\(r\)–\(b\)–\(e\), so the new height is 3. All edges remain the same.</p></details>
+</article>
+<article id="spanning"><h2>6. Spanning trees: remove cycles, retain connection</h2>
+<p>A <strong>spanning tree</strong> of G is a subgraph T with \(V(T)=V(G)\), \(E(T)\subseteq E(G)\), and T a tree. “Spanning” requires every original vertex, not every original edge.</p>
+<p><strong>Theorem.</strong> Every finite nonempty connected graph has a spanning tree.</p>
+<p><strong>Constructive proof.</strong> Begin with G. If the current graph contains a cycle, choose an edge uv on that cycle and delete that edge, retaining all vertices. The remaining portion of the cycle still joins u to v. To see that the whole graph stays connected, take a path between any two vertices before the deletion. If it uses uv, replace that edge by the other u–v route around the cycle. This produces a walk avoiding the deleted edge; removing repeated portions gives a path. If the path did not use uv, it survives unchanged.</p>
+<p>Repeat whenever a cycle remains. Each step removes one edge, so finiteness guarantees termination. Connectivity and the vertex set are preserved at every step. At termination, the remaining graph is connected, contains every original vertex, and has no cycles. It is therefore a spanning tree. ∎</p>
+<div class="pair"><figure><svg viewBox="0 0 440 310" role="img" aria-label="Connected graph with edges ab, bc, cd, da, ac."><title>Connected graph with edges ab, bc, cd, da, ac.</title><line x1="75" y1="55" x2="345" y2="55" /><line x1="345" y1="55" x2="345" y2="245" /><line x1="345" y1="245" x2="75" y2="245" /><line x1="75" y1="245" x2="75" y2="55" /><line x1="75" y1="55" x2="345" y2="245" /><circle cx="75" cy="55" r="17"/><text x="75" y="60">a</text><circle cx="345" cy="55" r="17"/><text x="345" y="60">b</text><circle cx="345" cy="245" r="17"/><text x="345" y="250">c</text><circle cx="75" cy="245" r="17"/><text x="75" y="250">d</text></svg><figcaption>Start with G: five edges on four vertices.</figcaption></figure><figure><svg viewBox="0 0 440 310" role="img" aria-label="Spanning tree with retained edges ab, bc, cd; deleted ac and da are dashed."><title>Spanning tree with retained edges ab, bc, cd; deleted ac and da are dashed.</title><line x1="75" y1="55" x2="345" y2="55" /><line x1="345" y1="55" x2="345" y2="245" /><line x1="345" y1="245" x2="75" y2="245" /><line class="removed" x1="75" y1="245" x2="75" y2="55" /><line class="removed" x1="75" y1="55" x2="345" y2="245" /><circle cx="75" cy="55" r="17"/><text x="75" y="60">a</text><circle cx="345" cy="55" r="17"/><text x="345" y="60">b</text><circle cx="345" cy="245" r="17"/><text x="345" y="250">c</text><circle cx="75" cy="245" r="17"/><text x="75" y="250">d</text></svg><figcaption>Delete ac, then da. Solid edges form the path a–b–c–d.</figcaption></figure></div>
+<p>In this example, first remove ac from triangle a–b–c–a. The four-cycle a–b–c–d–a remains, so next remove da. The three retained edges form a spanning tree. A different sequence can give a different spanning tree; for example, the edges ab, ac, ad form another one.</p>
+<p><strong>The key distinction.</strong> An edge on a cycle can be removed while preserving connectivity. Every edge of a tree is a bridge, so removing it disconnects the tree. The construction stops exactly when there are no cycle edges left to remove.</p>
+<p><strong>Consequences.</strong> A connected graph on n vertices has at least \(n-1\) edges because it contains a spanning tree. If it has exactly \(n-1\) edges, its spanning tree already uses all its edges, so the graph itself is a tree. Thus, for a nonempty graph on n vertices, each of the following characterizes a tree:</p>
+<ul><li>It is connected and acyclic.</li><li>Every pair of distinct vertices is joined by exactly one path.</li><li>It is connected and has \(n-1\) edges.</li><li>It is acyclic and has \(n-1\) edges: the forest formula forces one component.</li></ul>
+<p>If the original graph has k components, perform the same cycle-removal procedure in each component to obtain a <strong>spanning forest</strong> with \(n-k\) edges.</p>
+</article>
+<article id="exercises"><h2>7. Exercises and discussion</h2>
+<ol><li><strong>Return to the warm-up.</strong> Construct an isomorphism G → H sending a to 3 and b to 1. How many isomorphisms satisfy both requirements? Explain using the three nonadjacent pairs.</li>
+<li><strong>Automorphisms of a path.</strong> Let \(P_4\) have edges 12, 23, 34. List all its automorphisms and explain why your list is complete. How many isomorphisms are there from \(P_4\) to any fixed isomorphic copy?</li>
+<li><strong>Rigidity.</strong> In the three-arm rigid tree, replace the arm of length 3 by an arm of length 2. Count the automorphisms. Explain why the two equal arms can be exchanged but their vertices cannot be permuted freely.</li>
+<li><strong>Components.</strong> Compare the cycle \(C_6\) with the disjoint union of two triangles. Both have six vertices of degree 2. How many components does each have? Explain why no isomorphism exists.</li>
+<li><strong>Leaves and degrees.</strong> A tree has two vertices of degree 3 and all other vertices have degree 1 or 2. How many leaves does it have? Use the handshaking lemma and the edge-count theorem.</li>
+<li><strong>Forest arithmetic.</strong> A forest has 14 vertices and 9 edges. How many components does it have? Can a connected simple graph with 14 vertices have only 9 edges?</li>
+<li><strong>Rooting.</strong> Use the rooted-tree diagram to list all descendants of r and the subtree rooted at b. Re-root the tree at f; find its height and its rooted leaves.</li>
+<li><strong>Exactly one cycle.</strong> Prove carefully that adding an edge between nonadjacent vertices of a tree creates exactly one cycle. Identify that cycle in the rooted-tree diagram if the new edge is ce.</li>
+<li><strong>Construct two spanning trees.</strong> For the four-vertex graph in Section 6, give two different edge-removal sequences producing different spanning trees. At each deletion, name a cycle containing the deleted edge.</li>
+<li><strong>Keep the vertices.</strong> Why does deleting a leaf help the induction proof for the edge count, but fail to produce a spanning tree of the original graph? Explain the different purpose of the two deletion procedures.</li></ol>
+<details><summary>Selected answers and hints</summary>
+<ol><li>One map is a ↦ 3, c ↦ 5, b ↦ 1, d ↦ 6, e ↦ 2, f ↦ 4. Once a and b are specified, c and d are forced; e and f may be exchanged, so there are 2 maps.</li><li>The identity and the reversal (1 ↔ 4, 2 ↔ 3). An endpoint must map to an endpoint; after its image is chosen, adjacency forces the rest. There are 2 isomorphisms to any fixed isomorphic copy.</li><li>There are 2: the identity and the exchange of the two length-2 arms. Distance from the center fixes positions along an arm.</li><li>One component versus two. Paths, hence components, must correspond under an isomorphism.</li><li>Let L be the number of leaves and q the number of degree-2 vertices. Then \(L+2q+6=2(L+q+2-1)\), so \(L=4\).</li><li>There are \(14-9=5\) components. A connected graph on 14 vertices needs at least 13 edges.</li><li>The descendants of r are a, b, c, d, e, f. The subtree at b is the edge be with its endpoints. Rooted at f, the height is 5 (path f–d–a–r–b–e), and the rooted leaves are c and e.</li><li>Use the unique old path between the new edge's endpoints. Here it is c–a–r–b–e, so the cycle is c–a–r–b–e–c.</li><li>First sequence: delete ac from triangle abc, then da from cycle abcd, retaining ab, bc, cd. Second sequence: delete bc from triangle abc, then cd from triangle acd, retaining ab, ac, ad.</li><li>Leaf removal reduces the vertex set for induction. A spanning-tree construction must retain all original vertices; it deletes only cycle edges.</li></ol>
+</details>
+<p><strong>Looking ahead.</strong> Next we will ask when a graph can be drawn without edge crossings. Today's distinction between a graph and its drawing will remain essential.</p>
+</article>
+
+     <p class="back-to-top">
+  <a href="#top">↑ Back to top</a>
+</p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>
