@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>Discrete Math – Lesson 19: Planarity and Euler’s Formula — Guided Self-Study</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    svg .face-label { font-style: italic; font-size: 17px; }
+    .table-scroll { overflow-x: auto; }
+    figure { margin: 1.5em auto; max-width: 560px; }
+    figcaption { text-align: center; font-size: .92em; line-height: 1.5; }
+    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .pair figure { min-width: 0; width: 100%; }
+    svg { display: block; width: 100%; height: auto; }
+    svg line { stroke: var(--text, #202b38); stroke-width: 2.3; }
+    svg circle { fill: var(--bg, #fff); stroke: var(--text, #202b38); stroke-width: 2; }
+    svg text { fill: var(--text, #202b38); font: 16px Arial, sans-serif; text-anchor: middle; }
+    svg .removed { stroke-dasharray: 7 6; opacity: .45; }
+    details { margin: 1em 0; }
+    summary { cursor: pointer; }
+    article { scroll-margin-top: 1em; }
+    @media (max-width: 650px) { .pair { grid-template-columns: 1fr; } }
+    @media print { details { break-inside: auto; } figure { break-inside: avoid; } }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 19: Planarity and Euler’s Formula — Guided Self-Study</h1>
+  </header>
+  <div id="navigation-placeholder"></div>
+
+  <main>
+
+<article id="start"><h2>1. A self-study route</h2>
+
+<p>In Lesson 18, we separated a graph's adjacency structure from the appearance of a particular drawing. This lesson asks a new question: <em>can we draw the graph with no edge crossings at all?</em> Trees will provide the starting point for a formula relating vertices, edges, and regions. That formula will then prove that some graphs cannot be drawn without crossings, no matter how cleverly we try.</p>
+<p>Allow about 75–90 minutes. Read each section in order, try each self-check on paper before opening its answer, and finish with the exercises. You will need the definitions of a simple graph, a cycle, a tree, a spanning tree, and a bipartite graph. All graphs here are finite, simple, and undirected unless a statement explicitly says otherwise.</p>
+<p>By the end, you should be able to distinguish a planar graph from a plane drawing, count faces including the exterior, apply and explain Euler's formula, prove the nonplanarity of \(K_5\) and \(K_{3,3}\), and state what the Four Color Theorem guarantees.</p>
+<nav aria-label="Lecture sections"><p><a href="#drawings">Planar drawings</a> · <a href="#euler">Euler's formula</a> · <a href="#nonplanar">Two nonplanar graphs</a> · <a href="#coloring">Four colors</a> · <a href="#practice">Exercises</a> · <a href="#bounds">Optional edge bounds</a></p></nav>
+</article>
+<article id="drawings"><h2>2. A crossing in the picture—or a crossing we cannot avoid?</h2>
+<p>A graph is <strong>planar</strong> if it has a drawing in the plane in which vertices are distinct points and edges are simple curves that meet only at common endpoints. No edge may pass through a vertex other than one of its endpoints. Edges may bend; they need not be straight.</p>
+<p>We will call a particular crossing-free drawing a <strong>plane drawing</strong>. A graph is planar if at least one such drawing exists.</p>
+<div class="pair"><figure><svg viewBox="0 0 440 330" role="img" aria-label="K4 drawn as a square with two crossing diagonals. The crossing is not a vertex."><title>K4 drawn as a square with two crossing diagonals. The crossing is not a vertex.</title><line x1="85" y1="60" x2="355" y2="60"/><line x1="85" y1="60" x2="355" y2="275"/><line x1="85" y1="60" x2="85" y2="275"/><line x1="355" y1="60" x2="355" y2="275"/><line x1="355" y1="60" x2="85" y2="275"/><line x1="355" y1="275" x2="85" y2="275"/><circle cx="85" cy="60" r="16"/><text x="85" y="65">a</text><circle cx="355" cy="60" r="16"/><text x="355" y="65">b</text><circle cx="355" cy="275" r="16"/><text x="355" y="280">c</text><circle cx="85" cy="275" r="16"/><text x="85" y="280">d</text></svg><figcaption>A drawing of K₄ with a crossing; there are still only four vertices.</figcaption></figure> <figure><svg viewBox="0 0 440 330" role="img" aria-label="Crossing-free K4: outer triangle abc and interior vertex d joined to all three corners. Four faces including the exterior."><title>Crossing-free K4: outer triangle abc and interior vertex d joined to all three corners. Four faces including the exterior.</title><line x1="220" y1="35" x2="55" y2="275"/><line x1="220" y1="35" x2="385" y2="275"/><line x1="220" y1="35" x2="220" y2="180"/><line x1="55" y1="275" x2="385" y2="275"/><line x1="55" y1="275" x2="220" y2="180"/><line x1="385" y1="275" x2="220" y2="180"/><text class="face-label" x="155" y="165">F₁</text><text class="face-label" x="285" y="165">F₂</text><text class="face-label" x="220" y="245">F₃</text><text class="face-label" x="365" y="45">F₄</text><circle cx="220" cy="35" r="16"/><text x="220" y="40">a</text><circle cx="55" cy="275" r="16"/><text x="55" y="280">b</text><circle cx="385" cy="275" r="16"/><text x="385" y="280">c</text><circle cx="220" cy="180" r="16"/><text x="220" y="185">d</text></svg><figcaption>A plane drawing of the same K₄. The exterior is face F₄.</figcaption></figure></div>
+<p>The left-hand drawing has a crossing. The right-hand drawing proves that \(K_4\) is planar. In both drawings the edge set is \(\{ab,ac,ad,bc,bd,cd\}\). The unmarked crossing on the left is not a fifth vertex.</p>
+<p>To prove a graph planar, one valid crossing-free drawing is enough. To prove it nonplanar, one unsuccessful drawing is not enough: we must rule out <em>every</em> possible drawing.</p>
+<h3>Faces: remember the outside</h3>
+<p>When a planar graph is drawn without edges crossing, its vertices and edges divide the plane into regions. Each region is called a <strong>face</strong>. We include the unbounded “outside” region, called the <strong>exterior face</strong>. The crossing-free drawing of \(K_4\) above has three bounded faces and one exterior face, for a total of four.</p>
+<p>Although the shapes of the faces depend on the drawing, their total number is the same in every crossing-free drawing of a given planar graph. We may therefore speak of the <em>number of faces of a planar graph</em>. Euler's formula below will explain why this number does not change.</p>
+<p>A tree can be drawn without crossings and has just one face. Its branches do not enclose any region. For example, start with one vertex and build a tree by adding a leaf at a time, placing each new edge locally without creating a crossing or enclosing a region.</p>
+<p><strong>Self-check 1.</strong> A square has both diagonals drawn, crossing at an unmarked point. May we count its four triangular-looking regions as faces of a plane drawing of \(K_4\)?</p>
+<details><summary>Check your reasoning</summary><p>No. This is not a plane drawing because two edges cross. If we deliberately replace the crossing by a new vertex, we get a different graph with five vertices and eight edges, and its plane drawing has five faces (four bounded and the exterior). Those are not the vertex, edge, or face counts of a plane drawing of \(K_4\).</p></details>
+</article>
+<article id="euler"><h2>3. Discovering Euler's formula</h2>
+
+<p><strong>Explore before reading the formula.</strong> Draw a pentagon with vertices \(a,b,c,d,e\), using only its five sides. Count its vertices, edges, and faces, including the outside. Then make these two changes, keeping the drawing crossing-free:</p>
+<ol><li>Add the diagonal \(ac\) inside the pentagon.</li><li>Add a new vertex \(x\) outside the pentagon and join it only to \(b\).</li></ol>
+<p>Record the counts after each step. Which of \(n\), \(m\), and \(f\) change together? Can you find an expression involving all three that stays constant?</p>
+<div class="table-scroll"><table class="property-table"><caption>Your counting experiment</caption><thead><tr><th scope="col">Drawing</th><th scope="col">Vertices n</th><th scope="col">Edges m</th><th scope="col">Faces f</th></tr></thead><tbody><tr><th scope="row">Pentagon</th><td>5</td><td>5</td><td>2</td></tr><tr><th scope="row">Add diagonal ac</th><td>?</td><td>?</td><td>?</td></tr><tr><th scope="row">Add vertex x and edge bx</th><td>?</td><td>?</td><td>?</td></tr></tbody></table></div>
+<details><summary>Compare your counts</summary><p>The three rows are \((5,5,2)\), \((5,6,3)\), and \((6,7,3)\). Adding the diagonal splits one face into two: edges and faces each increase by 1. Adding the new leaf increases vertices and edges by 1 but leaves the faces unchanged. In all three rows, \(n-m+f=2\).</p></details>
+
+<p><strong>Theorem.</strong> For a finite nonempty connected plane graph with n vertices, m edges, and f faces,</p>
+\[\boxed{n-m+f=2.}\]
+<p>Equivalently, \(f=m-n+2\). The formula concerns a crossing-free drawing, and f includes its exterior face.</p>
+<h3>Why the formula holds: reduce to a tree</h3>
+<p>Recall the constructive spanning-tree argument from Lecture 18: remove an edge from a cycle, keeping all vertices. The graph stays connected because the rest of that cycle still joins the endpoints of the deleted edge.</p>
+<p>In a plane drawing, a cycle is a simple closed curve separating an inside from an outside. A cycle edge borders two distinct faces, one on each side. Removing that edge merges precisely those two faces into one. Thus n stays the same, while m and f each decrease by 1. The quantity \(n-m+f\) is unchanged.</p>
+<p>Continue removing cycle edges until a spanning tree remains. If the original graph has n vertices, this tree has \(n-1\) edges and one face. For the tree,</p>
+\[n-(n-1)+1=2.\]
+<p>Since each removal preserved the expression, the original plane graph also satisfies \(n-m+f=2\). ∎</p>
+<p>This proof explains the pattern in the experiment: deleting a cycle edge reverses the step of splitting a face, and the final tree supplies the starting count.</p>
+<h3>Worked example: the cube graph</h3>
+<figure><svg viewBox="0 0 440 330" role="img" aria-label="Plane cube graph: nested squares abcd and efgh joined by ae,bf,cg,dh. Six faces."><title>Plane cube graph: nested squares abcd and efgh joined by ae,bf,cg,dh. Six faces.</title><line x1="65" y1="40" x2="375" y2="40"/><line x1="375" y1="40" x2="375" y2="285"/><line x1="375" y1="285" x2="65" y2="285"/><line x1="65" y1="285" x2="65" y2="40"/><line x1="145" y1="110" x2="295" y2="110"/><line x1="295" y1="110" x2="295" y2="215"/><line x1="295" y1="215" x2="145" y2="215"/><line x1="145" y1="215" x2="145" y2="110"/><line x1="65" y1="40" x2="145" y2="110"/><line x1="375" y1="40" x2="295" y2="110"/><line x1="375" y1="285" x2="295" y2="215"/><line x1="65" y1="285" x2="145" y2="215"/><text class="face-label" x="220" y="82">F₁</text><text class="face-label" x="332" y="167">F₂</text><text class="face-label" x="220" y="260">F₃</text><text class="face-label" x="105" y="167">F₄</text><text class="face-label" x="220" y="167">F₅</text><text class="face-label" x="410" y="25">F₆</text><circle cx="65" cy="40" r="16"/><text x="65" y="45">a</text><circle cx="375" cy="40" r="16"/><text x="375" y="45">b</text><circle cx="375" cy="285" r="16"/><text x="375" y="290">c</text><circle cx="65" cy="285" r="16"/><text x="65" y="290">d</text><circle cx="145" cy="110" r="16"/><text x="145" y="115">e</text><circle cx="295" cy="110" r="16"/><text x="295" y="115">f</text><circle cx="295" cy="215" r="16"/><text x="295" y="220">g</text><circle cx="145" cy="215" r="16"/><text x="145" y="220">h</text></svg><figcaption>The cube graph: two squares joined at corresponding corners. Count the exterior face too.</figcaption></figure>
+<p>This drawing has \(n=8\), \(m=12\), and \(f=6\): the inner square, four regions between the squares, and the exterior. Hence \(8-12+6=2\). The usual three-dimensional picture of a cube represents the same graph, but the drawing above makes its planarity and its faces explicit.</p>
+<p><strong>Self-check 2.</strong> A connected plane graph has 10 vertices and 15 edges. How many faces are bounded? A tree has 10 vertices; how many faces does its plane drawing have?</p>
+<details><summary>Check your answer</summary><p>The first graph has \(f=15-10+2=7\) faces, of which 6 are bounded. The tree has 9 edges and \(f=9-10+2=1\) face, its exterior. It has no bounded faces.</p></details>
+</article>
+<article id="boundaries"><h2>4. Each edge has two sides</h2>
+<p>We now have a way to predict how many faces a connected graph would have <em>if</em> it were planar. To test that prediction, count how many edge sides surround those faces.</p>
+<p>Each edge has two sides. When we count the sides around every face, including the outside, every edge is counted twice. Therefore the total number of edge sides around all faces is \(2m\).</p>
+<p>In the plane drawing of \(K_4\), each of the four faces is surrounded by three edges. Counting around the faces gives \(4\cdot3=12\); counting two sides for each of the six edges also gives \(2\cdot6=12\).</p>
+<p>If every face requires at least three edge sides, then \(3f\le2m\). If every face requires at least four, then \(4f\le2m\). We will apply these observations directly to two graphs.</p>
+<details><summary>What happens when an edge has the same face on both sides?</summary>
+<p>Both sides still count. This happens for a bridge, such as the edge \(cd\) below.</p>
+<figure><svg viewBox="0 0 440 330" role="img" aria-label="Triangle abc with pendant edge cd. Two faces; edge cd borders the exterior on both sides."><title>Triangle abc with pendant edge cd. Two faces; edge cd borders the exterior on both sides.</title><line x1="90" y1="65" x2="40" y2="250"/><line x1="40" y1="250" x2="220" y2="250"/><line x1="220" y1="250" x2="90" y2="65"/><line x1="220" y1="250" x2="365" y2="250"/><text class="face-label" x="110" y="190">F₁</text><text class="face-label" x="320" y="85">F₂</text><circle cx="90" cy="65" r="16"/><text x="90" y="70">a</text><circle cx="40" cy="250" r="16"/><text x="40" y="255">b</text><circle cx="220" cy="250" r="16"/><text x="220" y="255">c</text><circle cx="365" cy="250" r="16"/><text x="365" y="255">d</text></svg><figcaption>The bridge cd contributes twice to the exterior face boundary.</figcaption></figure>
+<p>The inside triangular face uses three edge sides. Tracing the outside along \(a,b,c,d,c,a\) uses five, because \(cd\) appears twice. The total is \(3+5=8=2m\). Thus a face boundary need not be a cycle; count edge occurrences, including repetitions.</p></details>
+</article>
+<article id="nonplanar"><h2>5. Two graphs that cannot be drawn without crossings</h2>
+<div class="pair"><figure><svg viewBox="0 0 440 330" role="img" aria-label="Complete graph K5 on five vertices, with all ten edges. This drawing has crossings."><title>Complete graph K5 on five vertices, with all ten edges. This drawing has crossings.</title><line x1="220.0" y1="40.0" x2="338.88" y2="126.37"/><line x1="220.0" y1="40.0" x2="293.47" y2="266.13"/><line x1="220.0" y1="40.0" x2="146.53" y2="266.13"/><line x1="220.0" y1="40.0" x2="101.12" y2="126.37"/><line x1="338.88" y1="126.37" x2="293.47" y2="266.13"/><line x1="338.88" y1="126.37" x2="146.53" y2="266.13"/><line x1="338.88" y1="126.37" x2="101.12" y2="126.37"/><line x1="293.47" y1="266.13" x2="146.53" y2="266.13"/><line x1="293.47" y1="266.13" x2="101.12" y2="126.37"/><line x1="146.53" y1="266.13" x2="101.12" y2="126.37"/><circle cx="220.0" cy="40.0" r="16"/><text x="220.0" y="45.0">1</text><circle cx="338.88" cy="126.37" r="16"/><text x="338.88" y="131.37">2</text><circle cx="293.47" cy="266.13" r="16"/><text x="293.47" y="271.13">3</text><circle cx="146.53" cy="266.13" r="16"/><text x="146.53" y="271.13">4</text><circle cx="101.12" cy="126.37" r="16"/><text x="101.12" y="131.37">5</text></svg><figcaption>K₅: five vertices, ten edges. No crossing-free drawing exists.</figcaption></figure> <figure><svg viewBox="0 0 440 330" role="img" aria-label="Complete bipartite graph K3,3: each of a,b,c is joined to each of x,y,z."><title>Complete bipartite graph K3,3: each of a,b,c is joined to each of x,y,z.</title><line x1="65" y1="55" x2="65" y2="275"/><line x1="65" y1="55" x2="220" y2="275"/><line x1="65" y1="55" x2="375" y2="275"/><line x1="220" y1="55" x2="65" y2="275"/><line x1="220" y1="55" x2="220" y2="275"/><line x1="220" y1="55" x2="375" y2="275"/><line x1="375" y1="55" x2="65" y2="275"/><line x1="375" y1="55" x2="220" y2="275"/><line x1="375" y1="55" x2="375" y2="275"/><circle cx="65" cy="55" r="16"/><text x="65" y="60">a</text><circle cx="220" cy="55" r="16"/><text x="220" y="60">b</text><circle cx="375" cy="55" r="16"/><text x="375" y="60">c</text><circle cx="65" cy="275" r="16"/><text x="65" y="280">x</text><circle cx="220" cy="275" r="16"/><text x="220" y="280">y</text><circle cx="375" cy="275" r="16"/><text x="375" y="280">z</text></svg><figcaption>K₃,₃: six vertices, nine edges. Crossings are not extra vertices.</figcaption></figure></div>
+<h3>The complete graph K₅</h3>
+<p><strong>Claim.</strong> \(K_5\) is nonplanar.</p>
+<p><strong>Proof by contradiction.</strong> Suppose \(K_5\) had a crossing-free drawing. It has \(n=5\) vertices and \(m=10\) edges, so Euler's formula would give</p>
+\[5-10+f=2,\qquad f=7.\]
+<p>Each face would need at least three edge sides: there are no loops or parallel edges, and every edge belongs to a cycle, so no edge is a bridge. Seven faces would therefore require at least \(3\cdot7=21\) edge sides. But ten edges supply only \(2\cdot10=20\). This would force</p>
+\[21\le20,\]
+<p>which is impossible. Thus \(K_5\) is nonplanar. ∎</p>
+<h3>The complete bipartite graph K₃,₃</h3>
+<p>The two parts are \(\{a,b,c\}\) and \(\{x,y,z\}\). Each vertex in the first part is joined to all three vertices in the second, giving six vertices and nine edges. Think of three houses and three utilities: can each house be joined to every utility without crossings?</p>
+<p><strong>Claim.</strong> \(K_{3,3}\) is nonplanar.</p>
+<p><strong>Proof by contradiction.</strong> Suppose it had a crossing-free drawing. Euler's formula would give</p>
+\[6-9+f=2,\qquad f=5.\]
+<p>Every edge belongs to a cycle, so there are no bridges. The graph is simple, and it has no triangles: a walk alternates between the two parts, so a cycle must have even length. Each face would therefore require at least four edge sides. Five faces would need at least \(4\cdot5=20\) sides, but nine edges supply only \(2\cdot9=18\). We would obtain</p>
+\[20\le18,\]
+<p>again impossible. Thus \(K_{3,3}\) is nonplanar. ∎</p>
+<h3>The common strategy</h3>
+<ol><li>Assume that a crossing-free drawing exists.</li><li>Use Euler's formula to find its required number of faces.</li><li>Find the minimum number of edge sides needed around those faces.</li><li>Compare that minimum with the available \(2m\) sides.</li></ol>
+<p>The difference between the two proofs is the minimum face size: three for \(K_5\), four for \(K_{3,3}\). The contradiction rules out every possible drawing, not just the drawings shown above.</p>
+<p><strong>Self-check 3.</strong> Why would using only \(3f\le2m\) fail to prove that \(K_{3,3}\) is nonplanar? What additional feature makes the proof work?</p>
+<details><summary>Check your reasoning</summary><p>With \(f=5\) and \(m=9\), the weaker count says \(15\le18\), which is true and gives no contradiction. The absence of triangles forces at least four sides per face, giving the impossible inequality \(20\le18\).</p></details>
+<p><strong>A useful extension.</strong> A graph containing \(K_5\) or \(K_{3,3}\) as a subgraph is also nonplanar. Otherwise, erasing the extra vertices and edges from a crossing-free drawing would give a crossing-free drawing of the nonplanar subgraph.</p>
+</article>
+<article id="coloring"><h2>6. From planar graphs to four colors</h2>
+<p>A <strong>proper vertex coloring</strong> assigns a color to each vertex so that adjacent vertices receive different colors. Nonadjacent vertices may share a color. A color can be represented by a number or a name; the condition is about equality and difference, not about the appearance of an ink color.</p>
+<figure><svg viewBox="0 0 440 330" role="img" aria-label="Four-cycle abcd with a proper two-coloring: a,c have color 1 and b,d have color 2."><title>Four-cycle abcd with a proper two-coloring: a,c have color 1 and b,d have color 2.</title><line x1="100" y1="65" x2="340" y2="65"/><line x1="340" y1="65" x2="340" y2="265"/><line x1="340" y1="265" x2="100" y2="265"/><line x1="100" y1="265" x2="100" y2="65"/><circle cx="100" cy="65" r="23"/><text x="100" y="70">a:1</text><circle cx="340" cy="65" r="23"/><text x="340" y="70">b:2</text><circle cx="340" cy="265" r="23"/><text x="340" y="270">c:1</text><circle cx="100" cy="265" r="23"/><text x="100" y="270">d:2</text></svg><figcaption>A proper coloring of C₄: a and c use color 1; b and d use color 2.</figcaption></figure>
+<p>The cycle \(C_4\) needs only two colors. A triangle needs three, because its vertices are pairwise adjacent. The planar graph \(K_4\) needs four, for the same reason: all four vertices are pairwise adjacent.</p>
+<p><strong>Four Color Theorem.</strong> Every finite simple planar graph has a proper vertex coloring using at most four colors.</p>
+<p>“At most four” does not mean that every planar graph needs four colors. The examples above need two, three, and four, respectively. The theorem asserts the existence of a coloring; it does not say that an arbitrary sequence of color choices will succeed. We will study coloring methods in Lecture 20. The proof of the Four Color Theorem is much deeper than Euler's formula and is not included here.</p>
+<h3>Why this is also a map-coloring theorem</h3>
+<p>For an ordinary map whose countries are connected regions, regard each region as a vertex, and join two vertices when their regions share a boundary segment of positive length. Touching at just one point does not make two regions adjacent. The resulting adjacency graph is planar; proper vertex coloring assigns different colors to neighboring regions. Repeated edges may be suppressed because they impose the same coloring constraint.</p>
+<p>The connected-region assumption matters: if disconnected territories must share one color because they belong to the same country, the usual four-color statement need not apply. We use the standard connected-region model here.</p>
+<p><strong>Self-check 4.</strong> Does a proper four-coloring prove that a graph is planar? Does a planar drawing guarantee a proper three-coloring?</p>
+<details><summary>Check your answer</summary><p>No to both. The nonplanar graph \(K_{3,3}\) is bipartite and has a proper two-coloring, so it certainly can be colored using at most four colors. Conversely, \(K_4\) is planar but requires four colors. The Four Color Theorem is an implication from planarity to colorability, not an equivalence.</p></details>
+</article>
+<article id="practice"><h2>7. Practice and preparation for Lecture 20</h2>
+<p>Try these before opening the solutions. Use drawings and direct counts; the optional formulas below are not needed.</p>
+<ol>
+<li>Draw two different connected planar graphs, each with five vertices and five edges. How many faces does each have? Could a connected plane graph with the same numbers of vertices and edges have a different number of faces?</li>
+<li>A connected plane graph has 12 vertices and 20 edges. Find its total number of faces and its number of bounded faces.</li>
+<li>Start with a crossing-free drawing of a connected graph with 6 vertices, 8 edges, and 4 faces. Add a leaf. Then add a new edge between two existing nonadjacent vertices, without crossings. Give the three counts after each step and verify Euler's formula.</li>
+<li>Suppose a connected simple graph with 7 vertices and 16 edges had a plane drawing. Use Euler's formula and the count \(3f\le2m\) to obtain a contradiction.</li>
+<li>Prove that \(K_{4,4}\) is nonplanar in two ways: first by predicting its number of faces and counting edge sides, then by finding a \(K_{3,3}\) subgraph.</li>
+<li>A connected plane graph has 6 vertices, and every face is bounded by three edge sides. Find its numbers of edges and faces by solving two equations.</li>
+<li>Draw a triangle \(a,b,c,a\) with a two-edge path \(c,d,e\) attached. Count its vertices, edges, and faces. Trace the outside boundary and verify that the total number of edge sides around the two faces is \(2m\).</li>
+<li>Draw \(K_{2,3}\) without crossings. Label all faces, verify Euler's formula, and count the sides around each face.</li>
+<li>The surface of a cube has six square faces. Count its vertices and edges. Explain which face becomes the outside region in the nested-squares drawing in Section 3.</li>
+<li>Give an example of each: a planar graph needing two colors, one needing three, one needing four, and a nonplanar graph that can be colored with two colors.</li>
+</ol>
+<details><summary>Answers and solution outlines</summary><ol>
+<li>For example, draw a five-cycle; then draw a four-cycle with one leaf attached. Both have two faces. Every connected plane graph with these counts has \(f=5-5+2=2\).</li>
+<li>\(f=20-12+2=10\), of which 9 are bounded.</li>
+<li>After adding the leaf: \((n,m,f)=(7,9,4)\). After adding the second edge: \((7,10,5)\). The expression \(n-m+f\) remains 2.</li>
+<li>Euler's formula requires \(f=16-7+2=11\). But \(3f\le2m\) would say \(33\le32\), impossible.</li>
+<li>There are 8 vertices and 16 edges, so a plane drawing would require \(f=10\). Since the graph is bipartite and has no bridges, every face needs at least four sides, forcing \(40\le32\), impossible. Alternatively, select three vertices from each part to obtain a \(K_{3,3}\) subgraph.</li>
+<li>Use \(6-m+f=2\) and \(3f=2m\). The result is \(m=12\), \(f=8\).</li>
+<li>There are 5 vertices, 5 edges, and 2 faces. An exterior boundary walk is \(a,b,c,d,e,d,c,a\), of length 7. The bounded triangle uses 3 sides, giving \(7+3=10=2m\).</li>
+<li>Place the two-vertex part at left and right. Join them by three separate two-edge paths, placing their middle vertices above, between, and below. Then \(n=5\), \(m=6\), and \(f=3\). Each face, including the exterior, has four boundary sides, giving \(3\cdot4=12=2m\).</li>
+<li>The cube has 8 vertices and 12 edges, so \(8-12+6=2\). In the drawing, the outer square borders the exterior; that region represents one of the cube's six original faces. The inner square and four regions between the squares represent the other five.</li>
+<li>Examples are \(C_4\), \(K_3\), \(K_4\), and \(K_{3,3}\), respectively.</li>
+</ol></details>
+<p><strong>Bring to Lecture 20:</strong> a crossing-free drawing of \(K_{2,3}\), a complete face-counting contradiction, and an explanation of why four-colorability does not imply planarity.</p>
+<h3 id="bounds">Optional: two useful edge bounds</h3>
+<p>The counting arguments above can be packaged into formulas. These are convenient shortcuts once you understand the direct face counts.</p>
+<details><summary>Derive the general bound m ≤ 3n − 6</summary>
+<p>For a connected simple planar graph with \(n\ge3\), every face boundary has at least three edge occurrences. A boundary of length 1 would require a loop; one of length 2 would require parallel edges or a connected graph consisting of just one edge. Our hypotheses exclude these cases. Therefore \(3f\le2m\). Substituting \(f=m-n+2\) gives</p>
+\[3(m-n+2)\le2m,\qquad\boxed{m\le3n-6}.\]
+<p>For example, \(K_5\) has 10 edges, exceeding \(3(5)-6=9\).</p></details>
+<details><summary>Derive the triangle-free bound m ≤ 2n − 4</summary>
+<p>If a connected simple planar graph has \(n\ge3\) and no triangles, every face boundary has at least four edge occurrences. Hence \(4f\le2m\), and</p>
+\[4(m-n+2)\le2m,\qquad\boxed{m\le2n-4}.\]
+<p>This applies in particular to bipartite graphs. For \(K_{3,3}\), it would require \(9\le2(6)-4=8\), a contradiction.</p></details>
+<p>These bounds are necessary conditions, not tests that establish planarity. For example, attach a leaf to \(K_{3,3}\). The resulting graph satisfies both bounds, with 7 vertices and 10 edges, but remains nonplanar because it contains \(K_{3,3}\).</p>
+<p><strong>Companion reading:</strong> <a href="https://discrete.openmathbooks.org/dmoi4/sec_gt-planar.html">Discrete Mathematics: An Open Introduction, Section 2.3, Planar Graphs</a>. Use its drawing and counting activities for additional practice.</p>
+</article>
+
+<p class="back-to-top"><a href="#top">↑ Back to top</a></p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>

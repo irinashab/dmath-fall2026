@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Irina Shablinsky">
+  <meta name="description" content="Fall 2026 Discrete Math">
+  <title>MAT 3120 – Lesson 20: Graph Coloring — Algorithms, Applications, and Six Colors</title>
+  <link rel="stylesheet" href="../assets/style.css">
+ <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    svg circle.color-1 { fill: #dbeafe; stroke: #243245; }
+    svg text.color-1 { fill: #172033; }
+    svg circle.color-2 { fill: #ffedd5; stroke: #243245; }
+    svg text.color-2 { fill: #172033; }
+    svg circle.color-3 { fill: #dcfce7; stroke: #243245; }
+    svg text.color-3 { fill: #172033; }
+    svg circle.color-4 { fill: #f3e8ff; stroke: #243245; }
+    svg text.color-4 { fill: #172033; }
+    svg circle.color-5 { fill: #ffe4e6; stroke: #243245; }
+    svg text.color-5 { fill: #172033; }
+    svg circle.color-6 { fill: #fef9c3; stroke: #243245; }
+    svg text.color-6 { fill: #172033; }
+
+    .table-scroll { overflow-x: auto; }
+    figure { margin: 1.5em auto; max-width: 560px; }
+    figcaption { text-align: center; font-size: .92em; line-height: 1.5; }
+    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .pair figure { min-width: 0; width: 100%; }
+    svg { display: block; width: 100%; height: auto; }
+    svg line { stroke: var(--text, #202b38); stroke-width: 2.3; }
+    svg circle { fill: var(--bg, #fff); stroke: var(--text, #202b38); stroke-width: 2; }
+    svg text { fill: var(--text, #202b38); font: 16px Arial, sans-serif; text-anchor: middle; }
+    svg .removed { stroke-dasharray: 7 6; opacity: .45; }
+    details { margin: 1em 0; }
+    summary { cursor: pointer; }
+    article { scroll-margin-top: 1em; }
+    @media (max-width: 650px) { .pair { grid-template-columns: 1fr; } }
+    @media print { details { break-inside: auto; } figure { break-inside: avoid; } }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>Lesson 20: Graph Coloring — Algorithms, Applications, and Six Colors</h1>
+  </header>
+  <div id="navigation-placeholder"></div>
+
+  <main>
+
+<article id="opening"><h2>1. From four colors to the fewest colors</h2>
+
+<p>Lesson 19 ended with the Four Color Theorem: every planar graph can be properly colored with at most four colors. Today we ask how to construct a coloring and how to prove that fewer colors are impossible. We will use coloring to model scheduling conflicts, study a simple algorithm, and finish by proving a planar coloring theorem ourselves.</p>
+<p>Throughout, graphs are finite, simple, and undirected. Colors are numbered; the numbers are labels, not quantities to add or compare. In colored diagrams, each label has the form <em>vertex:color</em>, so the information does not depend on distinguishing the shaded fills.</p>
+<nav aria-label="Lecture sections"><p><a href="#chromatic">Chromatic number</a> · <a href="#applications">Conflict models</a> · <a href="#greedy">Greedy coloring</a> · <a href="#bound">A general bound</a> · <a href="#six">Six Color Theorem</a> · <a href="#practice">Exercises</a></p></nav>
+<p><strong>Opening question.</strong> A planar graph has been colored using four colors. Does that prove that four colors are necessary?</p>
+<details><summary>Show answer</summary><p>No. It proves that four colors suffice. The same graph might admit a coloring with fewer colors. To prove that four are necessary, we also need an argument ruling out every coloring with three or fewer.</p></details>
+</article>
+<article id="chromatic"><h2>2. Chromatic number: an example and an obstruction</h2>
+<p>A <strong>proper vertex coloring</strong> assigns a color to each vertex so that adjacent vertices have different colors. A <strong>proper k-coloring</strong> uses colors from \(\{1,2,\ldots,k\}\); it may use fewer than k of them. Formally, it is a function</p>
+\[c:V(G)\longrightarrow\{1,\ldots,k\},\qquad uv\in E(G)\implies c(u)\ne c(v).\]
+<p>A graph is <strong>k-colorable</strong> if such a coloring exists. The <strong>chromatic number</strong> \(\chi(G)\) is the least number of colors needed for a proper coloring. A nonempty edgeless graph has chromatic number 1. We take the empty graph to have chromatic number 0.</p>
+<p>To prove \(\chi(G)=k\), establish both:</p>
+<ul><li><strong>An upper bound:</strong> exhibit a proper coloring with k colors, proving \(\chi(G)\le k\).</li><li><strong>A lower bound:</strong> explain why fewer than k colors cannot work, proving \(\chi(G)\ge k\).</li></ul>
+<h3>Four examples to work through</h3>
+<p>For each graph, find a coloring and explain why fewer colors are impossible. The center in B and C is a vertex, not an unmarked crossing.</p>
+<div class="pair"><figure><svg viewBox="0 0 440 330" role="img" aria-label="Example A: cycle C8."><title>Example A: cycle C8.</title><line x1="220.0" y1="40.0" x2="308.39" y2="76.61"/><line x1="308.39" y1="76.61" x2="345.0" y2="165.0"/><line x1="345.0" y1="165.0" x2="308.39" y2="253.39"/><line x1="308.39" y1="253.39" x2="220.0" y2="290.0"/><line x1="220.0" y1="290.0" x2="131.61" y2="253.39"/><line x1="131.61" y1="253.39" x2="95.0" y2="165.0"/><line x1="95.0" y1="165.0" x2="131.61" y2="76.61"/><line x1="131.61" y1="76.61" x2="220.0" y2="40.0"/><circle cx="220.0" cy="40.0" r="23"/><text x="220.0" y="45.0">a</text><circle cx="308.39" cy="76.61" r="23"/><text x="308.39" y="81.61">b</text><circle cx="345.0" cy="165.0" r="23"/><text x="345.0" y="170.0">c</text><circle cx="308.39" cy="253.39" r="23"/><text x="308.39" y="258.39">d</text><circle cx="220.0" cy="290.0" r="23"/><text x="220.0" y="295.0">e</text><circle cx="131.61" cy="253.39" r="23"/><text x="131.61" y="258.39">f</text><circle cx="95.0" cy="165.0" r="23"/><text x="95.0" y="170.0">g</text><circle cx="131.61" cy="76.61" r="23"/><text x="131.61" y="81.61">h</text></svg><figcaption>A. Eight-cycle C₈.</figcaption></figure><figure><svg viewBox="0 0 440 330" role="img" aria-label="Example B: four-cycle with a center joined to all four cycle vertices."><title>Example B: four-cycle with a center joined to all four cycle vertices.</title><line x1="220.0" y1="40.0" x2="345.0" y2="165.0"/><line x1="345.0" y1="165.0" x2="220.0" y2="290.0"/><line x1="220.0" y1="290.0" x2="95.0" y2="165.0"/><line x1="95.0" y1="165.0" x2="220.0" y2="40.0"/><line x1="220.0" y1="40.0" x2="220" y2="165"/><line x1="345.0" y1="165.0" x2="220" y2="165"/><line x1="220.0" y1="290.0" x2="220" y2="165"/><line x1="95.0" y1="165.0" x2="220" y2="165"/><circle cx="220.0" cy="40.0" r="23"/><text x="220.0" y="45.0">a</text><circle cx="345.0" cy="165.0" r="23"/><text x="345.0" y="170.0">b</text><circle cx="220.0" cy="290.0" r="23"/><text x="220.0" y="295.0">c</text><circle cx="95.0" cy="165.0" r="23"/><text x="95.0" y="170.0">d</text><circle cx="220" cy="165" r="23"/><text x="220" y="170">o</text></svg><figcaption>B. Four-cycle with a universal center.</figcaption></figure><figure><svg viewBox="0 0 440 330" role="img" aria-label="Example C: seven-cycle with a center joined to all seven cycle vertices."><title>Example C: seven-cycle with a center joined to all seven cycle vertices.</title><line x1="220.0" y1="40.0" x2="317.73" y2="87.06"/><line x1="317.73" y1="87.06" x2="341.87" y2="192.82"/><line x1="341.87" y1="192.82" x2="274.24" y2="277.62"/><line x1="274.24" y1="277.62" x2="165.76" y2="277.62"/><line x1="165.76" y1="277.62" x2="98.13" y2="192.82"/><line x1="98.13" y1="192.82" x2="122.27" y2="87.06"/><line x1="122.27" y1="87.06" x2="220.0" y2="40.0"/><line x1="220.0" y1="40.0" x2="220" y2="165"/><line x1="317.73" y1="87.06" x2="220" y2="165"/><line x1="341.87" y1="192.82" x2="220" y2="165"/><line x1="274.24" y1="277.62" x2="220" y2="165"/><line x1="165.76" y1="277.62" x2="220" y2="165"/><line x1="98.13" y1="192.82" x2="220" y2="165"/><line x1="122.27" y1="87.06" x2="220" y2="165"/><circle cx="220.0" cy="40.0" r="23"/><text x="220.0" y="45.0">a</text><circle cx="317.73" cy="87.06" r="23"/><text x="317.73" y="92.06">b</text><circle cx="341.87" cy="192.82" r="23"/><text x="341.87" y="197.82">c</text><circle cx="274.24" cy="277.62" r="23"/><text x="274.24" y="282.62">d</text><circle cx="165.76" cy="277.62" r="23"/><text x="165.76" y="282.62">e</text><circle cx="98.13" cy="192.82" r="23"/><text x="98.13" y="197.82">f</text><circle cx="122.27" cy="87.06" r="23"/><text x="122.27" y="92.06">g</text><circle cx="220" cy="165" r="23"/><text x="220" y="170">o</text></svg><figcaption>C. Seven-cycle with a universal center.</figcaption></figure><figure><svg viewBox="0 0 440 330" role="img" aria-label="Example D: square abcd with diagonal bd."><title>Example D: square abcd with diagonal bd.</title><line x1="90" y1="65" x2="350" y2="65"/><line x1="350" y1="65" x2="350" y2="265"/><line x1="350" y1="265" x2="90" y2="265"/><line x1="90" y1="265" x2="90" y2="65"/><line x1="350" y1="65" x2="90" y2="265"/><circle cx="90" cy="65" r="23"/><text x="90" y="70">a</text><circle cx="350" cy="65" r="23"/><text x="350" y="70">b</text><circle cx="350" cy="265" r="23"/><text x="350" y="270">c</text><circle cx="90" cy="265" r="23"/><text x="90" y="270">d</text></svg><figcaption>D. Square with one diagonal.</figcaption></figure></div>
+<details><summary>Show colorings and optimality arguments</summary>
+<ol type="A"><li><strong>\(\chi(C_8)=2\).</strong> Alternate colors 1 and 2 around the cycle. At least two colors are needed because an edge has differently colored endpoints.</li>
+<li><strong>Three colors.</strong> Alternate colors 1 and 2 on the outside four-cycle and give the center color 3. The center and the endpoints of any outside edge form a triangle, whose three pairwise adjacent vertices require three different colors.</li>
+<li><strong>Four colors.</strong> The outside seven-cycle cannot be 2-colored: alternation around an odd cycle forces the last vertex to have the same color as the first, although they are adjacent. Three colors suffice for that cycle (alternate on the first six vertices, then use a third color on the seventh). The center is adjacent to every outside vertex, so it needs a color absent from the entire cycle. Thus at least four colors are necessary, and assigning a fourth to the center works.</li>
+<li><strong>Three colors.</strong> Give \(b\) color 1, \(d\) color 2, and both \(a\) and \(c\) color 3. The triangle with vertices \(a,b,d\) requires three colors.</li></ol></details>
+<h3>Useful reference points</h3>
+<p>Every complete graph \(K_n\) needs n colors: all vertices are pairwise adjacent, so no two can share a color. Thus a <strong>clique</strong>—a set of pairwise adjacent vertices—of size r in G proves \(\chi(G)\ge r\).</p>
+<p>Even cycles have chromatic number 2; odd cycles have chromatic number 3. A bipartite graph can be colored with at most two colors by giving a different color to each part. Conversely, the two color classes of a proper 2-coloring give a bipartition. Hence a graph is 2-colorable if and only if it is bipartite. If it has an edge, its chromatic number is then exactly 2.</p>
+<p>A tree with at least two vertices is 2-colorable: choose a root and color vertices according to the parity of their depth. Each edge joins a parent to a child, so its endpoints have opposite depth parity. Since the tree has an edge, its chromatic number is 2.</p>
+<p><strong>Check.</strong> Must every graph with no triangles be 2-colorable?</p>
+<details><summary>Show answer</summary><p>No. The five-cycle has no triangles but needs three colors. A triangle is one obstruction to two colors, but longer odd cycles are obstructions too.</p></details>
+</article>
+<article id="applications"><h2>3. Edges as conflicts</h2>
+<h3>Exam scheduling</h3>
+<p>Represent each course by a vertex. Join two distinct courses when at least one student takes both. A color represents an exam time slot. Adjacent courses must receive different slots; nonadjacent courses may use the same one.</p>
+<p>Consider courses \(a\) (Algebra), \(b\) (Biology), \(c\) (Computer Science), \(d\) (Drama), and \(e\) (Economics), with conflict edges</p>
+\[E=\{ab,ac,bc,bd,cd,ce,de\}.\]
+<p>Find a schedule using the fewest slots. What proves that you cannot use fewer?</p>
+<figure><svg viewBox="0 0 440 330" role="img" aria-label="Exam conflict graph with edges ab, ac, bc, bd, cd, ce, de; a,d use slot 1, b,e slot 2, c slot 3."><title>Exam conflict graph with edges ab, ac, bc, bd, cd, ce, de; a,d use slot 1, b,e slot 2, c slot 3.</title><line x1="220" y1="35" x2="60" y2="140"/><line x1="220" y1="35" x2="365" y2="140"/><line x1="60" y1="140" x2="365" y2="140"/><line x1="60" y1="140" x2="190" y2="235"/><line x1="365" y1="140" x2="190" y2="235"/><line x1="365" y1="140" x2="360" y2="290"/><line x1="190" y1="235" x2="360" y2="290"/><circle class="color-1" cx="220" cy="35" r="23"/><text class="color-1" x="220" y="40">a:1</text><circle class="color-2" cx="60" cy="140" r="23"/><text class="color-2" x="60" y="145">b:2</text><circle class="color-3" cx="365" cy="140" r="23"/><text class="color-3" x="365" y="145">c:3</text><circle class="color-1" cx="190" cy="235" r="23"/><text class="color-1" x="190" y="240">d:1</text><circle class="color-2" cx="360" cy="290" r="23"/><text class="color-2" x="360" y="295">e:2</text></svg><figcaption>A three-slot schedule. Labels show course:slot; shaded fills repeat the slot assignments.</figcaption></figure>
+<details><summary>Show the optimal schedule</summary>
+<div class="table-scroll"><table class="property-table"><caption>A minimum-slot schedule</caption><thead><tr><th scope="col">Slot</th><th scope="col">Courses</th></tr></thead><tbody><tr><td>1</td><td>Algebra and Drama</td></tr><tr><td>2</td><td>Biology and Economics</td></tr><tr><td>3</td><td>Computer Science</td></tr></tbody></table></div>
+<p>The diagram and table give a proper 3-coloring. Algebra, Biology, and Computer Science form a triangle, so they need three distinct slots. Therefore the minimum is exactly 3.</p></details>
+<p>This model addresses student conflicts. Room limits, exam lengths, and other restrictions would require additional constraints; they are not encoded by this conflict graph.</p>
+<h3>Sudoku: extending a partial coloring</h3>
+<p>For a standard 9 × 9 Sudoku board, make one vertex for each of its 81 cells. Two distinct cells are adjacent if they share a row, a column, or a 3 × 3 block. The digits 1–9 serve as nine colors.</p>
+<p>A proper 9-coloring gives all nine digits exactly once in each row, column, and block: each of those nine-cell sets is a clique. The given clues specify colors on some vertices. Solving the puzzle means <strong>extending those prescribed colors</strong> to a proper coloring of the whole graph. Finding an arbitrary 9-coloring that ignores the clues would not solve the given puzzle.</p>
+<p>In both applications, an edge represents an incompatibility, rather than a distance or a route. Choosing what vertices and edges mean is the modeling step.</p>
+</article>
+<article id="greedy"><h2>4. Greedy coloring: the order matters</h2>
+<p>The <strong>greedy coloring algorithm</strong> processes vertices in a chosen order. At each vertex, assign the smallest positive integer not already used by one of its colored neighbors.</p>
+<ol><li>Choose an ordering \(v_1,\ldots,v_n\).</li><li>For \(i=1,\ldots,n\), inspect the colors on neighbors of \(v_i\) that have already been processed.</li><li>Give \(v_i\) the smallest positive color missing from that set.</li></ol>
+<p><strong>Why it is correct.</strong> Consider any edge uv. Whichever endpoint is processed second avoids the color already given to the first. Thus every edge has differently colored endpoints, and the completed coloring is proper.</p>
+<p>Correctness does not imply optimality. The algorithm constructs a proper coloring, but it may use more than \(\chi(G)\) colors.</p>
+<h3>One graph, two orders</h3>
+<p>Use the cycle \(a,b,c,d,e,f,a\). First process vertices in the order \(a,d,b,e,c,f\).</p>
+<div class="table-scroll"><table class="property-table"><caption>Greedy coloring in the first order</caption><thead><tr><th scope="col">Vertex</th><th scope="col">Colors already on neighbors</th><th scope="col">Assigned color</th></tr></thead><tbody><tr><td>a</td><td>none</td><td>1</td></tr><tr><td>d</td><td>none</td><td>1</td></tr><tr><td>b</td><td>1 (on a)</td><td>2</td></tr><tr><td>e</td><td>1 (on d)</td><td>2</td></tr><tr><td>c</td><td>2 (on b), 1 (on d)</td><td>3</td></tr><tr><td>f</td><td>2 (on e), 1 (on a)</td><td>3</td></tr></tbody></table></div>
+<div class="pair"><figure><svg viewBox="0 0 440 330" role="img" aria-label="C6 greedily colored in order a,d,b,e,c,f using three colors."><title>C6 greedily colored in order a,d,b,e,c,f using three colors.</title><line x1="220.0" y1="40.0" x2="328.25" y2="102.5"/><line x1="328.25" y1="102.5" x2="328.25" y2="227.5"/><line x1="328.25" y1="227.5" x2="220.0" y2="290.0"/><line x1="220.0" y1="290.0" x2="111.75" y2="227.5"/><line x1="111.75" y1="227.5" x2="111.75" y2="102.5"/><line x1="111.75" y1="102.5" x2="220.0" y2="40.0"/><circle class="color-1" cx="220.0" cy="40.0" r="23"/><text class="color-1" x="220.0" y="45.0">a:1</text><circle class="color-2" cx="328.25" cy="102.5" r="23"/><text class="color-2" x="328.25" y="107.5">b:2</text><circle class="color-3" cx="328.25" cy="227.5" r="23"/><text class="color-3" x="328.25" y="232.5">c:3</text><circle class="color-1" cx="220.0" cy="290.0" r="23"/><text class="color-1" x="220.0" y="295.0">d:1</text><circle class="color-2" cx="111.75" cy="227.5" r="23"/><text class="color-2" x="111.75" y="232.5">e:2</text><circle class="color-3" cx="111.75" cy="102.5" r="23"/><text class="color-3" x="111.75" y="107.5">f:3</text></svg><figcaption>Order a, d, b, e, c, f: greedy uses three colors.</figcaption></figure><figure><svg viewBox="0 0 440 330" role="img" aria-label="The same C6 greedily colored in cyclic order a,b,c,d,e,f using two colors."><title>The same C6 greedily colored in cyclic order a,b,c,d,e,f using two colors.</title><line x1="220.0" y1="40.0" x2="328.25" y2="102.5"/><line x1="328.25" y1="102.5" x2="328.25" y2="227.5"/><line x1="328.25" y1="227.5" x2="220.0" y2="290.0"/><line x1="220.0" y1="290.0" x2="111.75" y2="227.5"/><line x1="111.75" y1="227.5" x2="111.75" y2="102.5"/><line x1="111.75" y1="102.5" x2="220.0" y2="40.0"/><circle class="color-1" cx="220.0" cy="40.0" r="23"/><text class="color-1" x="220.0" y="45.0">a:1</text><circle class="color-2" cx="328.25" cy="102.5" r="23"/><text class="color-2" x="328.25" y="107.5">b:2</text><circle class="color-1" cx="328.25" cy="227.5" r="23"/><text class="color-1" x="328.25" y="232.5">c:1</text><circle class="color-2" cx="220.0" cy="290.0" r="23"/><text class="color-2" x="220.0" y="295.0">d:2</text><circle class="color-1" cx="111.75" cy="227.5" r="23"/><text class="color-1" x="111.75" y="232.5">e:1</text><circle class="color-2" cx="111.75" cy="102.5" r="23"/><text class="color-2" x="111.75" y="107.5">f:2</text></svg><figcaption>Order a, b, c, d, e, f: greedy uses two colors.</figcaption></figure></div>
+<p>In cyclic order \(a,b,c,d,e,f\), the colors are \(1,2,1,2,1,2\). The first order used three colors, although the graph needs only two. The vertex order affects the greedy result; it does not change the graph's chromatic number.</p>
+<p><strong>Check.</strong> If greedy uses five colors on a graph, have we proved \(\chi(G)=5\)?</p>
+<details><summary>Show answer</summary><p>We have proved only \(\chi(G)\le5\). Proving equality would also require a lower-bound argument. A different order or a different method might use fewer colors.</p></details>
+</article>
+<article id="bound"><h2>5. A guarantee: at most Δ + 1 colors</h2>
+<p>Write \(\Delta(G)\) for the maximum vertex degree of a nonempty graph G.</p>
+<p><strong>Theorem.</strong> Every finite nonempty simple graph satisfies</p>
+\[\boxed{\chi(G)\le\Delta(G)+1.}\]
+<p><strong>Proof.</strong> Apply greedy coloring in any order. When a vertex is reached, it has at most \(\Delta(G)\) colored neighbors. They forbid at most \(\Delta(G)\) different colors. Among the \(\Delta(G)+1\) colors \(1,\ldots,\Delta(G)+1\), at least one is therefore available. Greedy can color every vertex using this palette. ∎</p>
+<p>The bound is sharp for \(K_n\): its maximum degree is \(n-1\) and its chromatic number is n. But it is often far from optimal. The star \(K_{1,r}\), for \(r\ge1\), has maximum degree r and needs only two colors.</p>
+<p>For our six-cycle, \(\Delta=2\), so greedy is guaranteed to use at most three colors in any order. The two orders above show both a three-color result and a better two-color result.</p>
+<details><summary>Optional perspective: finding versus checking</summary><p>Once someone hands us a proposed coloring, checking it is straightforward: inspect every edge and verify that its endpoints have different colors. Finding a coloring with the fewest colors is a different task. The general decision problem “does this graph admit a proper 3-coloring?” is NP-complete. This does not mean that no algorithm exists: trying all assignments will eventually decide any finite instance. It means that an algorithm solving every instance in polynomial time would resolve the question P = NP. No complexity-theory machinery is needed for today's proofs.</p></details>
+</article>
+<article id="six"><h2>6. Finale: prove the Six Color Theorem</h2>
+<p>The Four Color Theorem is a deep result. We can prove a weaker theorem with the tools already developed in this course. The route is</p>
+\[\text{Euler's formula}\ \longrightarrow\ \text{a low-degree vertex}\ \longrightarrow\ \text{induction and coloring}.\]
+<h3>First, recover the edge bound</h3>
+<p>Let G be a connected simple planar graph with \(n\ge3\). Choose a crossing-free drawing, with m edges and f faces. As in Lecture 19, Euler's formula gives \(n-m+f=2\), and counting edge sides gives \(3f\le2m\). Every face boundary has at least three edge occurrences: loops and parallel edges are excluded, and the exceptional connected graph consisting of one edge has only two vertices. Thus</p>
+\[3(m-n+2)\le2m,\qquad m\le3n-6.\]
+<p>This bound also holds if G is disconnected: add crossing-free edges between its components until it is connected. The augmented graph has the same n vertices and at least m edges, so applying the connected bound gives \(m\le3n-6\) for the original graph as well.</p>
+<h3>The low-degree lemma</h3>
+<p><strong>Lemma.</strong> Every finite nonempty simple planar graph has a vertex of degree at most 5.</p>
+<p><strong>Proof.</strong> If \(n=1\) or \(n=2\), every vertex has degree at most 1. If \(n\ge3\), the edge bound and the handshaking lemma give</p>
+\[\sum_{v\in V}\deg(v)=2m\le6n-12<6n.\]
+<p>If every vertex had degree at least 6, the sum would instead be at least \(6n\), a contradiction. Therefore some vertex has degree less than 6, hence at most 5. ∎</p>
+<p><strong>Notice the quantifier.</strong> The lemma guarantees <em>some</em> vertex of degree at most 5. It does not say that the maximum degree is at most 5. A planar star can have arbitrarily large maximum degree, so the general \(\Delta+1\) bound alone does not establish a six-color bound for planar graphs.</p>
+<h3>The theorem and its proof</h3>
+<p><strong>Six Color Theorem.</strong> Every finite simple planar graph has a proper coloring using at most six colors.</p>
+<p><strong>Proof by induction on the number of vertices.</strong> The empty graph is trivially colorable. Assume that every simple planar graph with \(n-1\) vertices is 6-colorable, and let G be one with \(n\ge1\) vertices.</p>
+<p>By the lemma, choose a vertex v with \(\deg(v)\le5\). Delete v and its incident edges. The graph \(G-v\) is still simple and planar, because deleting vertices and edges cannot create crossings. It may be disconnected, which is why our induction hypothesis concerns all planar graphs, not only connected ones.</p>
+<p>By the induction hypothesis, \(G-v\) has a proper coloring using colors from \(\{1,2,3,4,5,6\}\). Restore v. Its at most five neighbors use at most five distinct colors, so at least one of the six colors is absent from its neighbors. Give v that color.</p>
+<p>Edges not incident to v remain properly colored. Each edge incident to v is also properly colored by our choice of its color. Thus we have a proper 6-coloring of G, completing the induction. ∎</p>
+<div class="pair"><figure><svg viewBox="0 0 440 330" role="img" aria-label="After deleting v, its five former neighbors u1 to u5 have colors 1 to 5."><title>After deleting v, its five former neighbors u1 to u5 have colors 1 to 5.</title><line x1="220.0" y1="40.0" x2="338.88" y2="126.37"/><line x1="338.88" y1="126.37" x2="293.47" y2="266.13"/><line x1="293.47" y1="266.13" x2="146.53" y2="266.13"/><line x1="146.53" y1="266.13" x2="101.12" y2="126.37"/><line x1="101.12" y1="126.37" x2="220.0" y2="40.0"/><circle class="color-1" cx="220.0" cy="40.0" r="23"/><text class="color-1" x="220.0" y="45.0">u1:1</text><circle class="color-2" cx="338.88" cy="126.37" r="23"/><text class="color-2" x="338.88" y="131.37">u2:2</text><circle class="color-3" cx="293.47" cy="266.13" r="23"/><text class="color-3" x="293.47" y="271.13">u3:3</text><circle class="color-4" cx="146.53" cy="266.13" r="23"/><text class="color-4" x="146.53" y="271.13">u4:4</text><circle class="color-5" cx="101.12" cy="126.37" r="23"/><text class="color-5" x="101.12" y="131.37">u5:5</text></svg><figcaption>First color G − v. Here the five neighbors happen to use colors 1–5.</figcaption></figure><figure><svg viewBox="0 0 440 330" role="img" aria-label="Restore central vertex v joined to five neighbors; give it color 6."><title>Restore central vertex v joined to five neighbors; give it color 6.</title><line x1="220.0" y1="40.0" x2="338.88" y2="126.37"/><line x1="338.88" y1="126.37" x2="293.47" y2="266.13"/><line x1="293.47" y1="266.13" x2="146.53" y2="266.13"/><line x1="146.53" y1="266.13" x2="101.12" y2="126.37"/><line x1="101.12" y1="126.37" x2="220.0" y2="40.0"/><line x1="220.0" y1="40.0" x2="220" y2="165"/><line x1="338.88" y1="126.37" x2="220" y2="165"/><line x1="293.47" y1="266.13" x2="220" y2="165"/><line x1="146.53" y1="266.13" x2="220" y2="165"/><line x1="101.12" y1="126.37" x2="220" y2="165"/><circle class="color-1" cx="220.0" cy="40.0" r="23"/><text class="color-1" x="220.0" y="45.0">u1:1</text><circle class="color-2" cx="338.88" cy="126.37" r="23"/><text class="color-2" x="338.88" y="131.37">u2:2</text><circle class="color-3" cx="293.47" cy="266.13" r="23"/><text class="color-3" x="293.47" y="271.13">u3:3</text><circle class="color-4" cx="146.53" cy="266.13" r="23"/><text class="color-4" x="146.53" y="271.13">u4:4</text><circle class="color-5" cx="101.12" cy="126.37" r="23"/><text class="color-5" x="101.12" y="131.37">u5:5</text><circle class="color-6" cx="220" cy="165" r="23"/><text class="color-6" x="220" y="170">v:6</text></svg><figcaption>Restore v and choose color 6, which none of its neighbors uses.</figcaption></figure></div>
+<p>The picture shows the worst-case count for this extension step: five neighbors already using five different colors. The choice of color 6 completes that particular partial coloring. It does <em>not</em> prove that this graph needs six colors; indeed the pictured five-cycle with a center has chromatic number 4.</p>
+<h3>A coloring procedure hidden in the proof</h3>
+<p>Repeatedly delete a vertex of degree at most 5 in the <em>current</em> graph, recording the deletion order. Every remaining graph is planar, so the lemma can be applied again. Then restore vertices in reverse order, greedily assigning an available color. Each restored vertex has at most five neighbors already restored, so six colors always suffice.</p>
+<p>This is where the order matters in a useful way. An arbitrary greedy order need not give the six-color guarantee; the reverse deletion order does.</p>
+<p><strong>Final comparison.</strong> Six colors suffice by a proof we can now give. Four colors suffice by the stronger Four Color Theorem. Neither statement asserts that a particular planar graph needs that many colors. To determine its chromatic number, we still seek both a coloring and a matching lower bound.</p>
+</article>
+<article id="practice"><h2>7. Exercises and a final synthesis</h2>
+<ol>
+<li>Find the chromatic numbers of \(K_5\), \(C_9\), \(K_{3,4}\), and a tree with eight vertices. Give a coloring description and a lower bound for each.</li>
+<li>Construct a triangle-free graph needing three colors. Explain why your example disproves “no triangles implies bipartite.”</li>
+<li>For the scheduling graph in Section 3, add a conflict between Algebra and Drama. Find the new minimum number of slots. Identify a clique that proves your answer is optimal.</li>
+<li>Apply greedy coloring to \(C_6\) in the order \(a,c,e,b,d,f\). How many colors appear? Explain why all six vertices still receive proper colors.</li>
+<li>A graph has maximum degree 4. What upper bound follows for its chromatic number? If the graph is also planar, what stronger bound can you state?</li>
+<li>Explain why the statement “every planar graph has a vertex of degree at most five” cannot be replaced by “every planar graph has maximum degree at most five.”</li>
+<li>Why does the Six Color Theorem induction allow \(G-v\) to be disconnected? Give a connected planar graph and a vertex whose deletion disconnects it.</li>
+<li>A planar graph's chosen vertex has four neighbors, already colored 1, 2, 2, and 4. Which colors from \(\{1,\ldots,6\}\) can be used on that vertex? Why does the proof count distinct colors rather than just neighbors?</li>
+<li>Does the low-degree lemma alone prove that every planar graph is 5-colorable? Explain what can go wrong in the extension step with a five-color palette.</li>
+<li>Choose one of the four opening examples. Record a sequence of deletions of vertices of current degree at most 5, reverse it, and run greedy coloring. Compare the number of colors obtained with the chromatic number you proved earlier.</li>
+</ol>
+<details><summary>Answers and hints</summary><ol>
+<li>The answers are 5, 3, 2, and 2. In \(K_5\), all five vertices are pairwise adjacent. An odd cycle needs three colors, and three suffice. Color the two nonempty parts of \(K_{3,4}\) differently; an edge rules out one color. Color a rooted tree by depth parity; its edges also rule out one color.</li>
+<li>Use \(C_5\), or any odd cycle of length at least five.</li>
+<li>The vertices \(a,b,c,d\) now form a \(K_4\), requiring four slots. Assign them colors 1, 2, 3, 4, respectively. Vertex \(e\), adjacent only to \(c\) and \(d\), may use color 1 or 2. Hence the minimum is 4.</li>
+<li>The first three vertices are pairwise nonadjacent and get color 1. Each remaining vertex is adjacent only to vertices in that first group and gets color 2. Thus two colors suffice.</li>
+<li>The maximum-degree bound gives \(\chi(G)\le5\). Planarity gives \(\chi(G)\le4\) by the Four Color Theorem. Our elementary six-color bound is true but weaker here.</li>
+<li>A star with six leaves is planar and has a center of degree 6. Its leaves have degree 1, so the low-degree lemma still holds.</li>
+<li>Deleting a vertex need not preserve connectivity. For example, deleting the center of \(K_{1,3}\) leaves three isolated vertices. The induction hypothesis applies because this smaller graph is still planar.</li>
+<li>Colors 3, 5, and 6 are available. Repeated colors on neighbors forbid only one palette entry each: here four neighbors forbid three distinct colors.</li>
+<li>A degree-5 vertex can have five neighbors using all five colors. There may be no unused color to assign directly. The Five Color Theorem is true, but proving it requires an additional argument; this simple extension proof establishes six colors.</li>
+<li>Answers depend on the order. For the four-cycle with center, delete the center first, then the outside vertices in cyclic order. Reverse that order to greedily 2-color the outside cycle, then give the center color 3. This achieves its chromatic number.</li>
+</ol></details>
+<p><strong>Closing question.</strong> What have we combined in the final proof? A geometric drawing gave a counting inequality; a degree sum forced a useful vertex; induction reduced the graph; and a local algorithm extended the coloring. These are recurring methods of discrete mathematics: model a problem, identify a constraint, reduce to a smaller case, and justify the construction.</p>
+</article>
+
+<p class="back-to-top"><a href="#top">↑ Back to top</a></p>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+  const siteRoot = window.location.hostname.endsWith("github.io")
+    ? `/${window.location.pathname.split("/").filter(Boolean)[0]}/`
+    : "/";
+
+  fetch(`${siteRoot}assets/includes/navigation.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Navigation request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      const placeholder = document.getElementById("navigation-placeholder");
+      placeholder.innerHTML = html;
+
+      placeholder.querySelectorAll("a[data-path]").forEach(link => {
+        link.href = `${siteRoot}${link.dataset.path}`;
+      });
+    })
+    .catch(error => console.error("Navigation load failed:", error));
+
+  fetch(`${siteRoot}assets/includes/footer.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Footer request failed: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(error => console.error("Footer load failed:", error));
+</script>
+
+</body>
+</html>
